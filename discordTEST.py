@@ -9,7 +9,7 @@ tnmtinfo = str()
 people = []
 players=[]
 rlist=[]
-
+current_round = []
 
 @client.event
 async def on_ready():
@@ -48,6 +48,8 @@ async def on_message(message):
         #create rounds for the tournament
         global rlist
         rlist = rounds(people)
+        global current_round
+        current_round = rlist[0]
         #create tourney info textarea
         global tnmtinfo
         tnmtinfo = tournament + "\n"
@@ -88,6 +90,7 @@ async def on_message(message):
         
     if message.content.startswith('$tourney'):
         await message.channel.send(tnmtinfo)
+  
 
 """ @client.event
 async def on_reaction_add(reaction, user):

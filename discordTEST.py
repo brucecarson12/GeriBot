@@ -77,6 +77,7 @@ async def on_message(message):
                 player.add_lichess(str(names[1]).strip())
                 await message.channel.send(f"Lichess username, {player.li}, added to {player.name}.")
 
+    #addscore is not working as intended
     if message.content.startswith('$addscore'):
        def check(msg):
             return msg.author == message.author and msg.channel == message.channel

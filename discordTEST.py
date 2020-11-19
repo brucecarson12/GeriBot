@@ -82,12 +82,12 @@ async def on_message(message):
        def check(msg):
             return msg.author == message.author and msg.channel == message.channel
        await message.channel.send(f"Who won?(Enter Tournament Name)")
-       scname = str()
        scname = await client.wait_for("message", check=check)
+       print(scname.content)
        for player in players:
-           if player.name == scname:
+           if player.name == scname.content.strip():
                player.add_score(1)
-               await message.channel.send(f"1 point added to {player.name}")     
+               await message.channel.send(f"1 point added to {player.name}")    
         
     if message.content.startswith('$tourney'):
         await message.channel.send(tnmtinfo)

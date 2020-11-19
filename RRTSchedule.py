@@ -44,6 +44,7 @@ class Match:
         self.wplayer = wplayer
         self.bplayer = bplayer
         self.link = link
+        self.status = 'ongoing'
 
     def __str__(self):
         return super().__str__()

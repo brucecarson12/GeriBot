@@ -38,8 +38,6 @@ class Player:
 
 class Match:
     #Match in a tournament
-    roundno=1
-
     def __init__(self, wplayer, bplayer, link=None):
         self.wplayer = wplayer
         self.bplayer = bplayer
@@ -48,3 +46,13 @@ class Match:
 
     def __str__(self):
         return super().__str__()
+
+    def round(self,roundno):
+        self.roundno = roundno
+
+    def winner(self,winner_name):
+        if winner_name == wplayer or winner_name == bplayer or winner_name == 'Draw':
+            self.winner = winner_name
+            self.status = 'complete'
+        else:
+            return print("They aren't in this game!! Stoopid")

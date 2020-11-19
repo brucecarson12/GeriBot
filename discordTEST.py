@@ -1,7 +1,6 @@
 import discord
 from dotenv import load_dotenv
 import os
-import pandas
 from RRTSchedule import *
 
 TOKEN = os.getenv("DiscToken")

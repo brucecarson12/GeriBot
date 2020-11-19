@@ -11,6 +11,7 @@ players=[]
 rlist=[]
 current_round = []
 
+
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
@@ -81,13 +82,18 @@ async def on_message(message):
     if message.content.startswith('$addscore'):
        def check(msg):
             return msg.author == message.author and msg.channel == message.channel
-       await message.channel.send(f"Who won?(Enter Tournament Name)")
+       await message.channel.send(f"Who won?(Enter Player Name)")       
        scname = await client.wait_for("message", check=check)
        print(scname.content)
+       error_check = 0
        for player in players:
            if player.name == scname.content.strip():
                player.add_score(1)
                await message.channel.send(f"1 point added to {player.name}")    
+               error_check = 1
+        
+       if error_check ==0:
+            await message.channel.send(f"Player name {scname} not found.") 
         
     if message.content.startswith('$tourney'):
         await message.channel.send(tnmtinfo)
@@ -99,4 +105,5 @@ async def on_reaction_add(reaction, user):
         await message.channel.send('Nice!')
  """    
 
+print(TOKEN)
 client.run(TOKEN)

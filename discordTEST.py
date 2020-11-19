@@ -105,5 +105,4 @@ async def on_reaction_add(reaction, user):
         await message.channel.send('Nice!')
  """    
 
-print(TOKEN)
 client.run(TOKEN)

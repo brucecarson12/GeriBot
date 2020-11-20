@@ -70,7 +70,9 @@ async def on_message(message):
             for f in range(len(rlist)):
                 tnmtinfo += ("\n"+"__Round {}:__".format(f+1) + "\n")
                 for i in range(len(rlist[f])):
-                    tnmtinfo += (str(rlist[f][i].vstxt)+",   ")
+                    tnmtinfo += (str(rlist[f][i].vstxt))
+                    if i != len(rlist[f])-1:
+                        tnmtinfo += ",   "
             await message.channel.send(tnmtinfo)
 
     if message.content.startswith('$stoptourney'): 
@@ -142,6 +144,7 @@ async def on_message(message):
            complete_rounds.append(current_round)           
            if len(complete_rounds) == len(rlist): # I havent tested this yet, but in theory this should check to see that the tourney is over. We can add the results here.
                await message.channel.send(f"Tournament {tournament} is over!")
+               tourney_status = 'complete'
            else:
                current_round = rlist[len(complete_rounds)]
                rdtxt = "@chess The next round has started!"+"\n"

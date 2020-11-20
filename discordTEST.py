@@ -139,11 +139,11 @@ async def on_message(message):
            else:
                TempList += 1
        if TempList == len(current_round): #If all matches in the current_round are complete, the next round becomes the current round.
-           complete_rounds.append(current_round)
-           current_round = rlist[len(complete_rounds)]
-           if current_round == []: # I havent tested this yet, but in theory (unless the above line is an error) this should check to see that the tourney is over
+           complete_rounds.append(current_round)           
+           if len(complete_rounds) == len(rlist): # I havent tested this yet, but in theory this should check to see that the tourney is over. We can add the results here.
                await message.channel.send(f"Tournament {tournament} is over!")
            else:
+               current_round = rlist[len(complete_rounds)]
                rdtxt = "@chess The next round has started!"+"\n"
                for match in current_round:
                    rdtxt += match.vstxt + ",  "

@@ -46,10 +46,14 @@ class Match:
         self.wplayer = wplayer
         self.bplayer = bplayer
         self.link = link
-        self.status = 'ongoing'
+        self.status = 'pending'
 
     def __str__(self):
         return f'{self.wplayer} vs {self.bplayer} \nStatus: {self.status} \nLink: {self.link}'
+
+    def start(self):
+        self.status = 'started'
+        #self.link = findlink(self)
 
     def round(self,roundno):
         self.roundno = roundno

@@ -5,21 +5,21 @@ import chess.svg
 import cairosvg
 
 def randpuzzle():
-    rand = int(random.random()*1405)
+    rand = random.randint(2,1405)
     clue = str()
     fentxt = str()
     solutiontxt = str()
 
-    with open('puzzles.csv', 'r') as read_obj:
+    with open('puzzles.csv', 'r') as puzzles:
         # pass the file object to reader() to get the reader object
-        csv_reader = reader(read_obj)
+        csv_reader = reader(puzzles)
         # Pass reader object to list() to get a list of lists
-        list_of_rows = list(csv_reader)[rand]
+        puzzlelist = list(csv_reader)[rand]
         #pprint.pprint(list_of_rows)
-        clue = str(list_of_rows[0])
-        title = str(list_of_rows[1])
-        fentxt = str(list_of_rows[2])
-        solutiontxt = str(list_of_rows[3])
+        clue = str(puzzlelist[0])
+        title = str(puzzlelist[1])
+        fentxt = str(puzzlelist[2])
+        solutiontxt = str(puzzlelist[3])
 
     board = chess.Board(fentxt)
     boardsvg = chess.svg.board(board=board)
@@ -31,4 +31,4 @@ def randpuzzle():
 
     cairosvg.svg2png(bytestring=boardsvg, write_to=filename)
 
-    return filename, clue, title, fentxt, solutiontxt
+    return filename, clue, title, fentxt, 

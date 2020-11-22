@@ -19,13 +19,17 @@ def rounds(teams):
 class Player:
     #player in a tournuament
     score = 0
-    name = str()
-    lichess = str()
 
     def __init__(self, name, lichess=None):
         self.name = name
         self.li = lichess
         self.info = "**" + str(self.name) + " " + "**" + str(self.score) + "\n" + str(self.li)
+
+    def __repr__(self):
+        return f"**{self.name}** {self.score} \n_{self.li}_"  
+    
+    def __str__(self):
+        return f"Name: **{self.name}** Score: {self.score} \n usrnamelichess:_{self.li}_"
 
     def add_lichess(self,lichess):
         self.li = lichess
@@ -45,14 +49,17 @@ class Match:
         self.status = 'ongoing'
 
     def __str__(self):
-        return super().__str__()
+        return f'{self.wplayer} vs {self.bplayer} \nStatus: {self.status} \nLink: {self.link}'
 
     def round(self,roundno):
         self.roundno = roundno
+
+    def add_link(self,link):
+        self.link = link
 
     def winner(self,winner_name):
         if winner_name == wplayer or winner_name == bplayer or winner_name == 'Draw':
             self.winner = winner_name
             self.status = 'complete'
         else:
-            return print("They aren't in this game!! Stoopid")
+            return print("They aren't in this game!! _Stoopid_")

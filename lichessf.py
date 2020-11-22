@@ -1,10 +1,8 @@
 from csv import reader
-import pprint
 import random
 import chess
 import chess.svg
 import cairosvg
-import os
 
 def randpuzzle():
     rand = int(random.random()*1405)
@@ -25,19 +23,12 @@ def randpuzzle():
 
     board = chess.Board(fentxt)
     boardsvg = chess.svg.board(board=board)
+    filename = title + '.png'
 
     f = open(title + ".SVG", "w")
     f.write(boardsvg)
     f.close()
 
-    cairosvg.svg2png(bytestring=boardsvg, write_to=title + '.png')
+    cairosvg.svg2png(bytestring=boardsvg, write_to=filename)
 
-    boardpng = open(title + '.png')
-    boardpng.close()
-    filename = title + '.png'
-
-    return boardpng, filename, clue, title, fentxt, solutiontxt
-
-#boardpng,filename,clue,title,fentxt,solution = randpuzzle()
-
-#print(boardpng,filename,clue,title,fentxt,solution)
+    return filename, clue, title, fentxt, solutiontxt

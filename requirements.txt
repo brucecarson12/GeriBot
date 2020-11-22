@@ -1,0 +1,4 @@
+discord.py
+cairosvg.py
+python-chess.py
+csv

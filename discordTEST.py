@@ -2,6 +2,7 @@ import discord
 from dotenv import load_dotenv
 import os
 from RRTSchedule import *
+from lichessf import *
 
 TOKEN = os.getenv("DiscToken")
 client = discord.Client()
@@ -97,7 +98,14 @@ async def on_message(message):
         
     if message.content.startswith('$tourney'):
         await message.channel.send(tnmtinfo)
-  
+    
+    #sends a random puzzle to the chat
+    if message.content.startswith('$puzzle'):
+        boardpng,filename2,clue,title,fentxt,solution = randpuzzle()
+        await message.channel.send(f"Clue: {clue} \nGame: {title} \n||{solution}||")
+        await message.channel.send(file=discord.File(filename2))
+        os.remove(title + ".svg")
+        os.remove(filename2)
 
 """ @client.event
 async def on_reaction_add(reaction, user):

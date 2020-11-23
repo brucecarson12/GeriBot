@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 from RRTSchedule import *
 from functions import *
+from GSheet import *
 
 TOKEN = os.getenv("DiscToken")
 client = discord.Client()
@@ -28,7 +29,7 @@ async def on_message(message):
         return
 
     if message.content.startswith('$hello'):
-        await message.channel.send('yo!')
+        await message.channel.send('Hey! Did you know 1.d4 is better than 1.e4?')
 
     if message.content.startswith('$maketourney'):  
         #checks that message is from original sender
@@ -39,6 +40,7 @@ async def on_message(message):
         global tourney_status
         if tourney_status == 'ongoing':
             await message.channel.send("There is already an ongoing tournament!")
+            
             
         else:
             tourney_status = 'ongoing'
@@ -60,7 +62,7 @@ async def on_message(message):
         for i in range(0,len(people)):
             people[i] = people[i].strip()
         global players
-        players = list(map(Player,people))
+        players = MakePlayers(people)
         #create rounds for the tournament
         global rlist
         rlist = rounds(people)
@@ -102,27 +104,25 @@ async def on_message(message):
 
     #
     if message.content.startswith('$addwinner'):
-       def check(msg):
-            return msg.author == message.author and msg.channel == message.channel
-       await message.channel.send(f"Who won?(Enter Player Name or Draw)")       
-       scname = await client.wait_for("message", check=check)
-       #Draw case
-       if scname.content == 'Draw':
-           await message.channel.send("Pleae name one player in the game!")
-           scname2 = await client.wait_for("message", check=check)
-           for match in current_round:
-                if scname2.content == match.wplayer or scname2.content == match.bplayer:
-                   match.winner(scname.content) #Calls the winner function for match class
-                   for player in players:
-                       if player.name == match.wplayer or player.name == match.bplayer: #updates player scores
-                           player.add_score(0.5)
-                           await message.channel.send(f"0.5 points added to {player.name}") #We can work on this being one message later.
-                   break
-                else: 
-                    continue      #probably not needed, but i "grew up" on python 2 sooooo ¯\_(ツ)_/¯
-       else:  #winner case
+        def check(msg):
+             return msg.author == message.author and msg.channel == message.channel
+        await message.channel.send(f"Who won?(Enter Player Name or Draw)")       
+        scname = await client.wait_for("message", check=check)
+        #Draw case
+        if scname.content == 'Draw':
+            await message.channel.send("Pleae name one player in the game!")
+            scname2 = await client.wait_for("message", check=check)
             for match in current_round:
-                if scname.content == match.wplayer or scname.content == match.wplayer:
+                if scname2.content == match.wplayer or scname2.content == match.bplayer:
+                    match.winner(scname.content) #Calls the winner function for match class
+                    for player in players:
+                        if player.name == match.wplayer or player.name == match.bplayer: #updates player scores
+                            player.add_score(0.5)
+                            await message.channel.send(f"0.5 points added to {player.name}") #We can work on this being one message later.
+                    break                
+        else:  #winner case
+            for match in current_round:
+                if scname.content == match.wplayer or scname.content == match.bplayer:
                     match.winner(scname.content)
                     break
             error_check = 0
@@ -135,23 +135,24 @@ async def on_message(message):
                 
             if error_check ==0:
                     await message.channel.send(f"Player name {scname} not found.") 
-       TempList = 0 #TempList counts the number of completed matches. 
-       for match in current_round:
-           if match.status == 'ongoing':
-               break
-           else:
-               TempList += 1
-       if TempList == len(current_round): #If all matches in the current_round are complete, the next round becomes the current round.
-           complete_rounds.append(current_round)           
-           if len(complete_rounds) == len(rlist): # I havent tested this yet, but in theory this should check to see that the tourney is over. We can add the results here.
-               await message.channel.send(f"Tournament {tournament} is over!")
-               tourney_status = 'complete'
-           else:
-               current_round = rlist[len(complete_rounds)]
-               rdtxt = "@chess The next round has started!"+"\n"
-               for match in current_round:
+        TempList = 0 #TempList counts the number of completed matches. 
+        for match in current_round:
+            if match.status == 'started':
+                break
+            else:
+                TempList += 1
+        if TempList == len(current_round): #If all matches in the current_round are complete, the next round becomes the current round.
+            complete_rounds.append(current_round)           
+            if len(complete_rounds) == len(rlist): # I havent tested this yet, but in theory this should check to see that the tourney is over. We can add the results here.
+                await message.channel.send(f"Tournament {tournament} is over!")
+                UpdateSheet(players,tnmtinfo)
+                tourney_status = 'complete'
+            else:
+                current_round = rlist[len(complete_rounds)]
+                rdtxt = "@chess The next round has started!"+"\n"
+                for match in current_round:
                    rdtxt += match.vstxt + ",  "
-               await message.channel.send(rdtxt)
+                await message.channel.send(rdtxt)
 
         
     if message.content.startswith('$tourney'):

@@ -3,6 +3,9 @@ import random
 import chess
 import chess.svg
 import cairosvg
+import gspread
+from RRTSchedule import *
+
 
 def randpuzzle():
     rand = random.randint(2,1405)
@@ -35,3 +38,42 @@ def randpuzzle():
     cairosvg.svg2png(bytestring=boardsvg, write_to=filename)
 
     return filename, clue, title, fentxt, solutiontxt
+
+
+
+
+#---------------------Gsheet functions--------------------------------------------------------
+def MakePlayers(PlayerList):
+    gc = gspread.service_account(filename='credentials.json')
+    Book = gc.open('Chess_Tourney')
+    sheet = Book.get_worksheet(0)
+    players =[]
+    for player in PlayerList:
+        try: 
+            cell = sheet.find(player)
+            players.append(Player(sheet.row_values(cell.row)[0],sheet.row_values(cell.row)[1],sheet.row_values(cell.row)[2]))
+        except:
+            current_len = len(sheet.col_values(1))
+            new_row = current_len +1
+            sheet.update(new_row, 3, player)
+            sheet.update(f"D{new_row}:G{new_row}",[0,0,0,0]) 
+            players.append(Player( None,None,player))
+    return players
+            
+
+
+
+def UpdateSheet(players,tnmtinfo):
+    gc = gspread.service_account(filename='credentials.json')
+    Book = gc.open('Chess_Tourney')
+    sheet = Book.get_worksheet(0)
+    
+    for player in players:
+        TotalMatches = tnmtinfo.count(player.name) - tnmtinfo.count(f"{player.discord} vs BYE") - tnmtinfo.count(f"BYE vs {player.discord}") 
+        cell = sheet.find(player.discord)
+        sheet.update(cell.row,1,player.name)
+        sheet.update(cell.row,2,player.li)
+        sheet.update(cell.row,5,player.TourneyWins)
+        sheet.update(cell.row,7,player.TourneyDraws)
+        Losses = TotalMatches - player.TourneyWins - player.TourneyDraws
+

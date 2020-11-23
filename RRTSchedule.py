@@ -7,8 +7,8 @@ def rounds(teams):
     return_matchs = []
     for fixture in range(1, n):
         for i in range(int(n/2)):
-            matchs.append("{} VS {}".format(teams[i], teams[n - 1 - i]))
-            return_matchs.append("{} VS {}".format( teams[n - 1 - i],teams[i]))
+            matchs.append(Match(teams[i], teams[n - 1 - i]))
+            return_matchs.append(Match(teams[n - 1 - i],teams[i]))
         teams.insert(1, teams.pop())
         fixtures.insert(int(len(fixtures)/2), matchs)
         fixtures.append(return_matchs)
@@ -46,7 +46,8 @@ class Match:
         self.wplayer = wplayer
         self.bplayer = bplayer
         self.link = link
-        self.status = 'pending'
+        self.vstxt = "{} vs {}".format(wplayer,bplayer)
+        self.status = 'ongoing'
 
     def __str__(self):
         return f'{self.wplayer} vs {self.bplayer} \nStatus: {self.status} \nLink: {self.link}'
@@ -62,8 +63,9 @@ class Match:
         self.link = link
 
     def winner(self,winner_name):
-        if winner_name == wplayer or winner_name == bplayer or winner_name == 'Draw':
+        if winner_name == self.wplayer or winner_name == self.bplayer or winner_name == 'Draw':
             self.winner = winner_name
             self.status = 'complete'
+            return 
         else:
-            return print("They aren't in this game!! _Stoopid_")
+            return print("They aren't in this match!! Stoopid")

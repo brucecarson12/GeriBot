@@ -56,7 +56,7 @@ def MakePlayers(PlayerList):
         except:
             current_len = len(sheet.col_values(1))
             new_row = current_len +1
-            sheet.update(new_row, 3, p)
+            sheet.update_cell(new_row, 3, p)
             sheet.update(f"D{new_row}:G{new_row}",[0,0,0,0]) 
             players.append(Player( None,None,p))
     return players
@@ -72,9 +72,9 @@ def UpdateSheet(players,tnmtinfo):
     for p in players:
         TotalMatches = tnmtinfo.count(p.name) - tnmtinfo.count(f"{p.discord} vs BYE") - tnmtinfo.count(f"BYE vs {p.discord}") 
         cell = sheet.find(p.discord)
-        sheet.update(cell.row,1,p.name)
-        sheet.update(cell.row,2,p.li)
-        sheet.update(cell.row,5,p.TourneyWins)
-        sheet.update(cell.row,7,p.TourneyDraws)
+        sheet.update_cell(cell.row,1,p.name)
+        sheet.update_cell(cell.row,2,p.li)
+        sheet.update_cell(cell.row,5,p.TourneyWins)
+        sheet.update_cell(cell.row,7,p.TourneyDraws)
         Losses = TotalMatches - p.TourneyWins - p.TourneyDraws
 

@@ -30,7 +30,7 @@ async def on_message(message):
         return
 
     if message.content.startswith('$hello'):
-        await message.channel.send('Hey! Did you know 1.e4 is better than 1.d4?')
+        await message.channel.send('Hey! Did you know 1.d4 is better than 1.e4?')
 
     if message.content.startswith('$maketourney'):  
         #checks that message is from original sender
@@ -47,38 +47,38 @@ async def on_message(message):
             tourney_status = 'ongoing'
 
         
-        #name the tournament
-        await message.channel.send(f"Name Your Tournament!")
-        msg1 = await client.wait_for("message",check=check)
-        global tournament
-        tournament = "**" + str(msg1.content) + "**"
+            #name the tournament
+            await message.channel.send(f"Name Your Tournament!")
+            msg1 = await client.wait_for("message",check=check)
+            global tournament
+            tournament = "**" + str(msg1.content) + "**"
 
-        #name your players/react to join
-        await message.channel.send(f"Name Your players!")
-        msg = await client.wait_for("message",check=check)
-        #turn people into Player()s
-        global people
-        people = msg.content.split(',')
-        #strip player names
-        for i in range(0,len(people)):
-            people[i] = people[i].strip()
-        global players
-        players = MakePlayers(people)
-        #create rounds for the tournament
-        global rlist
-        rlist = rounds(people)
-        global current_round
-        current_round = rlist[0]
-        #create tourney info textarea
-        global tnmtinfo
-        tnmtinfo = tournament + "\n"
-        for f in range(len(rlist)):
-            tnmtinfo += ("\n"+"__Round {}:__".format(f+1) + "\n")
-            for i in range(len(rlist[f])):
-                tnmtinfo += (str(rlist[f][i].vstxt))
-                if i != len(rlist[f])-1:
-                    tnmtinfo += ",   "
-        await message.channel.send(tnmtinfo)
+            #name your players/react to join
+            await message.channel.send(f"Name Your players!")
+            msg = await client.wait_for("message",check=check)
+            #turn people into Player()s
+            global people
+            people = msg.content.split(',')
+            #strip player names
+            for i in range(0,len(people)):
+                people[i] = people[i].strip()
+            global players
+            players = MakePlayers(people)
+            #create rounds for the tournament
+            global rlist
+            rlist = rounds(people)
+            global current_round
+            current_round = rlist[0]
+            #create tourney info textarea
+            global tnmtinfo
+            tnmtinfo = tournament + "\n"
+            for f in range(len(rlist)):
+                tnmtinfo += ("\n"+"__Round {}:__".format(f+1) + "\n")
+                for i in range(len(rlist[f])):
+                    tnmtinfo += (str(rlist[f][i].vstxt))
+                    if i != len(rlist[f])-1:
+                        tnmtinfo += ",   "
+            await message.channel.send(tnmtinfo)
 
     if message.content.startswith('$stoptourney'): 
          tourney_status = 'none'

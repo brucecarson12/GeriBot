@@ -57,7 +57,10 @@ def MakePlayers(PlayerList):
             current_len = len(sheet.col_values(1))
             new_row = current_len +1
             sheet.update_cell(new_row, 3, p)
-            sheet.update(f"D{new_row}:G{new_row}",[0,0,0,0]) 
+            sheet.update_cell(new_row, 4, 0)
+            sheet.update_cell(new_row, 5, 0)
+            sheet.update_cell(new_row, 6, 0)
+            sheet.update_cell(new_row, 7, 0)
             players.append(Player( None,None,p))
     return players
             

@@ -2,7 +2,7 @@ import discord
 from dotenv import load_dotenv
 import os
 from RRTSchedule import *
-from lichessf import *
+from functions import *
 
 TOKEN = os.getenv("DiscToken")
 client = discord.Client()

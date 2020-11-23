@@ -5,7 +5,7 @@ from RRTSchedule import *
 from functions import *
 
 TOKEN = os.getenv("DiscToken")
-client = discord.Client(activity=discord.Activity(name="$help"))
+client = discord.Client()
 tnmtinfo = str()
 people = []
 players=[]
@@ -20,6 +20,7 @@ tourney_status = 'None'
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
     channel = client.get_channel('763912928247414794')
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='$help'))
 
 @client.event
 async def on_message(message):

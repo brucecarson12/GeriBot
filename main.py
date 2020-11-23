@@ -5,7 +5,7 @@ from RRTSchedule import *
 from functions import *
 
 TOKEN = os.getenv("DiscToken")
-client = discord.Client(status="$help")
+client = discord.Client(activity=discord.Activity(name="$help"))
 tnmtinfo = str()
 people = []
 players=[]

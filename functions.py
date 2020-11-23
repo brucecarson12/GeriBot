@@ -31,4 +31,4 @@ def randpuzzle():
 
     cairosvg.svg2png(bytestring=boardsvg, write_to=filename)
 
-    return filename, clue, title, fentxt, 
+    return filename, clue, title, fentxt, solutiontxt

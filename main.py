@@ -94,7 +94,7 @@ async def on_message(message):
                error_check = 1
         
        if error_check ==0:
-            await message.channel.send(f"Player name {scname} not found.") 
+            await message.channel.send(f"Player name, {scname}, not found.") 
         
     if message.content.startswith('$tourney'):
         await message.channel.send(tnmtinfo)

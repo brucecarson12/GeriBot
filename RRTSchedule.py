@@ -20,9 +20,13 @@ class Player:
     #player in a tournuament
     score = 0
 
-    def __init__(self, name, lichess=None):
+    def __init__(self, name=None, lichess=None, discord = None):
         self.name = name
         self.li = lichess
+        self.discord = discord
+        self.TourneyWins = 0
+        self.TourneyDraws = 0
+        self.TourneyLoses = 0
         self.info = "**" + str(self.name) + " " + "**" + str(self.score) + "\n" + str(self.li)
 
     def __repr__(self):
@@ -37,6 +41,10 @@ class Player:
    
     def add_score(self, points):
         self.score += points
+        if points == 1:
+            self.TourneyWins += 1
+        elif points == 0.5:
+            self.TourneyDraws += 1
         self.info = "**" + str(self.name) + " " + "**" + str(self.score) + "\n" + str(self.li)
 
 
@@ -47,7 +55,10 @@ class Match:
         self.bplayer = bplayer
         self.link = link
         self.vstxt = "{} vs {}".format(wplayer,bplayer)
-        self.status = 'ongoing'
+        if wplayer == "BYE" or bplayer == "BYE":
+            self.status == 'complete'
+        else:
+            self.status = 'pending'
 
     def __str__(self):
         return f'{self.wplayer} vs {self.bplayer} \nStatus: {self.status} \nLink: {self.link}'

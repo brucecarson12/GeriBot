@@ -9,6 +9,7 @@ def randpuzzle():
     clue = str()
     fentxt = str()
     solutiontxt = str()
+    ori = chess.WHITE
 
     with open('puzzles.csv', 'r') as puzzles:
         # pass the file object to reader() to get the reader object
@@ -21,8 +22,10 @@ def randpuzzle():
         fentxt = str(puzzlelist[2])
         solutiontxt = str(puzzlelist[3])
 
+    if clue.__contains__('Black'):
+        ori = chess.BLACK
     board = chess.Board(fentxt)
-    boardsvg = chess.svg.board(board=board)
+    boardsvg = chess.svg.board(board=board,orientation=ori)
     filename = title + '.png'
 
     f = open(title + ".SVG", "w")

@@ -2,6 +2,7 @@ from csv import reader
 import random
 import chess
 import chess.svg
+import cairo
 import cairosvg
 import gspread
 from RRTSchedule import *
@@ -48,16 +49,16 @@ def MakePlayers(PlayerList):
     Book = gc.open('Chess_Tourney')
     sheet = Book.get_worksheet(0)
     players =[]
-    for player in PlayerList:
+    for p in PlayerList:
         try: 
-            cell = sheet.find(player)
+            cell = sheet.find(p)
             players.append(Player(sheet.row_values(cell.row)[0],sheet.row_values(cell.row)[1],sheet.row_values(cell.row)[2]))
         except:
             current_len = len(sheet.col_values(1))
             new_row = current_len +1
-            sheet.update(new_row, 3, player)
+            sheet.update(new_row, 3, p)
             sheet.update(f"D{new_row}:G{new_row}",[0,0,0,0]) 
-            players.append(Player( None,None,player))
+            players.append(Player( None,None,p))
     return players
             
 
@@ -68,12 +69,12 @@ def UpdateSheet(players,tnmtinfo):
     Book = gc.open('Chess_Tourney')
     sheet = Book.get_worksheet(0)
     
-    for player in players:
-        TotalMatches = tnmtinfo.count(player.name) - tnmtinfo.count(f"{player.discord} vs BYE") - tnmtinfo.count(f"BYE vs {player.discord}") 
-        cell = sheet.find(player.discord)
-        sheet.update(cell.row,1,player.name)
-        sheet.update(cell.row,2,player.li)
-        sheet.update(cell.row,5,player.TourneyWins)
-        sheet.update(cell.row,7,player.TourneyDraws)
-        Losses = TotalMatches - player.TourneyWins - player.TourneyDraws
+    for p in players:
+        TotalMatches = tnmtinfo.count(p.name) - tnmtinfo.count(f"{p.discord} vs BYE") - tnmtinfo.count(f"BYE vs {p.discord}") 
+        cell = sheet.find(p.discord)
+        sheet.update(cell.row,1,p.name)
+        sheet.update(cell.row,2,p.li)
+        sheet.update(cell.row,5,p.TourneyWins)
+        sheet.update(cell.row,7,p.TourneyDraws)
+        Losses = TotalMatches - p.TourneyWins - p.TourneyDraws
 

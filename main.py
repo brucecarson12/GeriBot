@@ -120,6 +120,7 @@ async def on_message(message):
                         if player.name == match.wplayer or player.name == match.bplayer: #updates player scores
                             player.add_score(0.5)
                             await message.channel.send(f"0.5 points added to {player.name}") #We can work on this being one message later.
+                            
                     break                
         else:  #winner case
             for match in current_round:

@@ -69,6 +69,8 @@ async def on_message(message):
             rlist = rounds(people)
             global current_round
             current_round = rlist[0]
+            for match in current_round:
+                match.start()
             #create tourney info textarea
             global tnmtinfo
             tnmtinfo = tournament + "\n"
@@ -161,6 +163,8 @@ async def on_message(message):
                 tourney_status = 'complete'
             else:
                 current_round = rlist[len(complete_rounds)]
+                for match in current_round:
+                     match.start()
                 rdtxt = "@chess The next round has started!"+"\n"
                 for match in current_round:
                     rdtxt += match.vstxt + ",  "

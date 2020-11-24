@@ -135,16 +135,16 @@ async def on_message(message):
                     else:
                         match.winner(scname.content)
                         break
-            error_check = 0
-            for player in players:
-                if player.name == scname.content.strip():
-                    player.add_score(1)
-                    await message.channel.send(f"1 point added to {player.name}")    
-                    error_check = 1
-                    break
-                
-            if error_check ==0:
-                    await message.channel.send(f"Player name {scname.content} not found.") 
+                error_check = 0
+                for player in players:
+                    if player.name == scname.content.strip():
+                        player.add_score(1)
+                        await message.channel.send(f"1 point added to {player.name}")    
+                        error_check = 1
+                        break
+                    
+                if error_check ==0:
+                        await message.channel.send(f"Player name {scname.content} not found.") 
         TempList = 0 #TempList counts the number of completed matches. 
         for match in current_round:
             if match.status == 'started':
@@ -161,7 +161,7 @@ async def on_message(message):
                 current_round = rlist[len(complete_rounds)]
                 rdtxt = "@chess The next round has started!"+"\n"
                 for match in current_round:
-                   rdtxt += match.vstxt + ",  "
+                    rdtxt += match.vstxt + ",  "
                 await message.channel.send(rdtxt)
 
         

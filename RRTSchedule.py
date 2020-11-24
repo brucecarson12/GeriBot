@@ -56,15 +56,17 @@ class Match:
         self.link = link
         self.vstxt = "{} vs {}".format(wplayer,bplayer)
         self.status = 'pending'
-        if wplayer == "BYE" or bplayer == "BYE":
-            self.status = 'complete'
+
             
 
     def __str__(self):
         return f'{self.wplayer} vs {self.bplayer} \nStatus: {self.status} \nLink: {self.link}'
 
     def start(self):
-        self.status = 'started'
+        if self.wplayer == "BYE" or self.bplayer == "BYE":
+            self.status = 'complete'
+        else:
+            self.status = 'started'
         #self.link = findlink(self)
 
     def round(self,roundno):

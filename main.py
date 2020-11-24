@@ -175,11 +175,11 @@ async def on_message(message):
         await message.channel.send(tnmtinfo)
 
     if message.content.startswith('$standings'):
-        standings = players.sort
-        sinfo = "__Players:__ \n"
+        standings = sorted(players)
+        sinfo = "__Standings:__ \n"
         for player in standings:
             sinfo += player.info + "\n"
-        await message.channel.send(pinfo)
+        await message.channel.send(sinfo)
 
     
     #sends a random puzzle to the chat

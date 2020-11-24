@@ -115,18 +115,26 @@ async def on_message(message):
             scname2 = await client.wait_for("message", check=check)
             for match in current_round:
                 if scname2.content == match.wplayer or scname2.content == match.bplayer:
-                    match.winner(scname.content) #Calls the winner function for match class
-                    for player in players:
-                        if player.name == match.wplayer or player.name == match.bplayer: #updates player scores
-                            player.add_score(0.5)
-                            await message.channel.send(f"0.5 points added to {player.name}") #We can work on this being one message later.
+                    if match.status == 'complete':
+                        await message.channel.send("This game has already been scored!")
+                        break
+                    else:
+                        match.winner(scname.content) #Calls the winner function for match class
+                        for player in players:
+                            if player.name == match.wplayer or player.name == match.bplayer: #updates player scores
+                                player.add_score(0.5)
+                                await message.channel.send(f"0.5 points added to {player.name}") #We can work on this being one message later.
 
-                    break                
+                        break                
         else:  #winner case
             for match in current_round:
                 if scname.content == match.wplayer or scname.content == match.bplayer:
-                    match.winner(scname.content)
-                    break
+                    if match.status == 'complete':
+                        await message.channel.send("This game has already been scored!")
+                        break
+                    else:
+                        match.winner(scname.content)
+                        break
             error_check = 0
             for player in players:
                 if player.name == scname.content.strip():

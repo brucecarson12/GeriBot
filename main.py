@@ -30,7 +30,7 @@ async def on_message(message):
         return
 
     if message.content.startswith('$hello'):
-        await message.channel.send('Hey! Did you know 1.d4 is better than 1.e4?')
+        await message.channel.send('Hey! Did you know 1.d4 is better than 1.e4? =)')
 
     if message.content.startswith('$maketourney'):  
         #checks that message is from original sender
@@ -120,7 +120,7 @@ async def on_message(message):
                         if player.name == match.wplayer or player.name == match.bplayer: #updates player scores
                             player.add_score(0.5)
                             await message.channel.send(f"0.5 points added to {player.name}") #We can work on this being one message later.
-                            
+
                     break                
         else:  #winner case
             for match in current_round:

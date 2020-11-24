@@ -62,7 +62,7 @@ def MakePlayers(PlayerList):
             sheet.update_cell(new_row, 5, 0)
             sheet.update_cell(new_row, 6, 0)
             sheet.update_cell(new_row, 7, 0)
-            players.append(Player( None,None,p))
+            players.append(Player( p,None,p))
     return players
             
 

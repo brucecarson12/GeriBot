@@ -175,7 +175,7 @@ async def on_message(message):
         await message.channel.send(tnmtinfo)
 
     if message.content.startswith('$standings'):
-        standings = sorted(players)
+        standings = sorted(players).reverse()
         sinfo = "__Standings:__ \n"
         for player in standings:
             sinfo += player.info + "\n"

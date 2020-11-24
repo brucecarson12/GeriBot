@@ -57,7 +57,7 @@ class Match:
         self.vstxt = "{} vs {}".format(wplayer,bplayer)
         self.status = 'pending'
         if wplayer == "BYE" or bplayer == "BYE":
-            self.status == 'complete'
+            self.status = 'complete'
             
 
     def __str__(self):

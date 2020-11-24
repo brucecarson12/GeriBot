@@ -134,8 +134,7 @@ async def on_message(message):
                         break
                     else:
                         match.winner(scname.content)
-                        break
-                error_check = 0
+                        error_check = 0
                 for player in players:
                     if player.name == scname.content.strip():
                         player.add_score(1)
@@ -145,6 +144,8 @@ async def on_message(message):
                     
                 if error_check ==0:
                         await message.channel.send(f"Player name {scname.content} not found.") 
+                        break
+                
         TempList = 0 #TempList counts the number of completed matches. 
         for match in current_round:
             if match.status == 'started':

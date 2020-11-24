@@ -111,7 +111,7 @@ async def on_message(message):
         scname = await client.wait_for("message", check=check)
         #Draw case
         if scname.content == 'Draw':
-            await message.channel.send("Pleae name one player in the game!")
+            await message.channel.send("Please name one player in the game!")
             scname2 = await client.wait_for("message", check=check)
             for match in current_round:
                 if scname2.content == match.wplayer or scname2.content == match.bplayer:
@@ -135,7 +135,7 @@ async def on_message(message):
                     break
                 
             if error_check ==0:
-                    await message.channel.send(f"Player name {scname} not found.") 
+                    await message.channel.send(f"Player name {scname.content} not found.") 
         TempList = 0 #TempList counts the number of completed matches. 
         for match in current_round:
             if match.status == 'started':

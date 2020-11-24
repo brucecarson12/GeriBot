@@ -56,6 +56,7 @@ def MakePlayers(PlayerList):
         except:
             current_len = len(sheet.col_values(1))
             new_row = current_len +1
+            sheet.update_cell(new_row, 1, p)
             sheet.update_cell(new_row, 3, p)
             sheet.update_cell(new_row, 4, 0)
             sheet.update_cell(new_row, 5, 0)
@@ -64,7 +65,6 @@ def MakePlayers(PlayerList):
             players.append(Player( None,None,p))
     return players
             
-
 
 
 def UpdateSheet(players,tnmtinfo):

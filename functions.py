@@ -73,7 +73,7 @@ def UpdateSheet(players,tnmtinfo):
     sheet = Book.get_worksheet(0)
     
     for p in players:
-        TotalMatches = tnmtinfo.count(p.name) - tnmtinfo.count(f"{p.discord} vs BYE") - tnmtinfo.count(f"BYE vs {p.discord}") 
+        TotalMatches = tnmtinfo.count(p.discord) - tnmtinfo.count(f"{p.discord} vs BYE") - tnmtinfo.count(f"BYE vs {p.discord}") 
         cell = sheet.find(p.discord)
         sheet.update_cell(cell.row,1,p.name)
         sheet.update_cell(cell.row,2,p.li)

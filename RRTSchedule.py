@@ -35,6 +35,9 @@ class Player:
     def __str__(self):
         return f"Name: **{self.name}** Score: {self.score} \n usrnamelichess:_{self.li}_"
 
+    def __lt__(self,other):
+        return self.score < other.score
+
     def add_lichess(self,lichess):
         self.li = lichess
         self.info = "**" + str(self.name) + " " + "**" + str(self.score) + "\n" + str(self.li)

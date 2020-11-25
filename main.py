@@ -130,7 +130,7 @@ async def on_message(message):
                         break                
         else:  #winner case
             for match in current_round:
-                if scname.content == match.wplayer or scname.content == match.bplayer:
+                if scname.content.lower() == match.wplayer.lower() or scname.content.lower() == match.bplayer.lower():
                     if match.status == 'complete':
                         await message.channel.send("This game has already been scored!")
                         break

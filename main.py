@@ -121,7 +121,7 @@ async def on_message(message):
                         await message.channel.send("This game has already been scored!")
                         break
                     else:
-                        match.winner(scname.content) #Calls the winner function for match class
+                        match.winner(scname2.content) #Calls the winner function for match class
                         for player in players:
                             if player.name == match.wplayer or player.name == match.bplayer: #updates player scores
                                 player.add_score(0.5)

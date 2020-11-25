@@ -30,7 +30,7 @@ async def on_message(message):
         return
 
     if message.content.startswith('$hello'):
-        await message.channel.send('Hey! Did you know 1.d4 is better than 1.e4? =)')
+        await message.channel.send('Hey! Did you know 1.Nf3 is the ultimate compromise?\n Are you reti?')
 
     if message.content.startswith('$maketourney'):  
         #checks that message is from original sender

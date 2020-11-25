@@ -113,10 +113,10 @@ async def on_message(message):
         scname = await client.wait_for("message", check=check)
         #Draw case
         if scname.content == 'Draw':
-            await message.channel.send("Please name one player in the game!")
+            await message.channel.send("Please name one player in the game.")
             scname2 = await client.wait_for("message", check=check)
             for match in current_round:
-                if scname2.content == match.wplayer or scname2.content == match.bplayer:
+                if scname2.content.lower() == match.wplayer.lower() or scname2.content.lower() == match.bplayer.lower():
                     if match.status == 'complete':
                         await message.channel.send("This game has already been scored!")
                         break
@@ -139,7 +139,7 @@ async def on_message(message):
 
                         error_check = 0
                     for player in players:
-                        if player.name == scname.content.strip():
+                        if player.name.lower() == scname.content.lower():
                             player.add_score(1)
                             await message.channel.send(f"1 point added to {player.name}")    
                             error_check = 1

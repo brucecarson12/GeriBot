@@ -102,7 +102,7 @@ async def on_message(message):
     if message.content.startswith('$addli'):
         def check(msg):
             return msg.author == message.author and msg.channel == message.channel
-        await message.channel.send(f"What's your Tournament Name, lichess username?")
+        await message.channel.send(f"What's your Name, lichess username?")
         lichessname = await client.wait_for("message", check=check)
         names = lichessname.content.split(',')
         for player in players:

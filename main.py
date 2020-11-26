@@ -88,6 +88,7 @@ async def on_message(message):
 
     if message.content.startswith('$stoptourney'): 
          tourney_status = 'none'
+         tnmtinfo = str()
          await message.channel.send(f"Tournament {tournament} has been stopped.")
 
     #lists players

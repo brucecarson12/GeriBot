@@ -31,6 +31,10 @@ async def on_message(message):
 
     if message.content.startswith('$hello'):
         await message.channel.send('Hey! Did you know 1.Nf3 is the ultimate compromise?\n Are you reti?')
+    
+    #sends the bot's name inspiration
+    if message.content.startswith('$geri'):
+        await message.channel.send('https://youtu.be/9IYRC7g2ICg')
 
     if message.content.startswith('$maketourney'):  
         #checks that message is from original sender

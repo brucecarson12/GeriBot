@@ -34,7 +34,7 @@ async def on_message(message):
     
     #sends the bot's name inspiration
     if message.content.startswith('$Geri'):
-        await message.channel.send('https://www.youtube.com/watch?v=uMVtpCPx8ow')
+        await message.channel.send('[Reference](https://www.youtube.com/watch?v=uMVtpCPx8ow)')
 
     if message.content.startswith('$maketourney'):  
         #checks that message is from original sender

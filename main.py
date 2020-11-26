@@ -177,7 +177,10 @@ async def on_message(message):
 
         
     if message.content.startswith('$tourney'):
-        await message.channel.send(tnmtinfo)
+        if not tnmtinfo:
+            await message.channel.send('There is currently no active Tournament.')
+        else:
+            await message.channel.send(tnmtinfo)
 
     if message.content.startswith('$standings'):
         standings = reversed(sorted(players))

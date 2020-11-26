@@ -83,7 +83,7 @@ async def on_message(message):
                 for i in range(len(rlist[f])):
                     tnmtinfo += (str(rlist[f][i].vstxt))
                     if i != len(rlist[f])-1:
-                        tnmtinfo += ",   "
+                        tnmtinfo += ", "
             await message.channel.send(tnmtinfo)
 
     if message.content.startswith('$stoptourney'): 

@@ -34,7 +34,7 @@ async def on_message(message):
     
     #sends the bot's name inspiration
     if message.content.startswith('$Geri'):
-        embed = discord.Embed(description = '[Reference](https://www.youtube.com/watch?v=uMVtpCPx8ow)')
+        embed = discord.Embed(description = '[My namesake.](https://www.youtube.com/watch?v=uMVtpCPx8ow)')
         await message.channel.send(content="The video.", embed=embed)
 
     if message.content.startswith('$maketourney'):  

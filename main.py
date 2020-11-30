@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 import os
 from RRTSchedule import *
 from functions import *
-from GSheet import *
 
 TOKEN = os.getenv("DiscToken")
 client = discord.Client()

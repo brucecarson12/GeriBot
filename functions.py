@@ -83,9 +83,9 @@ def UpdateSheet(players,tnmtinfo):
 
 #--------------------lichess functions w/ test statements-------------------
 import berserk
-import pprint
 
-session = berserk.TokenSession('sLhbCPc7TJqgZRCD')
+LiTOKEN = os.getenv('LiToken')
+session = berserk.TokenSession(LiTOKEN)
 client = berserk.Client(session)
 
 livem = []

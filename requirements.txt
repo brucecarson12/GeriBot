@@ -19,3 +19,4 @@ python-chess==1.999
 python-dotenv==0.15.0
 requests==2.22.0
 yarl==1.5.1
+texttable==1.6.3

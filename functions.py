@@ -81,3 +81,29 @@ def UpdateSheet(players,tnmtinfo):
         sheet.update_cell(cell.row,7,p.TourneyDraws)
         Losses = TotalMatches - p.TourneyWins - p.TourneyDraws
 
+#--------------------lichess functions w/ test statements-------------------
+import berserk
+import pprint
+
+session = berserk.TokenSession('sLhbCPc7TJqgZRCD')
+client = berserk.Client(session)
+
+livem = []
+matchesLi = []
+
+def lichesslink(user1,user2):
+    p1 = user1.strip()
+    p2 = user2.strip()
+    global matchesLi    
+    matchesLi = list(client.games.export_by_player(p1,vs=p2,max=3))
+    livem = []
+    for match in matchesLi:
+        if match['status'] == 'started':
+            livem.append(match)
+    if not livem:
+        return matchesLi[0]
+    else:
+        return str("https://lichess.org/" + livem[0]['id'])
+
+#m1 = lichesslink('A_Hard_Days_Knight','gnasho')
+#pprint.pprint(m1)

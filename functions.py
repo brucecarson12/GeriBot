@@ -6,6 +6,8 @@ import cairo
 import cairosvg
 import gspread
 from RRTSchedule import *
+import berserk
+import os
 
 
 def randpuzzle():
@@ -82,8 +84,6 @@ def UpdateSheet(players,tnmtinfo):
         Losses = TotalMatches - p.TourneyWins - p.TourneyDraws
 
 #--------------------lichess functions w/ test statements-------------------
-import berserk
-
 LiTOKEN = os.getenv('LiToken')
 session = berserk.TokenSession(LiTOKEN)
 client = berserk.Client(session)

@@ -47,7 +47,7 @@ def randpuzzle():
 
 #---------------------Gsheet functions--------------------------------------------------------
 def MakePlayers(PlayerList):
-    gc = gspread.service_account(filename='credentials.json')
+    gc = gspread.service_account(filename='google-credentials.json')
     Book = gc.open('Chess_Tourney')
     sheet = Book.get_worksheet(0)
     players =[]
@@ -70,7 +70,7 @@ def MakePlayers(PlayerList):
 
 
 def UpdateSheet(players,tnmtinfo):
-    gc = gspread.service_account(filename='credentials.json')
+    gc = gspread.service_account(filename='google-credentials.json')
     Book = gc.open('Chess_Tourney')
     sheet = Book.get_worksheet(0)
     

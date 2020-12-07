@@ -8,7 +8,6 @@ import gspread
 from RRTSchedule import *
 import berserk
 import os
-import pprint
 
 
 def randpuzzle():

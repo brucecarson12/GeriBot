@@ -116,8 +116,8 @@ async def on_message(message):
             return msg.author == message.author and msg.channel == message.channel
         await message.channel.send(f"Please provide 2 lichess usernames. (p1,p2)")
         lichessnames = await client.wait_for("message", check=check)
-        linames = lichessnames.content.split(',')
-        link = lichesslink(linames)
+        player1, player2 = lichessnames.content.split(',')
+        link = lichesslink(player1,player2)
         await message.channel.send(f"{link}")
 
     #

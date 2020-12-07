@@ -106,5 +106,5 @@ def lichesslink(user1,user2):
     else:
         return str(f"Current Game: https://lichess.org/{livem[0]['id']}")
 
-m1 = lichesslink('A_Hard_Days_Knight','gnasho')
-pprint.pprint(m1)
+#m1 = lichesslink('A_Hard_Days_Knight','gnasho')
+#pprint.pprint(m1)

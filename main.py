@@ -117,7 +117,8 @@ async def on_message(message):
         await message.channel.send(f"Please provide 2 lichess usernames. (p1,p2)")
         lichessnames = await client.wait_for("message", check=check)
         linames = lichessnames.content.split(',')
-        await message.channel.send(lichesslink(linames))
+        link = lichesslink(linames)
+        await message.channel.send(f"{link}")
 
     #
     if message.content.startswith('$addwinner'):

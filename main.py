@@ -110,6 +110,15 @@ async def on_message(message):
                 player.add_lichess(str(names[1]).strip())
                 await message.channel.send(f"Lichess username, {player.li}, added to {player.name}.")
 
+    #add lichess username to players info
+    if message.content.startswith('$findli'):
+        def check(msg):
+            return msg.author == message.author and msg.channel == message.channel
+        await message.channel.send(f"Please provide 2 lichess usernames. (p1,p2)")
+        lichessnames = await client.wait_for("message", check=check)
+        linames = lichessnames.content.split(',')
+        await message.channel.send(lichesslink(linames))
+
     #
     if message.content.startswith('$addwinner'):
         def check(msg):

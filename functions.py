@@ -8,6 +8,7 @@ import gspread
 from RRTSchedule import *
 import berserk
 import os
+import pprint
 
 
 def randpuzzle():
@@ -101,9 +102,9 @@ def lichesslink(user1,user2):
         if match['status'] == 'started':
             livem.append(match)
     if not livem:
-        return matchesLi[0]
+        return str(f"Recent Game: https://lichess.org/{matchesLi[0]['id']}")
     else:
-        return str("https://lichess.org/" + livem[0]['id'])
+        return str(f"Current Game: https://lichess.org/{livem[0]['id']}")
 
-#m1 = lichesslink('A_Hard_Days_Knight','gnasho')
-#pprint.pprint(m1)
+m1 = lichesslink('A_Hard_Days_Knight','gnasho')
+pprint.pprint(m1)

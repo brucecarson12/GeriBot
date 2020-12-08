@@ -93,15 +93,18 @@ def lichesslink(user1,user2):
     p1 = user1.strip()
     p2 = user2.strip() 
     matchesLi = list(client.games.export_by_player(p1,vs=p2,max=3,ongoing=True))
-    livem = []
+    recgame = dict()
+    recgame['id'] = matchesLi[0]['id']
+    recgame['live'] = False
     for match in matchesLi:
         if match['status'] == 'started':
-            livem.append(match)
-    if livem:
-        return str(f"Current Game: https://lichess.org/{livem[0]['id']}")
-    else:
-        return str(f"Recent Game: https://lichess.org/{matchesLi[0]['id']}")
+            recgame['id'] = match['id']
+            recgame['live'] = True
+    recgame['link'] = f"https://lichess.org/{recgame['id']}"
+    recgame['giflink'] = f"https://lichess1.org/game/export/gif/{recgame['id']}.gif"
+    return recgame
+
 
 #game = lichesslink('Bnyce','m_0887')
-#print(game)
+#print(game['link'])
 #print(f"https://lichess1.org/game/export/gif/{game['id']}.gif", game['live'])

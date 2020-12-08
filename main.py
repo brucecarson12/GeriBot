@@ -117,8 +117,15 @@ async def on_message(message):
         await message.channel.send(f"Please provide 2 lichess usernames. (p1,p2)")
         lichessnames = await client.wait_for("message", check=check)
         player1, player2 = lichessnames.content.split(',')
-        link = lichesslink(player1,player2)
-        await message.channel.send(f"{link}")
+        gameinfo = lichesslink(player1,player2)
+        infotext = "Most Recent Game"
+        if gameinfo['live']:
+            infotext = "Live Game"
+        await message.channel.send(f"{infotext}: " + '<' + gameinfo['link'] + ">")
+        with open('game.gif', 'wb') as f:
+            f.write(requests.get(gameinfo['giflink']).content)
+        await message.channel.send(file=discord.File('game.gif'))
+        os.remove('game.gif')
 
     #
     if message.content.startswith('$addwinner'):

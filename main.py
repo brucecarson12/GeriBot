@@ -203,9 +203,9 @@ async def on_message(message):
     #sends a random puzzle to the chat
     if message.content.startswith('$puzzle'):
         filename2,clue,title,fentxt,solution = randpuzzle()
-        await message.channel.send(f"Clue: {clue} \nGame: {title} \n||{solution}||")
+        await message.channel.send(f"Clue: {clue} \nGame: {title} \n||{solution}|| \n (Please use '||' around your answer to keep it hidden)")
         await message.channel.send(file=discord.File(filename2))
-        os.remove(title + ".svg")
+        #os.remove(title + ".svg")
         os.remove(filename2)
 
 """ @client.event

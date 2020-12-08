@@ -8,6 +8,7 @@ import gspread
 from RRTSchedule import *
 import berserk
 import os
+import sys
 
 
 def randpuzzle():
@@ -92,18 +93,18 @@ client = berserk.Client(session)
 def lichesslink(user1,user2):
     p1 = user1.strip()
     p2 = user2.strip() 
-    matchesLi = list(client.games.export_by_player(p1,vs=p2,max=3))
+    matches = list(client.games.export_by_player(p1,vs=p2,max=3))
     recentgame = dict()
-    print(matchesLi[0])
-    recentgame['id'] = matchesLi[0]['id']
+    print >> sys.stderr, matches
+    print(matches)
+    recentgame['id'] = matches[0]['id']
     recentgame['live'] = False
-    for match in matchesLi:
+    for match in matches:
         if match['status'] == 'started':
             recentgame['id'] = match['id']
             recentgame['live'] = True
     recentgame['link']  = str(f"https://lichess.org/{recentgame['id']}")
     recentgame['gif'] = str(f"https://lichess1.org/game/export/gif/{recentgame['id']}.gif")
-    #print(matchesLi[0]['id'])
     return recentgame
 
 game = lichesslink('Bnyce','m_0887')

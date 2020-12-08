@@ -1,4 +1,4 @@
-berserk==0.10.0
+git+https://github.com/brucecarson12/berserk.git
 cachetools==4.1.1
 cairocffi==1.2.0
 CairoSVG==2.5.0

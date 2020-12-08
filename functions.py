@@ -104,7 +104,3 @@ def lichesslink(user1,user2):
     recgame['giflink'] = f"https://lichess1.org/game/export/gif/{recgame['id']}.gif"
     return recgame
 
-
-#game = lichesslink('Bnyce','m_0887')
-#print(game['link'])
-#print(f"https://lichess1.org/game/export/gif/{game['id']}.gif", game['live'])

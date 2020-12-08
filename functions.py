@@ -103,8 +103,10 @@ def lichesslink(user1,user2):
             recentgame['id'] = match['id']
             recentgame['live'] = True
     recentgame['link']  = str(f"https://lichess.org/{recentgame['id']}")
+    recentgame['gif'] = str(f"https://lichess1.org/game/export/gif/{recentgame['id']}.gif")
+    print(matchesLi[0]['id'])
     return recentgame
 
 #game = lichesslink('Bnyce','m_0887')
-#print(matchesLi[0])
+#print(game)
 #print(f"https://lichess1.org/game/export/gif/{game['id']}.gif", game['live'])

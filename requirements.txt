@@ -1,4 +1,4 @@
-git+https://github.com/brucecarson12/berserk.git
+git+git://github.com/brucecarson12/berserk.git
 cachetools==4.1.1
 cairocffi==1.2.0
 CairoSVG==2.5.0
@@ -19,4 +19,3 @@ python-chess==1.999
 python-dotenv==0.15.0
 requests==2.22.0
 yarl==1.5.1
-pandas==0.25.3

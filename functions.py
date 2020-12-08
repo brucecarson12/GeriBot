@@ -102,6 +102,6 @@ def lichesslink(user1,user2):
     else:
         return str(f"Recent Game: https://lichess.org/{matchesLi[0]['id']}")
 
-game = lichesslink('Bnyce','m_0887')
-print(game)
+#game = lichesslink('Bnyce','m_0887')
+#print(game)
 #print(f"https://lichess1.org/game/export/gif/{game['id']}.gif", game['live'])

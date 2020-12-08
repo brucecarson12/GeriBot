@@ -95,8 +95,7 @@ def lichesslink(user1,user2):
     p2 = user2.strip() 
     matches = list(client.games.export_by_player(p1,vs=p2,max=3))
     recentgame = dict()
-    print >> sys.stderr, matches
-    print(matches)
+    print(matches, file=sys.stderr)
     recentgame['id'] = matches[0]['id']
     recentgame['live'] = False
     for match in matches:

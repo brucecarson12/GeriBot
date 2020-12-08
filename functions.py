@@ -92,7 +92,7 @@ client = berserk.Client(session)
 def lichesslink(user1,user2):
     p1 = user1.strip()
     p2 = user2.strip() 
-    matchesLi = list(client.games.export_by_player(p1,vs=p2,max=3))
+    matchesLi = list(client.games.export_by_player(p1,vs=p2,max=3,ongoing=True))
     livem = []
     for match in matchesLi:
         if match['status'] == 'started':

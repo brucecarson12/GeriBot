@@ -88,7 +88,6 @@ LiTOKEN = os.getenv('LiToken')
 session = berserk.TokenSession(LiTOKEN)
 client = berserk.Client(session)
 
-livem = []
 matchesLi = []
 
 def lichesslink(user1,user2):
@@ -96,14 +95,16 @@ def lichesslink(user1,user2):
     p2 = user2.strip()
     global matchesLi    
     matchesLi = list(client.games.export_by_player(p1,vs=p2,max=3))
-    livem = []
+    recentgame = dict()
+    recentgame['id'] = matchesLi[0]['id']
+    recentgame['live'] = False
     for match in matchesLi:
         if match['status'] == 'started':
-            livem.append(match)
-    if not livem:
-        return str(f"Recent Game: https://lichess.org/{matchesLi[0]['id']}")
-    else:
-        return str(f"Current Game: https://lichess.org/{livem[0]['id']}")
+            recentgame['id'] = match['id']
+            recentgame['live'] = True
+    recentgame['link']  = str(f"https://lichess.org/{recentgame['id']}")
+    return recentgame
 
-#m1 = lichesslink('A_Hard_Days_Knight','gnasho')
-#pprint.pprint(m1)
+#game = lichesslink('Bnyce','m_0887')
+#print(matchesLi[0])
+#print(f"https://lichess1.org/game/export/gif/{game['id']}.gif", game['live'])

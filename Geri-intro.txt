@@ -1,4 +1,4 @@
-"Hey! I'm Geri, and I like to play chess against myself but I can also help you setup a tournament if you'd like?
+"Hey, I'm Geri! I like to play chess against myself but I can also help you setup a tournament if you'd like?
  
 Tourney Commands: 
 -- $maketourney : allows you to create a Round Robin tournament with a list of players. (Each player will play each other twice.) 

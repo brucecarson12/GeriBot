@@ -1,0 +1,15 @@
+"Hey! I'm Geri, and I like to play chess against myself but I can help you setup a tournament if you'd like to? \n
+ \n
+Tourney Commands: \n
+$maketourney : allows you to create a Round Robin tournament with a list of players. (Each player will play each other twice.) \n
+$stoptourney : ends the current tournament \n
+$tourney : gives the current tournament info
+$players : lists all the players in a tournament \n
+$standings : lists the current tournament score count \n
+$addwinner : allows you to add a score to an ongoing game \n
+$addli : adds a lichess username to a current tournament player's info \n
+Misc. Commands: \n
+$puzzle: generates a chess puzzle in the chat \n 
+$findli: will find a lichess games using usernames \n 
+\n 
+I'm new so go easy on me!"

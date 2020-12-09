@@ -21,7 +21,7 @@ tourney_status = 'None'
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
     channel = client.get_channel('763912928247414794')
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='$help'))
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='$Geri'))
 
 @client.event
 async def on_message(message):
@@ -30,12 +30,15 @@ async def on_message(message):
         return
 
     if message.content.startswith('$hello'):
-        await message.channel.send('Hey! Did you know 1.Nf3 is the ultimate compromise?\n Are you reti?')
+        await message.channel.send("Hey! Did you know 1.Nf3 is the ultimate compromise? \nAre you reti?")
     
     #sends the bot's name inspiration
     if message.content.startswith('$Geri'):
-        embed = discord.Embed(description = '[My namesake.](https://www.youtube.com/watch?v=uMVtpCPx8ow)')
-        await message.channel.send(content="The video.", embed=embed)
+        with open(file="Geri-intro.txt",mode="r") as introtext:
+            txtinfo = introtext.read()
+            print(txtinfo)
+            embed = discord.Embed(description = '[My namesake.](https://www.youtube.com/watch?v=uMVtpCPx8ow)')
+            await message.channel.send(content=txtinfo, embed=embed)
 
     if message.content.startswith('$maketourney'):  
         #checks that message is from original sender

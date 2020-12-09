@@ -36,7 +36,6 @@ async def on_message(message):
     if message.content.startswith('$Geri'):
         with open(file="Geri-intro.txt",mode="r") as introtext:
             txtinfo = introtext.read()
-            print(txtinfo)
             embed = discord.Embed(description = '[My namesake.](https://www.youtube.com/watch?v=uMVtpCPx8ow)')
             await message.channel.send(content=txtinfo, embed=embed)
 

@@ -12,4 +12,4 @@ Misc. Commands:
 -- $puzzle: generates a chess puzzle in the chat 
 -- $findli: will find a lichess games using usernames 
 
-I'm new so go easy on me!""
+I'm old so go easy on me!""

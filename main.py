@@ -194,7 +194,13 @@ async def on_message(message):
                 await message.channel.send(f"Tournament {tournament} is over! Congratulations {TourneyWinner}!!")
                 await message.channel.send(sinfo)
                 UpdateSheet(players,tnmtinfo)
-                tourney_status = 'complete'
+                tourney_status = 'complete'                
+                people = []
+                players=[]
+                rlist=[]
+                complete_rounds =[]
+                current_round = []
+                
             else:
                 current_round = rlist[len(complete_rounds)]
                 for match in current_round:

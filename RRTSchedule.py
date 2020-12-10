@@ -8,10 +8,10 @@ def rounds(teams):
     for fixture in range(1, n):
         for i in range(int(n/2)):
             matchs.append(Match(teams[i], teams[n - 1 - i]))
-            return_matchs.append(Match(teams[n - 1 - i],teams[i]))
+            #return_matchs.append(Match(teams[n - 1 - i],teams[i]))
         teams.insert(1, teams.pop())
         fixtures.insert(int(len(fixtures)/2), matchs)
-        fixtures.append(return_matchs)
+       # fixtures.append(return_matchs)
         matchs = []
         return_matchs = []
     return fixtures

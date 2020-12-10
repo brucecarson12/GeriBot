@@ -183,7 +183,13 @@ async def on_message(message):
         if TempList == len(current_round): #If all matches in the current_round are complete, the next round becomes the current round.
             complete_rounds.append(current_round)           
             if len(complete_rounds) == len(rlist): # I havent tested this yet, but in theory this should check to see that the tourney is over. We can add the results here.
-                await message.channel.send(f"Tournament {tournament} is over!")
+                standings = reversed(sorted(players))
+                TourneyWinner = standings[0].name
+                await message.channel.send(f"Tournament {tournament} is over! Congratulations {TourneyWinner}!!")
+                sinfo = "__Standings:__ \n"
+                for player in standings:
+                    sinfo += player.info + "\n"
+                await message.channel.send(sinfo)
                 UpdateSheet(players,tnmtinfo)
                 tourney_status = 'complete'
             else:

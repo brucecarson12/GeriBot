@@ -24,6 +24,7 @@ class Player:
         self.name = name
         self.li = lichess
         self.discord = discord
+        self.losses =0
         self.TourneyWins = 0
         self.TourneyDraws = 0
         self.TourneyLoses = 0
@@ -66,7 +67,11 @@ class Match:
         return f'{self.wplayer} vs {self.bplayer} \nStatus: {self.status} \nLink: {self.link}'
 
     def start(self):
-        if self.wplayer == "BYE" or self.bplayer == "BYE":
+        if self.wplayer == "BYE":
+            self.winner = self.bplayer
+            self.status = 'complete'
+        elif self.bplayer == "BYE":
+            self.winner = self.wplayer
             self.status = 'complete'
         else:
             self.status = 'started'
@@ -78,10 +83,13 @@ class Match:
     def add_link(self,link):
         self.link = link
 
-    def winner(self,winner_name):
-        if winner_name == self.wplayer or winner_name == self.bplayer or winner_name == 'Draw':
-            self.winner = winner_name
-            self.status = 'complete'
-            return 
+    def addwinner(self,winner_name):
+        if self.status == 'complete':
+            return print('Match already scored!')
         else:
-            return print("They aren't in this match!! Stoopid")
+            if winner_name == self.wplayer or winner_name == self.bplayer or winner_name == 'Draw':
+                self.winner = winner_name
+                self.status = 'complete'
+                return 
+            else:
+                return print("They aren't in this match!! Stoopid")

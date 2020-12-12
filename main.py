@@ -124,7 +124,7 @@ async def on_message(message):
         infotext = "Most Recent Game"
         if gameinfo['live']:
             infotext = "Live Game"
-        await message.channel.send(f"{infotext}: <{gameinfo['link']}> \nOpening: {gameinfo['opening']}")
+        await message.channel.send(f"{infotext}: <{gameinfo['link']}> \n{gameinfo['opening']}")
         with open('game.gif', 'wb') as f:
             f.write(requests.get(gameinfo['giflink']).content)
         await message.channel.send(file=discord.File('game.gif'))

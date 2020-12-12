@@ -102,5 +102,9 @@ def lichesslink(user1,user2):
             recgame['live'] = True
     recgame['link'] = f"https://lichess.org/{recgame['id']}"
     recgame['giflink'] = f"https://lichess1.org/game/export/gif/{recgame['id']}.gif"
+    gameinfo  = client.games.export(recgame['id'])
+    recgame['opening'] = f"ECO: {gameinfo['opening']['eco']}, {gameinfo['opening']['name']}"
     return recgame
 
+
+lichesslink('Bnyce','Rainith')

@@ -84,6 +84,19 @@ def UpdateSheet(players,tnmtinfo):
         sheet.update_cell(cell.row,7,p.TourneyDraws)
         Losses = TotalMatches - p.TourneyWins - p.TourneyDraws
 
+def UpdateSheetDiscordID(discName,discID=None):
+    gc = gspread.service_account(filename='google-credentials.json')
+    Book = gc.open('Chess_Tourney')
+    sheet = Book.get_worksheet(0)
+
+    cell = sheet.find(discName)
+    sheet.update_cell(cell.row,8,discID)
+    senderman = dict()
+    senderman['discName']  =  discName
+    senderman['discID'] = discID
+    senderman['lichess'] = sheet.cell(cell.row,2).value
+    return senderman
+
 #--------------------lichess functions w/ test statements-------------------
 LiTOKEN = os.getenv('LiToken')
 session = berserk.TokenSession(LiTOKEN)
@@ -110,4 +123,6 @@ def lichesslink(user1,user2):
 def  lastgame(user1):
     p1 = user1.strip()
     lastgame  = list(client.games.export_by_player(p1,max=1))
-    return lastgame
+    gamelink = f"https://lichess.org/{lastgame['id']}"
+    giflink = f"https://lichess1.org/game/export/gif/{lastgame['id']}.gif"
+    return lastgame, gamelink, giflink

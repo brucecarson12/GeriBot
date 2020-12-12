@@ -38,6 +38,11 @@ async def on_message(message):
             txtinfo = introtext.read()
             embed = discord.Embed(description = '[My namesake.](https://www.youtube.com/watch?v=uMVtpCPx8ow)')
             await message.channel.send(content=txtinfo, embed=embed)
+    
+    if message.content.startswith('$resources'):
+        with open(file="resources.txt",mode="r") as resourcetext:
+            txt = resourcetext.read()
+            await message.channel.send(content=txt)
 
     if message.content.startswith('$maketourney'):  
         #checks that message is from original sender

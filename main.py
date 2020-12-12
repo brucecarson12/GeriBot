@@ -117,8 +117,9 @@ async def on_message(message):
     if message.content.startswith('$findli'):
         def check(msg):
             return msg.author == message.author and msg.channel == message.channel
-        member = message.author.id
-        await message.channel.send(member)
+        member = str(message.author)
+        print(member)
+        memberid = message.author.id
         await message.channel.send(f"Please provide 2 lichess usernames. (p1,p2)")
         lichessnames = await client.wait_for("message", check=check)
         player1, player2 = lichessnames.content.split(',')

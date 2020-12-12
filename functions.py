@@ -117,12 +117,15 @@ def lichesslink(user1,user2):
     recgame['giflink'] = f"https://lichess1.org/game/export/gif/{recgame['id']}.gif"
     gameinfo  = client.games.export(recgame['id'])
     recgame['opening'] = f"ECO: {gameinfo['opening']['eco']}, {gameinfo['opening']['name']}"
-    print(gameinfo['opening'])
     return recgame
 
 def lastgame(user1):
     p1 = user1.strip()
     lastgame  = list(client.games.export_by_player(p1,max=1))
-    gamelink = f"https://lichess.org/{lastgame[0]['id']}"
-    giflink = f"https://lichess1.org/game/export/gif/{lastgame[0]['id']}.gif"
-    return lastgame, gamelink, giflink
+    game = dict()
+    game['id'] = lastgame[0]['id']
+    game['link'] = f"https://lichess.org/{game['id']}"
+    game['gif'] = f"https://lichess1.org/game/export/gif/{game['id']}.gif"
+    gameinfo  = client.games.export(lastgame[0]['id'])
+    game['opening'] = f"ECO: {gameinfo['opening']['eco']}, {gameinfo['opening']['name']}"
+    return game

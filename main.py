@@ -239,10 +239,10 @@ async def on_message(message):
         member = str(message.author)
         memberid = message.author.id
         Sheetinfo = UpdateSheetDiscordID(member,memberid)
-        lastone, gamel, gifl = lastgame(Sheetinfo['lichess'])
-        await message.channel.send(f"<{gamel}>")
+        lastone = lastgame(Sheetinfo['lichess'])
+        await message.channel.send(f"<{lastone['link']}> \nlastone['opening']")
         with open('game.gif', 'wb') as f:
-            f.write(requests.get(gifl).content)
+            f.write(requests.get(lastone['gif']).content)
         await message.channel.send(file=discord.File('game.gif'))
         os.remove('game.gif')
 

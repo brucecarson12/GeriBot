@@ -5,6 +5,7 @@ import os
 from RRTSchedule import *
 from functions import *
 import requests
+import asyncio
 
 TOKEN = os.getenv("DiscToken")
 client = discord.Client()
@@ -31,6 +32,7 @@ async def hello(ctx):
 
 @bot.command()
 async def Geri(ctx):
+    """an alternate help command"""
     with open(file="Geri-intro.txt",mode="r") as introtext:
             txtinfo = introtext.read()
             embed = discord.Embed(description = '[My namesake.](https://www.youtube.com/watch?v=uMVtpCPx8ow)')
@@ -38,12 +40,14 @@ async def Geri(ctx):
 
 @bot.command()
 async def resources(ctx):
+    """shares some helpful resources for improving at chess!"""
     with open(file="resources.txt",mode="r") as resourcetext:
         txt = resourcetext.read()
         await ctx.send(content=txt)
 
 @bot.command()
 async def puzzle(ctx):
+    """gives a random puzzle to the chat"""
     filename2,clue,title,fentxt,solution = randpuzzle()
     await ctx.send(f"Clue: {clue} \nGame: {title} \n||{solution}|| \n (Please use '||' around your answer to keep it hidden)")
     await ctx.send(file=discord.File(filename2))
@@ -52,6 +56,7 @@ async def puzzle(ctx):
 
 @bot.command()
 async def findli(ctx,user1,user2):
+    """finds the most recently started game between 2 lichess users. Ex: $findli user1 user2"""
     p1, p2 = user1.strip(), user2.strip()
     gameinfo = lichesslink(p1,p2)
     infotext = "Most Recent Game"
@@ -76,6 +81,47 @@ async def lastli(ctx):
     await ctx.send(file=discord.File('game.gif'))
     os.remove('game.gif')
 
+@bot.command()
+async def helpme(ctx):
+    """alternate help text with pages and reaction changes"""
+    contents = ["This is page 1!", "This is page 2!", "This is page 3!", "This is page 4!"]
+    pages = 4
+    cur_page = 1
+    message = await ctx.send(f"Page {cur_page}/{pages}:\n{contents[cur_page-1]}")
+    # getting the message object for editing and reacting
+
+    await message.add_reaction("◀️")
+    await message.add_reaction("▶️")
+
+    def check(reaction, user):
+        return user == ctx.author and str(reaction.emoji) in ["◀️", "▶️"]
+        # This makes sure nobody except the command sender can interact with the "menu"
+
+    while True:
+        try:
+            reaction, user = await bot.wait_for("reaction_add", timeout=60, check=check)
+            # waiting for a reaction to be added - times out after x seconds, 60 in this
+            # example
+
+            if str(reaction.emoji) == "▶️" and cur_page != pages:
+                cur_page += 1
+                await message.edit(content=f"Page {cur_page}/{pages}:\n{contents[cur_page-1]}")
+                await message.remove_reaction(reaction, user)
+
+            elif str(reaction.emoji) == "◀️" and cur_page > 1:
+                cur_page -= 1
+                await message.edit(content=f"Page {cur_page}/{pages}:\n{contents[cur_page-1]}")
+                await message.remove_reaction(reaction, user)
+
+            else:
+                await message.remove_reaction(reaction, user)
+                # removes reactions if the user tries to go forward on the last page or
+                # backwards on the first page
+        except asyncio.TimeoutError:
+            await message.delete()
+            break
+            # ending the loop if user doesn't react after x seconds
+
 
 
 @client.event
@@ -83,24 +129,6 @@ async def on_message(message):
     if message.author == client.user:
     
         return
-
-    #converted
-    if message.content.startswith('$hello'):
-        await message.channel.send("Hey! Did you know 1.Nf3 is the ultimate compromise? \nAre you reti?")
-    
-    #converted
-    #sends the bot's name inspiration
-    if message.content.startswith('$Geri'):
-        with open(file="Geri-intro.txt",mode="r") as introtext:
-            txtinfo = introtext.read()
-            embed = discord.Embed(description = '[My namesake.](https://www.youtube.com/watch?v=uMVtpCPx8ow)')
-            await message.channel.send(content=txtinfo, embed=embed)
-    
-    #converted
-    if message.content.startswith('$resources'):
-        with open(file="resources.txt",mode="r") as resourcetext:
-            txt = resourcetext.read()
-            await message.channel.send(content=txt)
 
     if message.content.startswith('$maketourney'):  
         #checks that message is from original sender

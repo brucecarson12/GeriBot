@@ -82,6 +82,14 @@ async def lastli(ctx):
     os.remove('game.gif')
 
 @bot.command()
+async def addli(ctx,arg):
+    """add your lichess username  Ex. $addli : yourusername"""
+    member = str(ctx.author)
+    memberid  = ctx.author.id
+    Sheetinfo = UpdateSheetDiscordID(member,memberid,lichessname=arg)
+    await ctx.send(f"lichess username: {Sheetinfo['lichess']} added to your info.")
+    
+@bot.command()
 async def helpme(ctx):
     """alternate help text with pages and reaction changes"""
     contents = ["This is page 1!", "This is page 2!", "This is page 3!", "This is page 4!"]
@@ -123,6 +131,8 @@ async def helpme(ctx):
             # ending the loop if user doesn't react after x seconds
 
 
+
+####---------------------to be converted-----------##########
 
 @client.event
 async def on_message(message):
@@ -191,18 +201,6 @@ async def on_message(message):
         for player in players:
             pinfo += player.info + "\n"
         await message.channel.send(pinfo)
-
-    #add lichess username to players info
-    if message.content.startswith('$addli'):
-        def check(msg):
-            return msg.author == message.author and msg.channel == message.channel
-        await message.channel.send(f"What's your Name, lichess username?")
-        lichessname = await client.wait_for("message", check=check)
-        names = lichessname.content.split(',')
-        for player in players:
-            if player.name == str(names[0]).strip():
-                player.add_lichess(str(names[1]).strip())
-                await message.channel.send(f"Lichess username, {player.li}, added to {player.name}.")
   
     #
     if message.content.startswith('$addwinner'):

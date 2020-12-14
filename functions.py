@@ -161,5 +161,9 @@ def lastgame(user1):
     game['link'] = f"https://lichess.org/{game['id']}"
     game['gif'] = f"https://lichess1.org/game/export/gif/{game['id']}.gif"
     gameinfo  = client.games.export(lastgame[0]['id'])
-    game['opening'] = f"ECO: {gameinfo['opening']['eco']}, {gameinfo['opening']['name']}"
+    game['opening'] = None
+    if 'opening' in gameinfo.keys():
+        game['opening'] = f"ECO: {gameinfo['opening']['eco']}, {gameinfo['opening']['name']}"
     return game
+
+print(lastgame('rural'))

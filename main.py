@@ -257,7 +257,7 @@ async def on_message(message):
             return msg.author == message.author and msg.channel == message.channel
         await message.channel.send(f"Whose profile would you like?")
         Name = await client.wait_for("message", check=check)
-        LiChessName = FindLiSheet(Name)
+        LiChessName = FindLiSheet(str(Name))
         if LiChessName:
             await message.channel.send(f"https://lichess.org/@/{LiChessName}")
         else:

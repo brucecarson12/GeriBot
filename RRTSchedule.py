@@ -34,7 +34,7 @@ class Player:
         return f"**{self.name}** {self.score} \n_{self.li}_"  
     
     def __str__(self):
-        return f"Name: **{self.name}** Score: {self.score} \n usrnamelichess:_{self.li}_"
+        return f"{self.name}"
 
     def __lt__(self,other):
         return self.score < other.score

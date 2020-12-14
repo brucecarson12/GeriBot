@@ -34,7 +34,7 @@ class Player:
         return f"**{self.name}** {self.score} \n_{self.li}_"  
     
     def __str__(self):
-        return f"Name: **{self.name}** Score: {self.score} \n usrnamelichess:_{self.li}_"
+        return f"{self.name}"
 
     def __lt__(self,other):
         return self.score < other.score
@@ -59,9 +59,7 @@ class Match:
         self.bplayer = bplayer
         self.link = link
         self.vstxt = "{} vs {}".format(wplayer,bplayer)
-        self.status = 'pending'
-
-            
+        self.status = 'pending'     
 
     def __str__(self):
         return f'{self.wplayer} vs {self.bplayer} \nStatus: {self.status} \nLink: {self.link}'

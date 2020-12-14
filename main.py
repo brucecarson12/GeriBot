@@ -261,7 +261,7 @@ async def on_message(message):
         User = UpdateSheetDiscordID(Name)
         LiChessName = User['lichess']
         if LiChessName:
-            await message.channel.send(f"<https://lichess.org/@/{LiChessName}>")
+            await message.channel.send(f"<https://lichess.org/@/{LiChessName}> \n https://lichess.org/insights/{LiChessName}/result/opening")
         else:
             await message.channel.send(f"This person has not yet added their LiChess name to the bot. Shame Shame Shame.")
 

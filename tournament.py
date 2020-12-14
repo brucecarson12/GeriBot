@@ -4,8 +4,8 @@ This defines a double elimination 'Tournament' object.
 import math
 import itertools
 
-from double_elimination.match import Match
-from double_elimination.participant import Participant
+from match import Match
+from participant import Participant
 
 class Tournament:
     """
@@ -18,7 +18,7 @@ class Tournament:
     skilled and the last being the least. They can also be randomized before creating the instance.
     Optional options dict fields:
     """
-    def __init__(self, competitors_list, options={}):
+    def __init__(self, competitors_list, name=None, options={}):
         assert len(competitors_list) > 1
         self.__matches = []
         next_higher_power_of_two = int(math.pow(2, math.ceil(math.log2(len(competitors_list)))))

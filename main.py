@@ -118,8 +118,8 @@ async def on_message(message):
         for player in players:
             if player.name == DiscName:
                 player.add_lichess(liname)                
-        User = UpdateSheetDiscordID(DiscName,ID,liname)
-        await message.channel.send(f"Lichess username: {User['lichess']}")
+        player1 = UpdateSheetDiscordID(DiscName,discID=ID,lichessname=liname)
+        await message.channel.send(f"Lichess username: {player1['lichess']}")
 
     #add lichess username to players info
     if message.content.startswith('$findli'):

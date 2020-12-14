@@ -121,9 +121,9 @@ def UpdateSheetDiscordID(discName,discID=None,lichessname=None):
     Book = gc.open('Chess_Tourney')
     sheet = Book.get_worksheet(0)
     cell = sheet.find(discName)
-    if not discID:
+    if discID:
         sheet.update_cell(cell.row,8,discID)
-    if not lichessname:
+    if lichessname:
         sheet.update_cell(cell.row,2,lichessname)
     senderman = dict()
     senderman['discName']  =  discName

@@ -251,13 +251,13 @@ async def on_message(message):
         await message.channel.send(file=discord.File('game.gif'))
         os.remove('game.gif')
 
-    #Brings up LiChess profile link for input(player)
+    #Brings up LiChess profile link using Gsheet for input(Name)
     if message.content.startswith('$liprofile'):
         def check(msg):
             return msg.author == message.author and msg.channel == message.channel
         await message.channel.send(f"Whose profile would you like?")
         Stuff = await client.wait_for("message", check=check)
-        Name = Stuff.content.strip
+        Name = Stuff.content.strip()
         LiChessName = FindLiSheet(Name)
         if LiChessName:
             await message.channel.send(f"https://lichess.org/@/{LiChessName}")

@@ -296,13 +296,8 @@ async def on_message(message):
         for player in standings:
             sinfo += player.info + "\n"
         await message.channel.send(sinfo)
-    
+     
 
-""" @client.event
-async def on_reaction_add(reaction, user):
-    if reaction == ":thumbsup:":
-        await message.channel.send('Nice!')
- """    
 
-#client.run(TOKEN)
 bot.run(TOKEN)
+client.run(TOKEN)

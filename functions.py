@@ -84,13 +84,14 @@ def UpdateSheet(players,tnmtinfo):
         sheet.update_cell(cell.row,7,p.TourneyDraws)
         Losses = TotalMatches - p.TourneyWins - p.TourneyDraws
 
-def UpdateSheetDiscordID(discName,discID=None):
+def UpdateSheetDiscordID(discName,discID=None,lichessname=None):
     gc = gspread.service_account(filename='google-credentials.json')
     Book = gc.open('Chess_Tourney')
     sheet = Book.get_worksheet(0)
-
     cell = sheet.find(discName)
     sheet.update_cell(cell.row,8,discID)
+    if not sheet.cell(cell.row,2).value:
+        sheet.update_cell(cell.row,2,lichessname)
     senderman = dict()
     senderman['discName']  =  discName
     senderman['discID'] = discID

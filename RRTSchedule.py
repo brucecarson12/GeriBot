@@ -59,9 +59,7 @@ class Match:
         self.bplayer = bplayer
         self.link = link
         self.vstxt = "{} vs {}".format(wplayer,bplayer)
-        self.status = 'pending'
-
-            
+        self.status = 'pending'     
 
     def __str__(self):
         return f'{self.wplayer} vs {self.bplayer} \nStatus: {self.status} \nLink: {self.link}'

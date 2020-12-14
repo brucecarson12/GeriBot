@@ -258,9 +258,10 @@ async def on_message(message):
         await message.channel.send(f"Whose profile would you like?")
         Stuff = await client.wait_for("message", check=check)
         Name = Stuff.content.strip()
-        LiChessName = FindLiSheet(Name)
+        User = UpdateSheetDiscordID(Name)
+        LiChessName = User['lichess']
         if LiChessName:
-            await message.channel.send(f"https://lichess.org/@/{LiChessName}")
+            await message.channel.send(f"<https://lichess.org/@/{LiChessName}>")
         else:
             await message.channel.send(f"This person has not yet added their LiChess name to the bot. Shame Shame Shame.")
 

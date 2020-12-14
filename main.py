@@ -110,13 +110,16 @@ async def on_message(message):
     if message.content.startswith('$addli'):
         def check(msg):
             return msg.author == message.author and msg.channel == message.channel
-        await message.channel.send(f"What's your Name, lichess username?")
+        await message.channel.send(f"What's your lichess username?")
         lichessname = await client.wait_for("message", check=check)
-        names = lichessname.content.split(',')
+        liname = lichessname.content.strip()
+        DiscName = str(message.author)
+        ID = message.author.id
         for player in players:
-            if player.name == str(names[0]).strip():
-                player.add_lichess(str(names[1]).strip())
-                await message.channel.send(f"Lichess username, {player.li}, added to {player.name}.")
+            if player.name == DiscName:
+                player.add_lichess(liname)                
+        UpdateSheetDiscordID(DiscName,ID,liname)
+        await message.channel.send(f"Lichess username: {player.li}")
 
     #add lichess username to players info
     if message.content.startswith('$findli'):
@@ -261,7 +264,7 @@ async def on_message(message):
         User = UpdateSheetDiscordID(Name)
         LiChessName = User['lichess']
         if LiChessName:
-            await message.channel.send(f"<https://lichess.org/@/{LiChessName}> \n https://lichess.org/insights/{LiChessName}/result/opening")
+            await message.channel.send(f"<https://lichess.org/@/{LiChessName}> \n <https://lichess.org/insights/{LiChessName}/result/opening>")
         else:
             await message.channel.send(f"This person has not yet added their LiChess name to the bot. Shame Shame Shame.")
 

@@ -98,14 +98,7 @@ def MakePlayers(PlayerList):
             sheet.update_cell(new_row, 7, 0)
             players.append(Player( p,None,p))
     return players
-
-def FindLiSheet(Name):
-    gc = gspread.service_account(filename='google-credentials.json')
-    Book = gc.open('Chess_Tourney')
-    sheet = Book.get_worksheet(0) 
-    cell = sheet.find(Name)
-    LiChessName = sheet.row_values(cell.row)[1]
-    return LiChessName  
+  
             
 
 
@@ -130,7 +123,7 @@ def UpdateSheetDiscordID(discName,discID=None,lichessname=None):
     cell = sheet.find(discName)
     if not discID:
         sheet.update_cell(cell.row,8,discID)
-    if not sheet.cell(cell.row,2).value:
+    if not lichessname:
         sheet.update_cell(cell.row,2,lichessname)
     senderman = dict()
     senderman['discName']  =  discName

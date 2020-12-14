@@ -251,6 +251,20 @@ async def on_message(message):
         await message.channel.send(file=discord.File('game.gif'))
         os.remove('game.gif')
 
+    #Brings up LiChess profile link for input(player)
+    if message.content.startswith('$liprofile'):
+        def check(msg):
+            return msg.author == message.author and msg.channel == message.channel
+        await message.channel.send(f"Whose profile would you like?")
+        Name = await client.wait_for("message", check=check)
+        LiChessName = FindLiSheet(Name)
+        if LiChessName:
+            await message.channel.send(f"https://lichess.org/@/{LiChessName}")
+        else:
+            await message.channel.send(f"This person has not yet added their LiChess name to the bot. Shame Shame Shame.")
+
+
+
 """ @client.event
 async def on_reaction_add(reaction, user):
     if reaction == ":thumbsup:":

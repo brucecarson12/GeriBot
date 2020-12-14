@@ -44,6 +44,37 @@ def randpuzzle():
     return filename, clue, title, fentxt, solutiontxt
 
 
+#----------------------------Double tourney---------------------------------------------------
+def MakeRound(Players):
+    Losers =[]
+    Winners = []
+    #Sort players in Losers and Winners Brackets. Doesnt count players who have >1 loss out
+    for player in Players:
+        if player.losses == 1:
+            Losers.append(player)
+        elif player.losses == 0:
+            Winners.append(player)
+            
+    if len(Losers) + len(Winners) == 2: #Checks to see if we are on the last match        
+        FinalMatch = Match(Losers[0].name,Winners[0].name)
+        return FinalMatch , None
+    else:
+        Losers.append(Player('BYE',None,'BYE')) if len(Losers)%2 ==1 else False
+        Winners.append(Player('BYE',None,'BYE')) if len(Winners)%2 ==1 else False #adds BYE player to odd number brackets
+        LMatches = []
+        WMatches = []
+        i,j=0
+        while i <len(Losers):
+            LMatches.append(Match(Losers[i].name,Losers[i+1].name))
+            i+=2
+        while j<len(Winners):
+            WMatches.append(Match(Winners[j].name,Winners[j+1].name))
+            j+=2
+        for match in WMatches:
+            match.start()
+        for match in LMatches:
+            match.start()
+        return WMatches, LMatches
 
 
 #---------------------Gsheet functions--------------------------------------------------------
@@ -67,6 +98,14 @@ def MakePlayers(PlayerList):
             sheet.update_cell(new_row, 7, 0)
             players.append(Player( p,None,p))
     return players
+
+def FindLiSheet(Name):
+    gc = gspread.service_account(filename='google-credentials.json')
+    Book = gc.open('Chess_Tourney')
+    sheet = Book.get_worksheet(0) 
+    cell = sheet.find(Name)
+    LiChessName = sheet.row_values(cell.row)[1]
+    return LiChessName  
             
 
 

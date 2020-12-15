@@ -165,5 +165,3 @@ def lastgame(user1):
     if 'opening' in gameinfo.keys():
         game['opening'] = f"ECO: {gameinfo['opening']['eco']}, {gameinfo['opening']['name']}"
     return game
-
-print(lastgame('rural'))

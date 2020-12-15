@@ -138,6 +138,13 @@ async def on_message(message):
         await message.channel.send(file=discord.File('game.gif'))
         os.remove('game.gif')
     
+    #displays manually updated current tournament file
+    if message.content.startswith('$tournament'):
+        with open(file="current-tournament.txt",mode="r") as tourntext:
+            txtinfo = tourntext.read()
+            await message.channel.send(content=txtinfo)
+
+    
     #
     if message.content.startswith('$addwinner'):
         def check(msg):

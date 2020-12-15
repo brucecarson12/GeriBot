@@ -1,9 +1,9 @@
 ***Opening Principles***
 __Round 1:__
 Drake vs Rhett, <link>
-Sean vs Tony, <link>
-Chris vs Rainey, <link>
-Billy vs Grant, <link>
+Sean vs Tony, <https://lichess.org/QCcyfq8I>
+Chris vs Rainey, <https://lichess.org/yjKSEh7g>
+Billy vs Grant, <https://lichess.org/QPXHW3hf>
 
 _Players with a Bye this round: Bryce, Emily, Neal, Tommy_
 
@@ -13,5 +13,5 @@ Neal vs _winner of Sean vs Tony_
 Tommy vs _winner of Chris vs Rainey_
 Bryce vs _winner of Billy vs Grant_
 ```
-Tournament link:
+Tournament link :
 <https://challonge.com/lyd70mdw>

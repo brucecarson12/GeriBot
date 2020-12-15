@@ -133,10 +133,11 @@ async def on_message(message):
         if gameinfo['live']:
             infotext = "Live Game"
         await message.channel.send(f"{infotext}: <{gameinfo['link']}> \n{gameinfo['opening']}")
-        with open('game.gif', 'wb') as f:
-            f.write(requests.get(gameinfo['giflink']).content)
-        await message.channel.send(file=discord.File('game.gif'))
-        os.remove('game.gif')
+        await message.channel.send(gameinfo['giflink'])
+        #with open('game.gif', 'wb') as f:
+        #    f.write(requests.get(gameinfo['giflink']).content)
+        #await message.channel.send(file=discord.File('game.gif'))
+        #os.remove('game.gif')
     
     #displays manually updated current tournament file
     if message.content.startswith('$tournament'):
@@ -256,10 +257,11 @@ async def on_message(message):
         Sheetinfo = UpdateSheetDiscordID(member,memberid)
         lastone = lastgame(Sheetinfo['lichess'])
         await message.channel.send(f"<{lastone['link']}> \n{lastone['opening']}")
-        with open('game.gif', 'wb') as f:
-            f.write(requests.get(lastone['gif']).content)
-        await message.channel.send(file=discord.File('game.gif'))
-        os.remove('game.gif')
+        await message.channel.send(lastone['gif'])
+        #with open('game.gif', 'wb') as f:
+        #    f.write(requests.get(lastone['gif']).content)
+        #await message.channel.send(file=discord.File('game.gif'))
+        #os.remove('game.gif')
 
     #Brings up LiChess profile link using Gsheet for input(Name)
     if message.content.startswith('$liprofile'):

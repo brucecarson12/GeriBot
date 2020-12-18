@@ -7,11 +7,12 @@ Tourney Commands:
 -- $players : lists all the players in a tournament 
 -- $standings : lists the current tournament score count 
 -- $addwinner : allows you to add a score to an ongoing game 
--- $lastli : shows your last game(based on start date, not end date of the game)
+
 Misc. Commands: 
 -- $puzzle : generates a chess puzzle in the chat 
 -- $addli : i'll remember your username and add it to the current tournament
+-- $lastli : shows your last game(based on start date, not end date of the game)
 -- $findli : will find a lichess games using usernames
 -- $resources : provides a list of useful chess resources 
 
-I'm old so go easy on me!"
+I'm hard of hearing so I may ask you to repeat yourself!"

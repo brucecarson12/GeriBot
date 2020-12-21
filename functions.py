@@ -120,7 +120,11 @@ def UpdateSheetDiscordID(discName,discID=None,lichessname=None):
     gc = gspread.service_account(filename='google-credentials.json')
     Book = gc.open('Chess_Tourney')
     sheet = Book.get_worksheet(0)
-    cell = sheet.find(discName)
+    try:
+        cell = sheet.find(discName)
+    except:
+        cell = sheet.find(discID)
+        sheet.update_cell(cell.row,3,discName)
     if discID:
         sheet.update_cell(cell.row,8,discID)
     if lichessname:

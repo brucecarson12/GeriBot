@@ -1,22 +1,22 @@
 ***Opening Principles***
 __Winners Round 2:__
-Emily vs Drake, <link> 
-**Neal** vs Sean, <link> 
-Tommy vs Chris/Rainey, <link>
+Emily vs **Drake**, <https://lichess.org/EsJC1g0D > 
+**Neal** vs Sean, <https://lichess.org/64tnDGtt > 
+Tommy vs Rainey, <link>
 Bryce vs Billy/Grant, <link>
 
-_Players with a Bye this round: Rhett, Tony, Chris/Rainey, Billy/Grant_
+_Players with a Bye this round: Rhett, Tony, Chris, Billy/Grant_
 
 ```Next Round Preview:
 [Winners Bracket Round 3]
 _winner of Emily v. Drake_ vs Neal
-_winner of Tommy v. Chris/Rainey_ vs Bryce
+_winner of Tommy v. Rainey_ vs _winner of Bryce v. Billy/Grany_
 
 [Losers Bracket Round 1]
-TBD vs Rhett
-TBD/Tommy vs Tony
-Sean vs Chris/Rainey
- _loser of Emily v. Drake_ vs _loser of Billy v. Grant_
+_loser of Bryce v. Billy/Grant_ vs Rhett
+_loser of Tommy v. Rainey_ vs Tony
+Sean vs Chris
+Emily vs _loser of Billy v. Grant_
 
 ```
 Tournament link :

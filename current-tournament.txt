@@ -2,7 +2,7 @@
 __Round 1:__
 **Drake** vs Rhett, <https://lichess.org/61JDgLeY> 1-0
 **Sean** vs Tony, <https://lichess.org/QCcyfq8I> 1-0
-Chris vs Rainey, <https://lichess.org/yjKSEh7g>
+Chris vs **Rainey**, <https://lichess.org/yjKSEh7g>
 Billy vs Grant, <https://lichess.org/QPXHW3hf>
 
 _Players with a Bye this round: Bryce, Emily, Neal, Tommy_
@@ -11,12 +11,10 @@ _Players with a Bye this round: Bryce, Emily, Neal, Tommy_
 [Winners Bracket]
 Emily vs Drake
 Neal vs Sean
-Tommy vs _winner of Chris vs Rainey_
+Tommy vs  Rainey
 Bryce vs _winner of Billy vs Grant_
 [Losers Bracket]
-Rhett vs TBD
-TBD vs Tony
-
+BYE
 ```
 Tournament link :
 <https://challonge.com/lyd70mdw>

@@ -126,6 +126,7 @@ def UpdateSheetDiscordID(discName,discID=None,lichessname=None):
         cell = sheet.find(discID)
         sheet.update_cell(cell.row,3,discName)
     if discID:
+        print(discID)
         sheet.update_cell(cell.row,8,discID)
     if lichessname:
         sheet.update_cell(cell.row,2,lichessname)

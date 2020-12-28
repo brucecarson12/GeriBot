@@ -276,6 +276,17 @@ async def on_message(message):
             await message.channel.send(f"<https://lichess.org/@/{LiChessName}> \n <https://lichess.org/insights/{LiChessName}/result/opening>")
         else:
             await message.channel.send(f"This person has not yet added their LiChess name to the bot. Shame Shame Shame.")
+    
+    if message.content.startswith('$stats'):
+        member = str(message.author)
+        memberid = message.author.id
+        Stats = GetStats(memberid)
+        Name = Stats['Name']
+        TotalWins = Stats['TotalWins']
+        TotalLoss = Stats['TotalLoss']
+        TotalDraw = Stats['TotalDraws']
+        Wins = Stats['TourneyWins']
+        await message.channel.send(f"{Name} : {TotalWins}/{TotalLoss}/{TotalDraw} \n Total number of tournament wins: {Wins} ")
 
 
 

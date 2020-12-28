@@ -135,6 +135,24 @@ def UpdateSheetDiscordID(discName,discID=None,lichessname=None):
     senderman['lichess'] = sheet.cell(cell.row,2).value
     return senderman
 
+def GetStats(discID):
+    gc = gspread.service_account(filename='google-credentials.json')
+    Book = gc.open('Chess_Tourney')
+    sheet = Book.get_worksheet(0)
+    try:
+        cell = sheet.find(discID)
+    except:
+        cell = None
+        return None
+    if cell:
+        stats = dict()
+        stats['Name']= sheet.cell(cell.row,1).value
+        stats['TourneyWins']= sheet.cell(cell.row,4).value
+        stats['TotalWins']=sheet.cell(cell.row,5).value
+        stats['TotalLoss']=sheet.cell(cell.row,6).value
+        stats['TotalDraws']=sheet.cell(cell.row,7).value
+        return stats
+
 #--------------------lichess functions w/ test statements-------------------
 LiTOKEN = os.getenv('LiToken')
 session = berserk.TokenSession(LiTOKEN)

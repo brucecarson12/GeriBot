@@ -1,20 +1,23 @@
 ***Opening Principles***
-__Round 1:__
-**Drake** vs Rhett, <https://lichess.org/61JDgLeY> 1-0
-**Sean** vs Tony, <https://lichess.org/QCcyfq8I> 1-0
-Chris vs **Rainey**, <https://lichess.org/yjKSEh7g> 0-1
-Billy vs Grant, <https://lichess.org/QPXHW3hf>
+__Winners Round 2:__
+Emily vs **Drake**, <https://lichess.org/EsJC1g0D > 
+**Neal** vs Sean, <https://lichess.org/64tnDGtt > 
+Tommy vs Rainey, <link>
+Bryce vs Grant, <link>
 
-_Players with a Bye this round: Bryce, Emily, Neal, Tommy_
+_Players with a Bye this round: Rhett, Tony, Chris, Billy_
 
-```Round2 preview:
-[Winners Bracket]
-Emily vs Drake
-Neal vs Sean
-Tommy vs  Rainey
-Bryce vs _winner of Billy vs Grant_
-[Losers Bracket]
-BYE
+```Next Round Preview:
+[Winners Bracket Round 3]
+_winner of Emily v. Drake_ vs Neal
+_winner of Tommy v. Rainey_ vs _winner of Bryce v.Grany_
+
+[Losers Bracket Round 1]
+_loser of Bryce v. Billy/Grant_ vs Rhett
+_loser of Tommy v. Rainey_ vs Tony
+Sean vs Chris
+Emily vs Billy
+
 ```
 Tournament link :
-<https://challonge.com/lyd70mdw>
+<https://challonge.com/lyd70mdw> 

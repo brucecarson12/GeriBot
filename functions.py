@@ -143,7 +143,6 @@ def GetStats(discID):
         cell = sheet.find(discID)
     except:
         cell = None
-        return None
     if cell:
         stats = dict()
         stats['Name']= sheet.cell(cell.row,1).value

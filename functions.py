@@ -140,7 +140,7 @@ def GetStats(discID):
     Book = gc.open('Chess_Tourney')
     sheet = Book.get_worksheet(0)
     print(discID)
-    cell = sheet.find(discID)    
+    cell = sheet.find(str(discID))    
     stats = dict()
     stats['Name']= sheet.cell(cell.row,1).value
     stats['TourneyWins']= sheet.cell(cell.row,4).value

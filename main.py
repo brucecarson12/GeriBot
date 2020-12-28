@@ -115,7 +115,6 @@ async def on_message(message):
         liname = lichessname.content.strip()
         DiscName = str(message.author)
         ID = message.author.id
-        print(ID)
         for player in players:
             if player.name == DiscName:
                 player.add_lichess(liname)                
@@ -281,7 +280,7 @@ async def on_message(message):
     if message.content.startswith('$stats'):
         member = str(message.author)
         memberid = message.author.id
-        Stats = GetStats(memberid)
+        Stats = GetStats(str(memberid))
         Name = Stats['Name']
         TotalWins = Stats['TotalWins']
         TotalLoss = Stats['TotalLoss']

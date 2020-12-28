@@ -139,7 +139,8 @@ def GetStats(discID):
     gc = gspread.service_account(filename='google-credentials.json')
     Book = gc.open('Chess_Tourney')
     sheet = Book.get_worksheet(0)
-    cell = sheet.find(str(discID))    
+    print(discID)
+    cell = sheet.find(discID)    
     stats = dict()
     stats['Name']= sheet.cell(cell.row,1).value
     stats['TourneyWins']= sheet.cell(cell.row,4).value

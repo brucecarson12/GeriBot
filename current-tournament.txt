@@ -2,7 +2,7 @@
 __Winners Round 2:__
 Emily vs **Drake**, <https://lichess.org/EsJC1g0D> 
 **Neal** vs Sean, <https://lichess.org/64tnDGtt> 
-Tommy vs Rainey, <https://lichess.org/3NOv0Ww2>
+Tommy vs **Rainey**, <https://lichess.org/3NOv0Ww2>
 Bryce vs Grant, <https://lichess.org/3M0NFxRn>
 
 _Players with a Bye this round: Rhett, Tony, Chris, Billy_
@@ -10,11 +10,11 @@ _Players with a Bye this round: Rhett, Tony, Chris, Billy_
 ```Next Round Preview:
 [Winners Bracket Round 3]
 Drake vs Neal
-_winner of Tommy v. Rainey_ vs _winner of Bryce v.Grant_
+ Rainey vs _winner of Bryce v.Grant_
 
 [Losers Bracket Round 1]
 _loser of Bryce v. Grant_ vs Rhett
-_loser of Tommy v. Rainey_ vs Tony
+Tommy vs Tony
 Sean vs Chris
 Emily vs Billy
 

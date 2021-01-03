@@ -1,20 +1,20 @@
 ***Opening Principles***
 __Winners Bracket Round 3__
  Drake vs Neal
-_winner of Tommy v. Rainey_ vs _winner of Bryce v.Grant_
+ Rainey vs  Bryce
 
 __Losers Bracket Round 1__
-_loser of Bryce v. Billy/Grant_ vs Rhett
-_loser of Tommy v. Rainey_ vs Tony
-Sean vs Chris
+Grant vs Rhett
+Tommy vs Tony
+Sean vs **Chris** <https://lichess.org/lpEGvwUu>
 Emily vs Billy
 
 ```Next Round Preview:
 [Winners Bracket Round 4]
-_winner of Drake v. Neal_ vs _winner of (Tommy/Rainey) v. (Bryce/Grant)_
+_winner of Drake v. Neal_ vs _winner of Rainey v. Bryce_
 
 [Losers Bracket Round 2]
-_winner of (Bryce/Grant) v. Rhett_ vs. _winner of (Tommy/Rainey) v. Tony_
+_winner of Grant v. Rhett_ vs. _winner of Tommy v. Tony_
 _winner of Sean v. Chris_ vs _winner of Emily v. Billy_
 
 ```

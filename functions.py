@@ -123,7 +123,7 @@ def UpdateSheetDiscordID(discName,discID=None,lichessname=None):
     try:
         cell = sheet.find(discName)
     except:
-        cell = sheet.find(discID)
+        cell = sheet.find(str(discID))
         sheet.update_cell(cell.row,3,discName)
     if discID:
         sheet.update_cell(cell.row,8,str(discID))

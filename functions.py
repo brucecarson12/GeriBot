@@ -175,8 +175,9 @@ def lastgame(user1):
     lastgame  = list(client.games.export_by_player(p1,max=1))
     game = dict()
     game['id'] = lastgame[0]['id']
+    game['side'] = 'white' if lastgame[0]['players']['white']['user']['name'] == user1 else 'black'
     game['link'] = f"https://lichess.org/{game['id']}"
-    game['gif'] = f"https://lichess1.org/game/export/gif/{game['id']}.gif"
+    game['gif'] = f"https://lichess1.org/game/export/gif/{game['side']}/{game['id']}.gif"
     gameinfo  = client.games.export(lastgame[0]['id'])
     game['opening'] = None
     if 'opening' in gameinfo.keys():

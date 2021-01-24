@@ -187,10 +187,10 @@ def lastgame(user1):
     if 'analysis' in gameinfo.keys():
         game['analysis'] = gameinfo['players'][game['side']]['analysis']
         moves = gameinfo['moves'].split(' ')
-        startno = 1 if game['side'] == 'black' else 0
+        startno = 3 if game['side'] == 'black' else 2
         for i in range(startno,len(gameinfo['analysis']),2):
-            move = (str(int((i/2) + .5)) + "... " + moves[i]) if i%2 else (str(int(i/2)) + ". " + moves[i])
             if 'judgment' in gameinfo['analysis'][i]:
+                move = str(f"{str(int((i+2)/2))}. {moves[i]}") if startno == 2 else str(f"{str(int((i+1)/2))}... {moves[i]}")
                 name = gameinfo['analysis'][i]['judgment']['name'].lower()
                 game['badmoves'][name].append(move)
     return game

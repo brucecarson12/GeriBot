@@ -258,7 +258,10 @@ async def on_message(message):
         lastone = lastgame(Sheetinfo['lichess'])
         analysis = None
         if lastone['analysis'] != None:
-            analysis = str(f"Average Centipawn Loss: {lastone['analysis']['acpl']} \nInaccuracies: {lastone['analysis']['inaccuracy']} {lastone['badmoves']['inaccuracy']}\nMistakes: {lastone['analysis']['mistake']} {lastone['badmoves']['mistake']}\nBlunders: {lastone['analysis']['blunder']} {lastone['badmoves']['blunder']}")
+            analysis = str(f"""Average Centipawn Loss: {lastone['analysis']['acpl']} 
+            Inaccuracies: ({lastone['analysis']['inaccuracy']}) {', '.join(lastone['badmoves']['inaccuracy'])}
+            Mistakes: ({lastone['analysis']['mistake']}) {', '.join(lastone['badmoves']['mistake'])}
+            Blunders: ({lastone['analysis']['blunder']}) {', '.join(lastone['badmoves']['blunder'])}""")
         await message.channel.send(f"<{lastone['link']}> \n{lastone['opening']}\n"+analysis)
         await message.channel.send(lastone['gif'])
 

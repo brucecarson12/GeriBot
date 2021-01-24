@@ -194,5 +194,3 @@ def lastgame(user1):
                 name = gameinfo['analysis'][i]['judgment']['name'].lower()
                 game['badmoves'][name].append(move)
     return game
-
-print(lastgame('bnyce'))

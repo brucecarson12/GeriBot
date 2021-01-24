@@ -171,14 +171,15 @@ def lichesslink(user1,user2):
     return recgame
 
 def lastgame(user1):
-    p1 = user1.strip()
+    p1 = user1.strip().lower()
     lastgame  = list(client.games.export_by_player(p1,max=1))
     game = dict()
     game['id'] = lastgame[0]['id']
-    game['side'] = 'white' if lastgame[0]['players']['white']['user']['name'] == user1 else 'black'
+    game['side'] = 'white' if lastgame[0]['players']['white']['user']['name'].lower() == p1 else 'black'
     game['link'] = f"https://lichess.org/{game['id']}"
     game['gif'] = f"https://lichess1.org/game/export/gif/{game['side']}/{game['id']}.gif"
     gameinfo  = client.games.export(lastgame[0]['id'])
+    game['analysis'] = gameinfo['players'][game['side']]['analysis']
     game['opening'] = None
     if 'opening' in gameinfo.keys():
         game['opening'] = f"ECO: {gameinfo['opening']['eco']}, {gameinfo['opening']['name']}"

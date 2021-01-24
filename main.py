@@ -256,12 +256,11 @@ async def on_message(message):
         memberid = message.author.id
         Sheetinfo = UpdateSheetDiscordID(member,memberid)
         lastone = lastgame(Sheetinfo['lichess'])
-        await message.channel.send(f"<{lastone['link']}> \n{lastone['opening']}")
+        analysis = str(f"""Average Centipawn Loss: {lastone['analysis']['acpl']}\nInaccuracies: {lastone['analysis']['inaccuracy']}\n
+                            Mistakes: {lastone['analysis']['mistake']}\nBlunders: {lastone['analysis']['blunder']}""")
+        await message.channel.send(f"<{lastone['link']}> \n{lastone['opening']}\n",analysis)
         await message.channel.send(lastone['gif'])
-        #with open('game.gif', 'wb') as f:
-        #    f.write(requests.get(lastone['gif']).content)
-        #await message.channel.send(file=discord.File('game.gif'))
-        #os.remove('game.gif')
+
 
     #Brings up LiChess profile link using Gsheet for input(Name)
     if message.content.startswith('$liprofile'):

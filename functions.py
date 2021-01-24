@@ -179,8 +179,17 @@ def lastgame(user1):
     game['link'] = f"https://lichess.org/{game['id']}"
     game['gif'] = f"https://lichess1.org/game/export/gif/{game['side']}/{game['id']}.gif"
     gameinfo  = client.games.export(lastgame[0]['id'])
-    game['analysis'] = gameinfo['players'][game['side']]['analysis']
+    game['analysis'] = None
     game['opening'] = None
+    game['badmoves'] = {'inaccuracy':list(),'mistake':list(),'blunder':list()}
     if 'opening' in gameinfo.keys():
         game['opening'] = f"ECO: {gameinfo['opening']['eco']}, {gameinfo['opening']['name']}"
+    if 'analysis' in gameinfo.keys():
+        game['analysis'] = gameinfo['players'][game['side']]['analysis']
+        moves = gameinfo['moves'].split(' ')
+        startno = 1 if game['side'] == 'black' else 0
+        for i in range(startno,len(gameinfo['analysis']),2):
+            if 'judgment' in gameinfo['analysis'][i]:
+                name = gameinfo['analysis'][i]['judgment']['name'].lower()
+                game['badmoves'][name].append(str(moves[i]))
     return game

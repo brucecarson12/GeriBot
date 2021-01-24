@@ -256,7 +256,9 @@ async def on_message(message):
         memberid = message.author.id
         Sheetinfo = UpdateSheetDiscordID(member,memberid)
         lastone = lastgame(Sheetinfo['lichess'])
-        analysis = str(f"Average Centipawn Loss: {lastone['analysis']['acpl']}\nInaccuracies: {lastone['analysis']['inaccuracy']}\nMistakes: {lastone['analysis']['mistake']}\nBlunders: {lastone['analysis']['blunder']}")
+        analysis = None
+        if lastone['analysis'] != None:
+            analysis = str(f"Average Centipawn Loss: {lastone['analysis']['acpl']} \nInaccuracies: {lastone['analysis']['inaccuracy']} {lastone['badmoves']['inaccuracy']}\nMistakes: {lastone['analysis']['mistake']} {lastone['badmoves']['mistake']}\nBlunders: {lastone['analysis']['blunder']} {lastone['badmoves']['blunder']}")
         await message.channel.send(f"<{lastone['link']}> \n{lastone['opening']}\n"+analysis)
         await message.channel.send(lastone['gif'])
 

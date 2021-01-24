@@ -189,7 +189,10 @@ def lastgame(user1):
         moves = gameinfo['moves'].split(' ')
         startno = 1 if game['side'] == 'black' else 0
         for i in range(startno,len(gameinfo['analysis']),2):
+            move = (str(int((i/2) + .5)) + "... " + moves[i]) if i%2 else (str(int(i/2)) + ". " + moves[i])
             if 'judgment' in gameinfo['analysis'][i]:
                 name = gameinfo['analysis'][i]['judgment']['name'].lower()
-                game['badmoves'][name].append(str(moves[i]))
+                game['badmoves'][name].append(move)
     return game
+
+print(lastgame('bnyce'))

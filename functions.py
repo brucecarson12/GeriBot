@@ -192,5 +192,6 @@ def lastgame(user1):
             if 'judgment' in gameinfo['analysis'][i]:
                 move = str(f"{str(int((i+2)/2))}. {moves[i]}") if startno == 2 else str(f"{str(int((i+1)/2))}... {moves[i]}")
                 name = gameinfo['analysis'][i]['judgment']['name'].lower()
+                movecomment = gameinfo['analysis'][i]['judgment']['comment']
                 game['badmoves'][name].append(move)
     return game

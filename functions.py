@@ -165,3 +165,51 @@ def lastgame(user1):
     if 'opening' in gameinfo.keys():
         game['opening'] = f"ECO: {gameinfo['opening']['eco']}, {gameinfo['opening']['name']}"
     return game
+
+
+def ratinghistory(user1):
+    p1 = user1.strip().lower()
+    rathist = dict()
+    ratings = client.users.get_rating_history(p1)
+    
+    bullet = ratings[0]
+    bullet['currentelo'] = None if len(bullet['points']) == 0 else bullet['points'][len(bullet['points'])-1][3]
+    bullet['peak'] = bullet['currentelo']
+    for i in bullet['points']:
+        if i[3] > bullet['peak']:
+            bullet['peak'] = i[3]
+
+    blitz = ratings[1]
+    blitz['currentelo'] = None if len(blitz['points']) == 0 else blitz['points'][len(blitz['points'])-1][3]
+    blitz['peak'] = blitz['currentelo']
+    for i in blitz['points']:
+        if i[3] > blitz['peak']:
+            blitz['peak'] = i[3]
+    
+    rapid = ratings[2]
+    rapid['currentelo'] = None if len(rapid['points']) == 0 else rapid['points'][len(rapid['points'])-1][3]
+    rapid['peak'] = rapid['currentelo']
+    for i in rapid['points']:
+        if i[3] > rapid['peak']:
+            rapid['peak'] = i[3]
+
+    classical = ratings[3]
+    classical['currentelo'] = None if len(classical['points']) == 0 else classical['points'][len(classical['points'])-1][3]
+    classical['peak'] = classical['currentelo']
+    for i in classical['points']:
+        if i[3] > classical['peak']:
+            classical['peak'] = i[3]
+
+    correspondence = ratings[4]
+    correspondence['currentelo'] = None if len(correspondence['points']) == 0 else correspondence['points'][len(correspondence['points'])-1][3]
+    correspondence['peak'] = correspondence['currentelo']
+    for i in correspondence['points']:
+        if i[3] > correspondence['peak']:
+            correspondence['peak'] = i[3]
+    
+    
+    modes = [bullet,blitz,rapid,classical,correspondence]
+    for mode in modes:
+        del mode['points']
+    
+    return modes

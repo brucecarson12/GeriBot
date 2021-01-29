@@ -182,9 +182,12 @@ def lastgame(user1):
     game['analysis'] = None
     game['opening'] = None
     game['badmoves'] = {'inaccuracy':list(),'mistake':list(),'blunder':list()}
+    game['result'] = lastgame[0]['result']
     if 'opening' in gameinfo.keys():
         game['opening'] = f"ECO: {gameinfo['opening']['eco']}, {gameinfo['opening']['name']}"
-    
+    game['status'] = lastgame[0]['status']
+    if 'winner' in gameinfo.keys():
+        game['winner'] = gameinfo['winner']
     if 'analysis' in gameinfo.keys():
         game['analysis'] = gameinfo['players'][game['side']]['analysis']
         moves = gameinfo['moves'].split(' ')

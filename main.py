@@ -256,10 +256,20 @@ async def on_message(message):
         memberid = message.author.id
         Sheetinfo = UpdateSheetDiscordID(member,memberid)
         lastone = lastgame(Sheetinfo['lichess'])
+        result = None
+        if lastone['status'] == 'draw':
+            result = "Result: 1/2-1/2"
+        elif 'winner' in lastone.keys():
+            if lastone['winner'] == 'white':
+                result = "Result: 1-0"
+            elif lastone['winner'] == 'black':
+                result = "Result: 0-1"
         analysis = str()
         if lastone['analysis'] != None:
             analysis = (f"Average Centipawn Loss: {lastone['analysis']['acpl']} \nInaccuracies({lastone['analysis']['inaccuracy']}): {', '.join(lastone['badmoves']['inaccuracy'])} \nMistakes({lastone['analysis']['mistake']}): {', '.join(lastone['badmoves']['mistake'])} \nBlunders({lastone['analysis']['blunder']}): {', '.join(lastone['badmoves']['blunder'])}")
         await message.channel.send(f"<{lastone['link']}> \n{lastone['opening']}\n{analysis}")
+        if result is not None:
+            await message.channel.send(f"{result}")
         await message.channel.send(lastone['gif'])
 
     #ratings and peak for discord users

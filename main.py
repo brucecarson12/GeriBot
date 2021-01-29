@@ -262,6 +262,17 @@ async def on_message(message):
         await message.channel.send(f"<{lastone['link']}> \n{lastone['opening']}\n{analysis}")
         await message.channel.send(lastone['gif'])
 
+    #ratings and peak for discord users
+    if message.content.startswith('$ratings'):
+        member = str(message.author)
+        memberid = message.author.id
+        Sheetinfo = UpdateSheetDiscordID(member,memberid)
+        stats = ratinghistory(Sheetinfo['lichess'])
+        ratings = f'**Variant**(# games): Current ELO, _Peak ELO_ \n'
+        for i in stats:
+            if i['peak']:
+                ratings += f"**{i['name']}**: {i['currentelo']}, _{i['peak']}_ \n"
+        await message.channel.send(ratings)
 
     #Brings up LiChess profile link using Gsheet for input(Name)
     if message.content.startswith('$liprofile'):

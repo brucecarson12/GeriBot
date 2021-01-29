@@ -200,47 +200,21 @@ def lastgame(user1):
 
 def ratinghistory(user1):
     p1 = user1.strip().lower()
-    rathist = dict()
     ratings = client.users.get_rating_history(p1)
     
     bullet = ratings[0]
-    bullet['currentelo'] = None if len(bullet['points']) == 0 else bullet['points'][len(bullet['points'])-1][3]
-    bullet['peak'] = bullet['currentelo']
-    for i in bullet['points']:
-        if i[3] > bullet['peak']:
-            bullet['peak'] = i[3]
-
-    blitz = ratings[1]
-    blitz['currentelo'] = None if len(blitz['points']) == 0 else blitz['points'][len(blitz['points'])-1][3]
-    blitz['peak'] = blitz['currentelo']
-    for i in blitz['points']:
-        if i[3] > blitz['peak']:
-            blitz['peak'] = i[3]
-    
+    blitz = ratings[1]    
     rapid = ratings[2]
-    rapid['currentelo'] = None if len(rapid['points']) == 0 else rapid['points'][len(rapid['points'])-1][3]
-    rapid['peak'] = rapid['currentelo']
-    for i in rapid['points']:
-        if i[3] > rapid['peak']:
-            rapid['peak'] = i[3]
-
     classical = ratings[3]
-    classical['currentelo'] = None if len(classical['points']) == 0 else classical['points'][len(classical['points'])-1][3]
-    classical['peak'] = classical['currentelo']
-    for i in classical['points']:
-        if i[3] > classical['peak']:
-            classical['peak'] = i[3]
-
-    correspondence = ratings[4]
-    correspondence['currentelo'] = None if len(correspondence['points']) == 0 else correspondence['points'][len(correspondence['points'])-1][3]
-    correspondence['peak'] = correspondence['currentelo']
-    for i in correspondence['points']:
-        if i[3] > correspondence['peak']:
-            correspondence['peak'] = i[3]
-    
-    
+    correspondence = ratings[4]    
     modes = [bullet,blitz,rapid,classical,correspondence]
     for mode in modes:
+        mode['currentelo'] = None if len(mode['points'])==0 else mode['points'][len(mode['points'])-1][3]
+        mode['peak'] = mode['currentelo']
+        #mode['nogames'] = len(list(client.games.export_by_player('bnyce',perf_type=mode['name'].lower(),rated=1)))
+        for i in mode['points']:
+            if i[3] > mode['peak']:
+                mode['peak'] = i[3]
         del mode['points']
     
     return modes

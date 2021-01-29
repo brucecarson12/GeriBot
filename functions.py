@@ -120,9 +120,13 @@ def UpdateSheetDiscordID(discName,discID=None,lichessname=None):
     gc = gspread.service_account(filename='google-credentials.json')
     Book = gc.open('Chess_Tourney')
     sheet = Book.get_worksheet(0)
-    cell = sheet.find(discName)
+    try:
+        cell = sheet.find(discName)
+    except:
+        cell = sheet.find(str(discID))
+        sheet.update_cell(cell.row,3,discName)
     if discID:
-        sheet.update_cell(cell.row,8,discID)
+        sheet.update_cell(cell.row,8,str(discID))
     if lichessname:
         sheet.update_cell(cell.row,2,lichessname)
     senderman = dict()
@@ -130,6 +134,19 @@ def UpdateSheetDiscordID(discName,discID=None,lichessname=None):
     senderman['discID'] = discID
     senderman['lichess'] = sheet.cell(cell.row,2).value
     return senderman
+
+def GetStats(discID):
+    gc = gspread.service_account(filename='google-credentials.json')
+    Book = gc.open('Chess_Tourney')
+    sheet = Book.get_worksheet(0)
+    cell = sheet.find(str(discID))    
+    stats = dict()
+    stats['Name']= sheet.cell(cell.row,1).value
+    stats['TourneyWins']= sheet.cell(cell.row,4).value
+    stats['TotalWins']=sheet.cell(cell.row,5).value
+    stats['TotalLoss']=sheet.cell(cell.row,6).value
+    stats['TotalDraws']=sheet.cell(cell.row,7).value
+    return stats
 
 #--------------------lichess functions w/ test statements-------------------
 LiTOKEN = os.getenv('LiToken')
@@ -154,16 +171,30 @@ def lichesslink(user1,user2):
     return recgame
 
 def lastgame(user1):
-    p1 = user1.strip()
+    p1 = user1.strip().lower()
     lastgame  = list(client.games.export_by_player(p1,max=1))
     game = dict()
     game['id'] = lastgame[0]['id']
+    game['side'] = 'white' if lastgame[0]['players']['white']['user']['name'].lower() == p1 else 'black'
     game['link'] = f"https://lichess.org/{game['id']}"
-    game['gif'] = f"https://lichess1.org/game/export/gif/{game['id']}.gif"
+    game['gif'] = f"https://lichess1.org/game/export/gif/{game['side']}/{game['id']}.gif"
     gameinfo  = client.games.export(lastgame[0]['id'])
+    game['analysis'] = None
     game['opening'] = None
+    game['badmoves'] = {'inaccuracy':list(),'mistake':list(),'blunder':list()}
     if 'opening' in gameinfo.keys():
         game['opening'] = f"ECO: {gameinfo['opening']['eco']}, {gameinfo['opening']['name']}"
+    
+    if 'analysis' in gameinfo.keys():
+        game['analysis'] = gameinfo['players'][game['side']]['analysis']
+        moves = gameinfo['moves'].split(' ')
+        startno = 3 if game['side'] == 'black' else 2
+        for i in range(startno,len(gameinfo['analysis']),2):
+            if 'judgment' in gameinfo['analysis'][i]:
+                move = str(f"{str(int((i+2)/2))}. {moves[i]}") if startno == 2 else str(f"{str(int((i+1)/2))}... {moves[i]}")
+                name = gameinfo['analysis'][i]['judgment']['name'].lower()
+                movecomment = gameinfo['analysis'][i]['judgment']['comment']
+                game['badmoves'][name].append(move)
     return game
 
 

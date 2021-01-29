@@ -13,6 +13,7 @@ Misc. Commands:
 -- $addli : i'll remember your username and add it to the current tournament
 -- $lastli : shows your last game(based on start date, not end date of the game)
 -- $findli : will find a lichess games using usernames
+-- $liprofile : I'll find someones profile for you if I know their name
 -- $resources : provides a list of useful chess resources 
 
 I'm hard of hearing so I may ask you to repeat yourself!"

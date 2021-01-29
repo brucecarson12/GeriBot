@@ -256,12 +256,12 @@ async def on_message(message):
         memberid = message.author.id
         Sheetinfo = UpdateSheetDiscordID(member,memberid)
         lastone = lastgame(Sheetinfo['lichess'])
-        await message.channel.send(f"<{lastone['link']}> \n{lastone['opening']}")
+        analysis = str()
+        if lastone['analysis'] != None:
+            analysis = (f"Average Centipawn Loss: {lastone['analysis']['acpl']} \nInaccuracies({lastone['analysis']['inaccuracy']}): {', '.join(lastone['badmoves']['inaccuracy'])} \nMistakes({lastone['analysis']['mistake']}): {', '.join(lastone['badmoves']['mistake'])} \nBlunders({lastone['analysis']['blunder']}): {', '.join(lastone['badmoves']['blunder'])}")
+        await message.channel.send(f"<{lastone['link']}> \n{lastone['opening']}\n{analysis}")
         await message.channel.send(lastone['gif'])
-        #with open('game.gif', 'wb') as f:
-        #    f.write(requests.get(lastone['gif']).content)
-        #await message.channel.send(file=discord.File('game.gif'))
-        #os.remove('game.gif')
+
 
     #Brings up LiChess profile link using Gsheet for input(Name)
     if message.content.startswith('$liprofile'):
@@ -276,6 +276,17 @@ async def on_message(message):
             await message.channel.send(f"<https://lichess.org/@/{LiChessName}> \n <https://lichess.org/insights/{LiChessName}/result/opening>")
         else:
             await message.channel.send(f"This person has not yet added their LiChess name to the bot. Shame Shame Shame.")
+    
+    if message.content.startswith('$stats'):
+        member = str(message.author)
+        memberid = message.author.id
+        Stats = GetStats(str(memberid))
+        Name = Stats['Name']
+        TotalWins = Stats['TotalWins']
+        TotalLoss = Stats['TotalLoss']
+        TotalDraw = Stats['TotalDraws']
+        Wins = Stats['TourneyWins']
+        await message.channel.send(f"{Name} : {TotalWins}/{TotalLoss}/{TotalDraw} \n Total number of tournament wins: {Wins} ")
 
 
 

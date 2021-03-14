@@ -66,16 +66,31 @@ async def on_message(message):
             tournament = "**" + str(msg1.content) + "**"
 
             #name your players/react to join
-            await message.channel.send(f"Name Your players!")
-            msg = await client.wait_for("message",check=check)
+            regmsg = await message.channel.send(f"React with 👍 to join! 0 players joined")
+            def check2(reaction, user):
+                return user != regmsg.author and str(reaction) in ["👍","🛑"]
+            
+            await regmsg.add_reaction("👍")
+            players2list = []
+            reg = True
+            regno = 0
+            while reg == True:
+                reaction, user = await client.wait_for("reaction_add",check=check2)
+                if str(reaction.emoji) == "👍" and user.id not in players2list:
+                    players2list.append(user.id)
+                    regno += 1
+                    await regmsg.edit(content=f"React with 👍 to join! {regno} players joined")             
+            
+                if str(reaction.emoji) == "🛑" and user == msg1.author:
+                    reg = False
+
+
             #turn people into Player()s
             global people
-            people = msg.content.split(',')
-            #strip player names
-            for i in range(0,len(people)):
-                people[i] = people[i].strip()
             global players
-            players = MakePlayers(people)
+            players = MakePlayers(players2list)
+            for player in players:
+                people.append(player.name)
             #create rounds for the tournament
             global rlist
             rlist = rounds(people)
@@ -309,10 +324,10 @@ async def on_message(message):
 
 
 
-""" @client.event
+@client.event
 async def on_reaction_add(reaction, user):
     if reaction == ":thumbsup:":
         await message.channel.send('Nice!')
- """    
+    
 
 client.run(TOKEN)

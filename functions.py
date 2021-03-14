@@ -85,7 +85,7 @@ def MakePlayers(PlayerList):
     players =[]
     for p in PlayerList:
         try: 
-            cell = sheet.find(p)
+            cell = sheet.find(str(p))
             players.append(Player(sheet.row_values(cell.row)[0],sheet.row_values(cell.row)[1],sheet.row_values(cell.row)[2]))
         except:
             current_len = len(sheet.col_values(1))

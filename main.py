@@ -66,7 +66,7 @@ async def on_message(message):
             tournament = "**" + str(msg1.content) + "**"
 
             #name your players/react to join
-            regmsg = await message.channel.send(f"React with 👍 to join! 0 players joined")
+            regmsg = await message.channel.send(f"@everyone React with 👍 to join! 0 players joined")
             def check2(reaction, user):
                 return user != regmsg.author and str(reaction) in ["👍","🛑"]
             
@@ -79,7 +79,7 @@ async def on_message(message):
                 if str(reaction.emoji) == "👍" and user.id not in players2list:
                     players2list.append(user.id)
                     regno += 1
-                    await regmsg.edit(content=f"React with 👍 to join! {regno} players joined")             
+                    await regmsg.edit(content=f"@everyone React with 👍 to join! {regno} players joined")             
             
                 if str(reaction.emoji) == "🛑" and user == msg1.author:
                     reg = False

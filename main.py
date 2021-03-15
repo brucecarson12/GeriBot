@@ -259,9 +259,10 @@ async def on_message(message):
         await message.channel.send(sinfo)
 
     if message.content.startswith('$round'):
+        rdtxt = "The current round is:"+"\n"
         for match in current_round:
             rdtxt += match.vstxt + ",  "
-        await message.channel.send('The current round is:'+'\n'+ rdtxt)
+        await message.channel.send(rdtxt)
 
 
 

@@ -120,6 +120,8 @@ async def on_message(message):
         for player in players:
             pinfo += player.info + "\n"
         await message.channel.send(pinfo)
+    
+
 
     #add lichess username to players info
     if message.content.startswith('$addli'):
@@ -256,7 +258,13 @@ async def on_message(message):
             sinfo += player.info + "\n"
         await message.channel.send(sinfo)
 
-    
+    if message.content.startswith('$round'):
+        for match in current_round:
+            rdtxt += match.vstxt + ",  "
+        await message.channel.send('The current round is:'+'\n'+ rdtxt)
+
+
+
     #sends a random puzzle to the chat
     if message.content.startswith('$puzzle'):
         filename2,clue,title,fentxt,solution = randpuzzle()

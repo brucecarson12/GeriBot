@@ -1,23 +1,23 @@
 10+5
 
 Round 1:
-Thomas vs Rhett, BYE vs Drake, **Rainey** vs Sean, Emily vs Chris, Bryce vs Neal
+Thomas vs Drake, **Rainey** vs Sean, Emily vs Chris, Bryce vs Neal
 Round 2:
-Thomas vs Sean, Drake vs Chris, Rhett vs Neal, BYE vs Bryce, Rainey vs Emily
+Thomas vs Sean, Drake vs Chris, Bryce vs Neal, Rainey vs Emily
 Round 3:
-Thomas vs Neal, Chris vs Bryce, Sean vs Emily, Drake vs Rainey, Rhett vs BYE
+Thomas vs Neal, Chris vs Bryce, Sean vs Emily, Drake vs Rainey
 Round 4:
-Thomas vs Emily, Bryce vs Rainey, Neal vs BYE, Chris vs Rhett, Sean vs Drake
+Thomas vs Emily, Bryce vs Rainey, Neal vs Chris, Sean vs Drake
 Round 5:
-Thomas vs Rainey, Emily vs BYE, Bryce vs Rhett, Neal vs Drake, Chris vs Sean
+Thomas vs Rainey, Bryce vs Emily, Neal vs Drake, Chris vs Sean
 Round 6:
-Thomas vs Bryce, Neal vs Emily, Chris vs Rainey, Sean vs BYE, Drake vs Rhett
+Thomas vs Bryce, Neal vs Emily, Chris vs Rainey, Sean vs Drake 
 Round 7:
-Thomas vs Chris, Sean vs Neal, Drake vs Bryce, Rhett vs Emily, BYE vs Rainey
+Thomas vs Chris, Sean vs Neal, Drake vs Bryce,  Emily vs Rainey
 Round 8:
-Thomas vs Drake, Rhett vs Sean, BYE vs Chris, Rainey vs Neal, Emily vs Bryce
+Thomas vs Drake, Sean vs Chris, Rainey vs Neal, Emily vs Bryce
 Round 9:
-Thomas vs BYE, Rainey vs Rhett, Emily vs Drake, Bryce vs Sean, Neal vs Chris
+Rainey vs Thomas, Emily vs Drake, Bryce vs Sean,  Chris vs Neal
 
 Standings: 
 Rhett 0

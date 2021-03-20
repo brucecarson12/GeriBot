@@ -6,6 +6,7 @@ from RRTSchedule import *
 from functions import *
 import requests
 import asyncio
+import random
 
 TOKEN = os.getenv("DiscToken")
 client = discord.Client()
@@ -129,6 +130,55 @@ async def helpme(ctx):
             await message.delete()
             break
             # ending the loop if user doesn't react after x seconds
+
+#====================Tourney Commands ========================================
+@bot.command()
+async def makeytourney(ctx,TourneyName):
+    gc = gspread.service_account(filename='google-credentials.json')
+    Book = gc.open('Chess_Tourney')
+    sheet1 = Book.get_worksheet(1)
+    sheet2 = Book.get_worksheet(2)
+    if sheet1.acell('B2').value == 'ongoing' :
+        await ctx.send("There is already an ongoing Tournament!")
+    else:
+        #name your players/react to join
+        sheet1.update('B1',TourneyName)
+        sheet1.update('B2','ongoing')
+        regmsg = await ctx.send(f"@everyone React with 👍 to join! 0 players joined")
+        def check2(reaction, user):
+            return user != regmsg.author and str(reaction) in ["👍","🛑"]
+            
+        await regmsg.add_reaction("👍")
+
+        players2list = []
+        reg = True
+        regno = 0
+        while reg == True:
+            reaction, user = await client.wait_for("reaction_add",check=check2)
+            if str(reaction.emoji) == "👍" and user.id not in players2list:
+                players2list.append(user.id)
+                regno += 1
+                await regmsg.edit(content=f"@everyone React with 👍 to join! {regno} players joined")             
+            
+            if str(reaction.emoji) == "🛑" and user == ctx.author:
+                reg = False
+        random.shuffle(players2list)
+        players = MakePlayers(players2list)
+        people = []
+        for player in players:
+            people.append(player.name)        
+        rlist = rounds(people)
+        tnmtinfo = TourneyName + "\n"
+        for f in range(len(rlist)):
+            tnmtinfo += ("\n"+"__Round {}:__".format(f+1) + "\n")
+            for i in range(len(rlist[f])):
+                tnmtinfo += (str(rlist[f][i].vstxt))
+                if i != len(rlist[f])-1:
+                    tnmtinfo += ", "
+        await ctx.send(tnmtinfo)
+        #here is where we update the gsheet
+
+
 
 
 

@@ -1,7 +1,7 @@
 10+5
 
 Round 1:
-**Thomas** vs Drake, **Rainey** vs Sean, Emily vs Chris, Bryce vs Neal
+**Thomas** vs Drake, **Rainey** vs Sean, Emily vs Chris, **Bryce** vs Neal
 Round 2:
 Thomas vs Sean, Drake vs Chris, Bryce vs Neal, Rainey vs Emily
 Round 3:
@@ -35,7 +35,7 @@ gnasho
 Neal 0
 A_Hard_Days_Knight
 
-Bryce 0
+Bryce 1
 Bnyce
 
 Emily 0

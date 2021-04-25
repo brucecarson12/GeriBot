@@ -55,6 +55,17 @@ async def puzzle(ctx):
     os.remove(filename2)
 
 @bot.command()
+async def liprofile(ctx, name):
+    """grabs a lichess profile. example: $liprofile username""" 
+    Name = name.content.strip()
+    User = UpdateSheetDiscordID(Name)
+    LiChessName = User['lichess']
+    if LiChessName:
+        await ctx.send(f"<https://lichess.org/@/{LiChessName}> \n <https://lichess.org/insights/{LiChessName}/result/opening>")
+    else:
+        await ctx.send(f"This person has not yet added their LiChess name to the bot. Shame Shame Shame.")
+
+@bot.command()
 async def findli(ctx,user1,user2):
     """finds the most recently started game between 2 lichess users. Ex: $findli user1 user2"""
     p1, p2 = user1.strip(), user2.strip()

@@ -1,16 +1,15 @@
-**resources**
-__youtubers:__
-agadmator: <https://www.youtube.com/channel/UCL5YbN5WLFD8dLIegT5QAbA>
-NM ChessNetwork(Jerry): <https://www.youtube.com/user/ChessNetwork>
-GM Hikaru Nakamura: <https://www.youtube.com/channel/UCweCc7bSMX5J4jEH7HFImng>
+**Resources**
+__streamers:__
+NM Nick Matta: <https://www.twitch.tv/nmchess>
+NM ChessNetwork(Jerry): <https://www.youtube.com/user/ChessNetwork> // <https://www.twitch.tv/chessnetwork>
+IM GothamChhess(Levi): <https://www.youtube.com/c/GothamChess> // <https://www.twitch.tv/gothamchess>
+IM Eric Rosen: <https://www.youtube.com/channel/UCXy10-NEFGxQ3b4NVrzHw1Q> // <https://www.twitch.tv/imrosen>
+GM Hikaru Nakamura: <https://www.youtube.com/channel/UCweCc7bSMX5J4jEH7HFImng> // <https://www.twitch.tv/gmhikaru>
 GM Magnus Carlsen: <https://www.youtube.com/channel/UCbdcpQ5uPPymv7Ea0nnFfOw>
-GM GingerGM(Simon Williams): <https://www.youtube.com/channel/UClV9nqHHcsrm2krkFDPPr-g>
-IM GothamChhess(Levi): <https://www.youtube.com/c/GothamChess>
-GM Daniel Naroditsky: <https://www.youtube.com/c/DanielNaroditskyGM>
-IM Eric Rosen: <https://www.youtube.com/channel/UCXy10-NEFGxQ3b4NVrzHw1Q>
-St Louis Chess Club: <https://www.youtube.com/user/STLChessClub>
-Chessopenings.com: <https://www.youtube.com/user/KebuChess>
-GJ_Chess: <https://www.youtube.com/channel/UCji6ITCdOOmxUzd6R2TonZQ>
+GM GingerGM(Simon Williams): <https://www.youtube.com/channel/UClV9nqHHcsrm2krkFDPPr-g> // <https://www.twitch.tv/gingergm>
+GM Eric Hansen/GM Aman Hambleton: <https://www.youtube.com/channel/UCvXxdkt1d8Uu08NAQP2IUTw> // <https://www.twitch.tv/chessbrah>
+agadmator: <https://www.youtube.com/channel/UCL5YbN5WLFD8dLIegT5QAbA>
+
 
 
 __useful links:__

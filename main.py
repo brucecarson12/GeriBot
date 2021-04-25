@@ -94,11 +94,11 @@ async def lastli(ctx):
     os.remove('game.gif')
 
 @bot.command()
-async def addli(ctx,arg):
+async def addli(ctx, Lichessname , IRLname=None):
     """add your lichess username  Ex. $addli yourusername"""
     member = str(ctx.author)
     memberid  = ctx.author.id
-    Sheetinfo = UpdateSheetDiscordID(member,memberid,lichessname=arg)
+    Sheetinfo = AddLiSheet(Lichessname, member, memberid,IRLname)
     await ctx.send(f"lichess username: {Sheetinfo['lichess']} added to your info.")
      
 

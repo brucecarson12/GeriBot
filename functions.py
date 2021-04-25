@@ -147,7 +147,11 @@ def AddLiSheet(lichessame,DiscName, DiscID, IRLname = None):
     except:
         sheet.resize(1)
         sheet.append_row([IRLname, lichessname, DiscName])
-
+    senderman = dict()
+    senderman['discName']  =  DiscName
+    senderman['discID'] = DiscID
+    senderman['lichess'] = sheet.cell(cell.row,2).value
+    return senderman
 
 def GetStats(discID):
     gc = gspread.service_account(filename='google-credentials.json')

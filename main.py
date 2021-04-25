@@ -57,7 +57,8 @@ async def puzzle(ctx):
 @bot.command()
 async def liprofile(ctx, name):
     """grabs a lichess profile. example: $liprofile username""" 
-    Name = name.content.strip()
+    #add logic to pull your own profile if no username is specified
+    Name = name.strip()
     User = UpdateSheetDiscordID(Name)
     LiChessName = User['lichess']
     if LiChessName:

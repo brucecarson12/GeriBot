@@ -135,6 +135,20 @@ def UpdateSheetDiscordID(discName,discID=None,lichessname=None):
     senderman['lichess'] = sheet.cell(cell.row,2).value
     return senderman
 
+def AddLiSheet(lichessame,DiscName, DiscID, IRLname = None):
+    gc = gspread.service_account(filename='google-credentials.json')
+    Book = gc.open('Chess_Tourney')
+    sheet = Book.get_worksheet(0) 
+    try:
+        cell = sheet.find(DiscID)
+        sheet.update_cell(cell.row,2,lichessname)
+        if IRLname:
+            sheet.update_cell(cell.row,1,IRLname)
+    except:
+        sheet.resize(1)
+        sheet.append_row([IRLname, lichessname, DiscName])
+
+
 def GetStats(discID):
     gc = gspread.service_account(filename='google-credentials.json')
     Book = gc.open('Chess_Tourney')

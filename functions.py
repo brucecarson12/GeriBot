@@ -146,10 +146,12 @@ def AddLiSheet(lichessname,DiscName, DiscID, IRLname = None):
             sheet.update_cell(cell.row,1,IRLname)
     except:
         sheet.append_row([IRLname, lichessname, DiscName])
+    cell = sheet.find(IRLname)    
     senderman = dict()
-    senderman['discName']  =  DiscName
+    senderman['discName']  =  sheet.cell(cell.row,3).value
     senderman['discID'] = DiscID
     senderman['lichess'] = sheet.cell(cell.row,2).value
+    senderman['IRLname'] = sheet.cell(cell.row,1).value
     return senderman
 
 def GetStats(discID):

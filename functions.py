@@ -144,15 +144,19 @@ def AddLiSheet(lichessname,DiscName, DiscID, IRLname = None):
         sheet.update_cell(cell.row,2,lichessname)
         if IRLname:
             sheet.update_cell(cell.row,1,IRLname)
+        else:
+            sheet.update_cell(cell.row,1,DiscName)
     except:
         sheet.append_row([IRLname, lichessname, DiscName,0,0,0,0,str(DiscID)])
-    cell = sheet.find(IRLname)    
+
+    cell = sheet.find(lichessname)    
     senderman = dict()
     senderman['discName']  =  sheet.cell(cell.row,3).value
     senderman['discID'] = DiscID
     senderman['lichess'] = sheet.cell(cell.row,2).value
     senderman['IRLname'] = sheet.cell(cell.row,1).value
     return senderman
+
 
 def GetStats(discID):
     gc = gspread.service_account(filename='google-credentials.json')

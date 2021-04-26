@@ -140,7 +140,7 @@ def AddLiSheet(lichessname,DiscName, DiscID, IRLname = None):
     Book = gc.open('Chess_Tourney')
     sheet = Book.get_worksheet(0) 
     try:
-        cell = sheet.find(DiscID)
+        cell = sheet.find(str(DiscID))
         sheet.update_cell(cell.row,2,lichessname)
         if IRLname:
             sheet.update_cell(cell.row,1,IRLname)
@@ -148,7 +148,6 @@ def AddLiSheet(lichessname,DiscName, DiscID, IRLname = None):
             sheet.update_cell(cell.row,1,DiscName)
     except:
         sheet.append_row([IRLname, lichessname, DiscName,0,0,0,0,str(DiscID)])
-
     cell = sheet.find(lichessname)    
     senderman = dict()
     senderman['discName']  =  sheet.cell(cell.row,3).value

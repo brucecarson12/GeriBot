@@ -145,7 +145,6 @@ def AddLiSheet(lichessname,DiscName, DiscID, IRLname = None):
         if IRLname:
             sheet.update_cell(cell.row,1,IRLname)
     except:
-        sheet.resize(1)
         sheet.append_row([IRLname, lichessname, DiscName])
     senderman = dict()
     senderman['discName']  =  DiscName

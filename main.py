@@ -98,7 +98,11 @@ async def addli(ctx, Lichessname , IRLname=None):
     """add your lichess username  Ex. $addli yourusername"""
     member = str(ctx.author)
     memberid  = ctx.author.id
-    Sheetinfo = AddLiSheet(Lichessname.strip(), member, memberid,IRLname.strip())
+    if IRLname:
+        Sheetinfo = AddLiSheet(Lichessname.strip(), member, memberid,IRLname.strip())
+    else:
+        Sheetinfo = AddLiSheet(Lichessname.strip(), member, memberid,IRLname)
+
     await ctx.send(f"lichess username: {Sheetinfo['lichess']} added to your info.")
      
 

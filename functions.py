@@ -46,7 +46,7 @@ def randpuzzle():
 
 #needs more work but looking to pull puzzles similar to how we do it with the above randpuzzle command. Ideally eliminating Cairo at some point.
 def lipuzzle():
-    rand = random.randint(1,679050)
+    rand = random.randint(1,353269)
     lipuzzle = dict() #might be better to use a dict to contain puzzle info like gamelink, clue, toPlay, Solution etc.
     clue = str()
     fentxt = str()

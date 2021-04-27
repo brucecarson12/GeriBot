@@ -44,6 +44,41 @@ def randpuzzle():
     return filename, clue, title, fentxt, solutiontxt
 
 
+#needs more work but looking to pull puzzles similar to how we do it with the above randpuzzle command. Ideally eliminating Cairo at some point.
+def lipuzzle():
+    rand = random.randint(1,679050)
+    lipuzzle = dict() #might be better to use a dict to contain puzzle info like gamelink, clue, toPlay, Solution etc.
+    clue = str()
+    fentxt = str()
+    solutiontxt = str()
+    ori = chess.WHITE
+
+    with open('lipuzzlesTEST.csv', 'r') as puzzles:
+        # pass the file object to reader() to get the reader object
+        csv_reader = reader(puzzles)
+        # Pass reader object to list() to get a list of lists
+        puzzle = list(csv_reader)[rand]
+        #pprint.pprint(list_of_rows)
+        clue = str(puzzle[0])
+        title = str(puzzle[1])
+        fentxt = str(puzzle[2])
+        solutiontxt = str(puzzle[3])
+
+    if clue.__contains__('Black'):
+        ori = chess.BLACK
+    board = chess.Board(fentxt)
+    boardsvg = chess.svg.board(board=board,orientation=ori)
+    filename = title + '.png'
+
+    f = open(title + ".SVG", "w")
+    f.write(boardsvg)
+    f.close()
+
+    cairosvg.svg2png(bytestring=boardsvg, write_to=filename)
+
+    return lipuzzle
+
+
 #----------------------------Double tourney---------------------------------------------------
 def MakeRound(Players):
     Losers =[]

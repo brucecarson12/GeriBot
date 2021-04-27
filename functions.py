@@ -48,9 +48,6 @@ def randpuzzle():
 def lipuzzle():
     rand = random.randint(1,353269)
     lipuzzle = dict() #might be better to use a dict to contain puzzle info like gamelink, clue, toPlay, Solution etc.
-    clue = str()
-    fentxt = str()
-    solutiontxt = str()
     ori = chess.WHITE
 
     with open('lipuzzlesTEST.csv', 'r') as puzzles:
@@ -59,24 +56,32 @@ def lipuzzle():
         # Pass reader object to list() to get a list of lists
         puzzle = list(csv_reader)[rand]
         #pprint.pprint(list_of_rows)
-        clue = str(puzzle[0])
-        title = str(puzzle[1])
-        fentxt = str(puzzle[2])
-        solutiontxt = str(puzzle[3])
+        lipuzzle['themes'] = str(puzzle[8])
+        lipuzzle['gameurl'] = str(puzzle[9])
+        lipuzzle['fen'] = str(puzzle[12])
+        lipuzzle['toPlay'] = str(puzzle[10])
+        lipuzzle['solution'] = str(puzzle[13])
+        lipuzzle['ID'] = str(puzzle[0])
+        lipuzzle['rating'] = f'{puzzle[4]} +/- {puzzle[5]}'
 
-    if clue.__contains__('Black'):
+
+    if lipuzzle['toPlay'].__contains__('Black'):
         ori = chess.BLACK
-    board = chess.Board(fentxt)
+    board = chess.Board(lipuzzle['fen'])
     boardsvg = chess.svg.board(board=board,orientation=ori)
-    filename = title + '.png'
+    lipuzzle['img'] = f"lipuzzle{lipuzzle['ID']}.png"
 
-    f = open(title + ".SVG", "w")
-    f.write(boardsvg)
-    f.close()
+    #do we need this part??
+    #f = open(f"lipuzzle{lipuzzle['ID']}.SVG", "w")
+    #f.write(boardsvg)
+    #f.close()
+    #I don't see it used, maybe left over from Testing^^
 
-    cairosvg.svg2png(bytestring=boardsvg, write_to=filename)
+    cairosvg.svg2png(bytestring=boardsvg, write_to=lipuzzle['img'])
 
     return lipuzzle
+
+print(lipuzzle())
 
 
 #----------------------------Double tourney---------------------------------------------------

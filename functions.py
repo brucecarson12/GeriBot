@@ -45,7 +45,7 @@ def randpuzzle():
 
 
 #needs more work but looking to pull puzzles similar to how we do it with the above randpuzzle command. Ideally eliminating Cairo at some point.
-def lipuzzle():
+def lichesspuzzle():
     rand = random.randint(1,353269)
     lipuzzle = dict() #might be better to use a dict to contain puzzle info like gamelink, clue, toPlay, Solution etc.
     ori = chess.WHITE
@@ -80,8 +80,6 @@ def lipuzzle():
     cairosvg.svg2png(bytestring=boardsvg, write_to=lipuzzle['img'])
 
     return lipuzzle
-
-print(lipuzzle())
 
 
 #----------------------------Double tourney---------------------------------------------------

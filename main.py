@@ -55,6 +55,15 @@ async def puzzle(ctx):
     os.remove(filename2)
 
 @bot.command()
+async def lipuzzle(ctx):
+    """gives a random puzzle from lichess"""
+    puzzle = lichesspuzzle()
+    await ctx.send(f"Game: <{puzzle['gameurl']}> \nRating: {puzzle['rating']} \nThemes: ||{puzzle['themes']}|| \nSolution: ||{puzzle['solution']}|| \n{puzzle['toPlay']}")
+    await ctx.send(file=discord.File(puzzle['img']))
+    os.remove(puzzle['img'])
+
+
+@bot.command()
 async def liprofile(ctx, name):
     """grabs a lichess profile. example: $liprofile username [CaSe SeNsItIvE usernames!]""" 
     #add logic to pull your own profile if no username is specified

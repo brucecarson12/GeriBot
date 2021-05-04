@@ -64,7 +64,7 @@ async def lipuzzle(ctx):
 
 
 @bot.command()
-async def liprofile(ctx, name):
+async def liprofile(ctx, name=None):
     """grabs a lichess profile. example: $liprofile username [CaSe SeNsItIvE usernames!]""" 
     #add logic to pull your own profile if no username is specified
     Name = str()

@@ -70,8 +70,9 @@ async def liprofile(ctx, name):
     Name = name.strip()
     User = UpdateSheetDiscordID(Name)
     LiChessName = User['lichess']
+    ratings = ratinghistory(LiChessName)
     if LiChessName:
-        await ctx.send(f"<https://lichess.org/@/{LiChessName}> \n <https://lichess.org/insights/{LiChessName}/result/opening>")
+        await ctx.send(f"{ratings['txt']} \n<https://lichess.org/@/{LiChessName}> \n <https://lichess.org/insights/{LiChessName}/result/opening>")
     else:
         await ctx.send(f"This person has not yet added their LiChess name to the bot. Shame Shame Shame.")
 

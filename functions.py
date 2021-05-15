@@ -9,6 +9,8 @@ from RRTSchedule import *
 import berserk
 import os
 import sys
+import json
+import chessdotcom as cdc
 
 
 def randpuzzle():
@@ -278,3 +280,23 @@ def ratinghistory(user1):
         if i != 'txt':
             stats['txt'] += f"{i}: {stats[i]} \n"
     return stats
+
+#--------------------chess.com functions--------------------------------------
+
+def chessdotcomstats(user1):
+    p1 = user1.strip()
+    ratings = cdc.get_player_stats(p1)
+    stats = dict()
+    stats['txt'] = str()
+    modes = ['bullet','blitz','rapid','classical','correspondence']
+    for i in modes:
+        try:
+            search = "chess_" + i
+            stats[i] = ratings.json['stats'][search]['last']['rating']
+            stats['txt'] += f"{i}: {stats[i]} \n"
+
+        except:
+            continue
+    
+    return stats
+

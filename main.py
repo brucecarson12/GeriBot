@@ -6,6 +6,9 @@ from RRTSchedule import *
 from functions import *
 import requests
 import asyncio
+import nest_asyncio
+
+nest_asyncio.apply()
 
 TOKEN = os.getenv("DiscToken")
 client = discord.Client()
@@ -78,6 +81,14 @@ async def liprofile(ctx, name=None):
         await ctx.send(f"{ratings['txt']} \n<https://lichess.org/@/{LiChessName}> \n <https://lichess.org/insights/{LiChessName}/result/opening>")
     else:
         await ctx.send(f"This person has not yet added their LiChess name to the bot. Shame Shame Shame.")
+
+
+@bot.command()
+async def cdcprofile(ctx, name=None):
+    """grabs a chess.com profile and stats. example: $cdcprofile username"""
+    Name = name.strip()
+    ratings = chessdotcomstats(Name)
+    await ctx.send(f"{ratings['txt']} \n<https://www.chess.com/member/{Name}>")
 
 @bot.command()
 async def findli(ctx,user1,user2):

@@ -63,14 +63,19 @@ async def lipuzzle(ctx):
 
 
 @bot.command()
-async def liprofile(ctx, name):
+async def liprofile(ctx, name=None):
     """grabs a lichess profile. example: $liprofile username [CaSe SeNsItIvE usernames!]""" 
     #add logic to pull your own profile if no username is specified
-    Name = name.strip()
+    Name = str()
+    if name:
+        Name = name.strip()
+    else:
+        Name = str(ctx.author)
     User = UpdateSheetDiscordID(Name)
     LiChessName = User['lichess']
+    ratings = ratinghistory(LiChessName)
     if LiChessName:
-        await ctx.send(f"<https://lichess.org/@/{LiChessName}> \n <https://lichess.org/insights/{LiChessName}/result/opening>")
+        await ctx.send(f"{ratings['txt']} \n<https://lichess.org/@/{LiChessName}> \n <https://lichess.org/insights/{LiChessName}/result/opening>")
     else:
         await ctx.send(f"This person has not yet added their LiChess name to the bot. Shame Shame Shame.")
 

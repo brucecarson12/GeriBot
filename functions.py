@@ -264,21 +264,17 @@ def lastgame(user1):
 
 def ratinghistory(user1):
     p1 = user1.strip().lower()
-    ratings = client.users.get_rating_history(p1)
-    
-    bullet = ratings[0]
-    blitz = ratings[1]    
-    rapid = ratings[2]
-    classical = ratings[3]
-    correspondence = ratings[4]    
-    modes = [bullet,blitz,rapid,classical,correspondence]
-    for mode in modes:
-        mode['currentelo'] = None if len(mode['points'])==0 else mode['points'][len(mode['points'])-1][3]
-        mode['peak'] = mode['currentelo']
-        #mode['nogames'] = len(list(client.games.export_by_player('bnyce',perf_type=mode['name'].lower(),rated=1)))
-        for i in mode['points']:
-            if i[3] > mode['peak']:
-                mode['peak'] = i[3]
-        del mode['points']
-    
-    return modes
+    ratingsget = client.users.get_by_id(p1)
+    stats = dict()
+    stats['txt'] = str()
+    modes = ['bullet','blitz','rapid','classical','correspondence']
+    for i in modes:
+        try:
+            stats[i] = ratingsget[0]['perfs'][i]['rating']
+        except:
+            continue
+
+    for i in stats:
+        if i != 'txt':
+            stats['txt'] += f"{i}: {stats[i]} \n"
+    return stats

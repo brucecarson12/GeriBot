@@ -51,7 +51,6 @@ async def puzzle(ctx):
     filename2,clue,title,fentxt,solution = randpuzzle()
     await ctx.send(f"Clue: {clue} \nGame: {title} \n||{solution}|| \n (Please use '||' around your answer to keep it hidden)")
     await ctx.send(file=discord.File(filename2))
-    #os.remove(title + ".svg")
     os.remove(filename2)
 
 @bot.command()
@@ -112,7 +111,7 @@ async def lastli(ctx):
 
 @bot.command()
 async def addli(ctx, Lichessname , IRLname=None):
-    """add your lichess username  Ex. $addli yourusername"""
+    """add your lichess username  Ex. $addli yourusername IRLName[Optional]"""
     member = str(ctx.author)
     memberid  = ctx.author.id
     if IRLname:

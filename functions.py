@@ -35,10 +35,6 @@ def randpuzzle():
     boardsvg = chess.svg.board(board=board,orientation=ori)
     filename = title + '.png'
 
-    f = open(title + ".SVG", "w")
-    f.write(boardsvg)
-    f.close()
-
     cairosvg.svg2png(bytestring=boardsvg, write_to=filename)
 
     return filename, clue, title, fentxt, solutiontxt
@@ -176,7 +172,9 @@ def UpdateSheetDiscordID(discName,discID=None,lichessname=None):
 def AddLiSheet(lichessname,DiscName, DiscID, IRLname = None):
     gc = gspread.service_account(filename='google-credentials.json')
     Book = gc.open('Chess_Tourney')
-    sheet = Book.get_worksheet(0) 
+    sheet = Book.get_worksheet(0)
+    headers = sheet.row_values(1)
+    print(headers)
     try:
         cell = sheet.find(str(DiscID))
         sheet.update_cell(cell.row,2,lichessname)
@@ -192,6 +190,10 @@ def AddLiSheet(lichessname,DiscName, DiscID, IRLname = None):
     senderman['discID'] = DiscID
     senderman['lichess'] = sheet.cell(cell.row,2).value
     senderman['IRLname'] = sheet.cell(cell.row,1).value
+
+    userlistdict = sheet.get_all_records()
+    
+    print(userlistdict[0]['Lichess Username'])
     return senderman
 
 

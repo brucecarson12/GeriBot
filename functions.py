@@ -289,7 +289,7 @@ def chessdotcomstats(user1):
     ratings = cdc.get_player_stats(p1)
     stats = dict()
     modes = ['bullet','blitz','rapid','classical','correspondence']
-    if cdc.is_player_online(p1).json['online'] == 'True':
+    if cdc.is_player_online(p1).json['online'] == True:
         stats['txt'] = "Online Now! \n"
     else:
         stats['txt'] = str()

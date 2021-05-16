@@ -30,6 +30,11 @@ async def on_ready():
     channel = bot.get_channel('763912928247414794')
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='$Geri'))
 
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
+        await ctx.send("Oops! Looks like you didn't give me enough info.")
+
 @bot.command()
 async def hello(ctx):
     await ctx.send('Hey! Type $Geri to learn more about me!')
@@ -62,18 +67,25 @@ async def puzzle(ctx):
 @bot.command()
 async def cdcprofile(ctx, name=None):
     """grabs a chess.com profile and stats. example: $cdcprofile username"""
-    Name = name.strip()
-    ratings = chessdotcomstats(Name)
-    await ctx.send(f"{ratings['txt']} \n<https://www.chess.com/member/{Name}>")
+    try:
+        Name = str(ctx.author) if not name else name.strip()
+        User = UpdateSheetDiscordID(Name)
+        ratings = chessdotcomstats(User['cdc'])
+        await ctx.send(f"{ratings['txt']} \n<https://www.chess.com/member/{User['cdc']}>")
+    except:
+        await ctx.send(f"Hmm, I couldn't find your name. Use the $addcdc command to add a username to my records. If you're looking for another player then make sure you've typed a username behind your command(Ex. $cdcprofile plsBnyce).")
+
 
 @bot.command()
 async def addcdc(ctx,cdcName, IRLname=None):
     """add your chess.com username  Ex. $addcdc yourusername IRLName[Optional]"""
-    member = str(ctx.author)
-    memberid  = ctx.author.id
-    Sheetinfo = UpdateSheetDiscordID(member,memberid,IRLname=IRLname,cdcname=cdcName)
-
-    await ctx.send(f"Chess.com username: {Sheetinfo['cdc']} added to your info. Real Name: {Sheetinfo['IRLname']}")
+    try:
+        member = str(ctx.author)
+        memberid  = ctx.author.id
+        Sheetinfo = UpdateSheetDiscordID(member,memberid,IRLname=IRLname,cdcname=cdcName)
+        await ctx.send(f"Chess.com username: {Sheetinfo['cdc']} added to your info. Real Name: {Sheetinfo['IRLname']}")
+    except:
+        await ctx.send(f"Hmm, I don't see you in my records. Please make sure to enter a Chess.com Username after your command.(Ex. $addcdc username)")
 
 #-----Lichess.org Commands-----
 

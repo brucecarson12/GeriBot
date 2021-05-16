@@ -23,6 +23,7 @@ tournament = str()
 tourney_status = 'None'
 
 
+#------Generic Commands-----
 @bot.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
@@ -56,6 +57,18 @@ async def puzzle(ctx):
     await ctx.send(file=discord.File(filename2))
     os.remove(filename2)
 
+#-----Chess.com Commands-----
+
+@bot.command()
+async def cdcprofile(ctx, name=None):
+    """grabs a chess.com profile and stats. example: $cdcprofile username"""
+    Name = name.strip()
+    ratings = chessdotcomstats(Name)
+    await ctx.send(f"{ratings['txt']} \n<https://www.chess.com/member/{Name}>")
+    
+
+#-----Lichess.org Commands-----
+
 @bot.command()
 async def lipuzzle(ctx):
     """gives a random puzzle from lichess"""
@@ -68,27 +81,18 @@ async def lipuzzle(ctx):
 @bot.command()
 async def liprofile(ctx, name=None):
     """grabs a lichess profile. example: $liprofile username [CaSe SeNsItIvE usernames!]""" 
-    #add logic to pull your own profile if no username is specified
-    Name = str()
-    if name:
-        Name = name.strip()
-    else:
-        Name = str(ctx.author)
-    User = UpdateSheetDiscordID(Name)
-    LiChessName = User['lichess']
-    ratings = ratinghistory(LiChessName)
-    if LiChessName:
-        await ctx.send(f"{ratings['txt']} \n<https://lichess.org/@/{LiChessName}> \n<https://lichess.org/insights/{LiChessName}/result/opening>")
-    else:
-        await ctx.send(f"This person has not yet added their LiChess name to the bot. Shame Shame Shame.")
+    try:
+        if name:
+            name = name.strip()
+        else:
+            name = str(ctx.author)
+        User = UpdateSheetDiscordID(name)
+        LiChessName = User['lichess']
+        ratings = ratinghistory(LiChessName)
+        await ctx.send(f"{ratings['txt']}\n<https://lichess.org/@/{LiChessName}> \n<https://lichess.org/insights/{LiChessName}/result/opening>")
+    except:
+        await ctx.send(f"Hmm, I couldn't find your name. Use the $addli command to add a username to my records. If you're looking for another player then make sure you've typed a username behind your command(Ex. $liprofile bnyce).")
 
-
-@bot.command()
-async def cdcprofile(ctx, name=None):
-    """grabs a chess.com profile and stats. example: $cdcprofile username"""
-    Name = name.strip()
-    ratings = chessdotcomstats(Name)
-    await ctx.send(f"{ratings['txt']} \n<https://www.chess.com/member/{Name}>")
 
 @bot.command()
 async def findli(ctx,user1,user2):
@@ -103,6 +107,7 @@ async def findli(ctx,user1,user2):
         f.write(requests.get(gameinfo['giflink']).content)
     await ctx.send(file=discord.File('game.gif'))
     os.remove('game.gif')
+
 
 @bot.command()
 async def lastli(ctx):

@@ -270,19 +270,18 @@ def ratinghistory(user1):
     ratingsget = client.users.get_by_id(p1)
     stats = dict()
     if client.users.get_public_data(p1)['online'] == True:
-        stats['txt'] = "Online Now!\n"
+        stats['txt'] = ":green_circle: Online Now!\n\n"
     else:
-        stats['txt'] = str()
+        stats['txt'] = ":red_circle: Offline\n\n"
     modes = ['bullet','blitz','rapid','classical','correspondence']
+    emojis = [':gun:',':cloud_lightning:',':alarm_clock:',':clock:',':sunny:']
     for i in modes:
         try:
+            indx = modes.index(i)
             stats[i] = ratingsget[0]['perfs'][i]['rating']
+            stats['txt'] += f"{emojis[indx]} {i}: {stats[i]} \n"
         except:
             continue
-
-    for i in stats:
-        if i != 'txt':
-            stats['txt'] += f"{i}: {stats[i]} \n"
     return stats
 
 #--------------------chess.com functions--------------------------------------
@@ -292,15 +291,17 @@ def chessdotcomstats(user1):
     ratings = cdc.get_player_stats(p1)
     stats = dict()
     modes = ['bullet','blitz','rapid','classical','correspondence']
+    emojis = [':gun:',':cloud_lightning:',':alarm_clock:',':clock:',':sunny:']
     if cdc.is_player_online(p1).json['online'] == True:
-        stats['txt'] = "Online Now!\n"
+        stats['txt'] = ":green_circle: Online Now!\n\n"
     else:
-        stats['txt'] = str()
+        stats['txt'] = ":red_circle: Offline\n\n"
     for i in modes:
         try:
+            indx = modes.index(i)
             search = "chess_" + i
             stats[i] = ratings.json['stats'][search]['last']['rating']
-            stats['txt'] += f"{i}: {stats[i]} \n"
+            stats['txt'] += f"{emojis[indx]} {i}: {stats[i]} \n"
 
         except:
             continue

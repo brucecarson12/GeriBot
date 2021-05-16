@@ -65,7 +65,15 @@ async def cdcprofile(ctx, name=None):
     Name = name.strip()
     ratings = chessdotcomstats(Name)
     await ctx.send(f"{ratings['txt']} \n<https://www.chess.com/member/{Name}>")
-    
+
+@bot.command()
+async def addcdc(ctx,cdcName, IRLname=None):
+    """add your chess.com username  Ex. $addcdc yourusername IRLName[Optional]"""
+    member = str(ctx.author)
+    memberid  = ctx.author.id
+    Sheetinfo = UpdateSheetDiscordID(member,memberid,IRLname=IRLname,cdcname=cdcName)
+
+    await ctx.send(f"Chess.com username: {Sheetinfo['cdc']} added to your info. Real Name: {Sheetinfo['IRLname']}")
 
 #-----Lichess.org Commands-----
 

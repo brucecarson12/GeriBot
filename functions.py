@@ -269,7 +269,10 @@ def ratinghistory(user1):
     p1 = user1.strip().lower()
     ratingsget = client.users.get_by_id(p1)
     stats = dict()
-    stats['txt'] = str()
+    if client.users.get_public_data(p1)['online'] == True:
+        stats['txt'] = "Online Now!\n"
+    else:
+        stats['txt'] = str()
     modes = ['bullet','blitz','rapid','classical','correspondence']
     for i in modes:
         try:
@@ -281,6 +284,7 @@ def ratinghistory(user1):
         if i != 'txt':
             stats['txt'] += f"{i}: {stats[i]} \n"
     return stats
+ratinghistory('bnyce')
 
 #--------------------chess.com functions--------------------------------------
 
@@ -290,7 +294,7 @@ def chessdotcomstats(user1):
     stats = dict()
     modes = ['bullet','blitz','rapid','classical','correspondence']
     if cdc.is_player_online(p1).json['online'] == True:
-        stats['txt'] = "Online Now! \n"
+        stats['txt'] = "Online Now!\n"
     else:
         stats['txt'] = str()
     for i in modes:

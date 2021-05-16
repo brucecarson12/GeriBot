@@ -11,6 +11,7 @@ import os
 import sys
 import json
 import chessdotcom as cdc
+import datetime as dt
 
 
 def randpuzzle():
@@ -287,8 +288,11 @@ def chessdotcomstats(user1):
     p1 = user1.strip()
     ratings = cdc.get_player_stats(p1)
     stats = dict()
-    stats['txt'] = str()
     modes = ['bullet','blitz','rapid','classical','correspondence']
+    if cdc.is_player_online(p1).json['online'] == 'True':
+        stats['txt'] = "Online Now! \n"
+    else:
+        stats['txt'] = str()
     for i in modes:
         try:
             search = "chess_" + i
@@ -297,6 +301,20 @@ def chessdotcomstats(user1):
 
         except:
             continue
-    
     return stats
 
+def chessdotcomlastgame(user1):
+    #this needs more work but it's almost there!! 
+    #NEED TO FIND A WAY TO GRAB THE GAME Gif though we could have Geri generate them if need be.
+    p1 = user1.strip()
+    today = dt.datetime.today()
+    game = cdc.get_player_games_by_month(p1,year=today.year,month=today.month)
+    if not game.json['games']:
+        game = cdc.get_player_games_by_month(p1,year=today.year,month=today.month-1)
+    nogames = len(game.json['games']) - 1
+    lastgame = game.json['games'][nogames]
+    lastgamedict = dict()
+    lastgamedict['url'] = lastgame['url']
+    lastgamedict['vstxt'] =  f"{lastgame['white']['username']} {lastgame['white']['rating']} vs. {lastgame['black']['username']} {lastgame['black']['rating']}"
+    lastgamedict['pgn'] = lastgame['pgn']
+    return lastgamedict

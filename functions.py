@@ -284,7 +284,6 @@ def ratinghistory(user1):
         if i != 'txt':
             stats['txt'] += f"{i}: {stats[i]} \n"
     return stats
-ratinghistory('bnyce')
 
 #--------------------chess.com functions--------------------------------------
 

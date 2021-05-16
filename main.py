@@ -62,6 +62,14 @@ async def puzzle(ctx):
     await ctx.send(file=discord.File(filename2))
     os.remove(filename2)
 
+@bot.command()
+async def challenge(ctx,limit=5,inc=0):
+    """Creates an open challenge for 2 players to join. Ex. $challenge time increment, """
+    #I'd like to add the name and rated parts of the api call at some point, but that requires some berserk manipulation.
+    challenge = lichallenge(limit=limit,increment=inc)
+    await ctx.send(f"{challenge['url']}")
+
+
 #-----Chess.com Commands-----
 
 @bot.command()

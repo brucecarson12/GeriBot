@@ -241,6 +241,11 @@ def lichesslink(user1,user2):
     recgame['opening'] = f"ECO: {gameinfo['opening']['eco']}, {gameinfo['opening']['name']}"
     return recgame
 
+def lichallenge(limit=5,increment=0):
+    limsec = limit * 60 #converts minutes to seconds for clock limit
+    challenge = client.challenges.create_open(clock_limit=limsec,clock_increment=increment)['challenge']
+    return challenge
+
 def lastgame(user1):
     p1 = user1.strip().lower()
     lastgame  = list(client.games.export_by_player(p1,max=1))

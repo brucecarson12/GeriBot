@@ -73,6 +73,19 @@ async def challenge(ctx,limit=5,inc=0):
 #-----Chess.com Commands-----
 
 @bot.command()
+async def profile(ctx, name=None):  
+    """grabs chess.com and lichess profiles of the names user or the one who calls the command. """
+    try:
+       Name = str(ctx.author) if not name else name.strip()
+       User = UpdateSheetDiscordID(Name)
+       ratings = chessdotcomstats(User['cdc'])
+       liratings = ratinghistory(User['lichess'])
+       await ctx.send(f"**Chess.com**\n{ratings['txt']}\n<https://www.chess.com/member/{User['cdc']}>\n\n**Lichess.org**\n{liratings['txt']}\n<https://lichess.org/@/{User['lichess']}>")
+    except:
+       await ctx.send(f"Hmm, I couldn't find your name. Use the $addcdc command to add a username to my records. If you're looking for another player then make sure you've typed a username behind your command(Ex. $cdcprofile plsBnyce).")
+
+
+@bot.command()
 async def cdcprofile(ctx, name=None):
     """grabs a chess.com profile and stats. example: $cdcprofile username"""
     try:
@@ -94,6 +107,20 @@ async def addcdc(ctx,cdcName, IRLname=None):
         await ctx.send(f"Chess.com username: {Sheetinfo['cdc']} added to your info. Real Name: {Sheetinfo['IRLname']}")
     except:
         await ctx.send(f"Hmm, I don't see you in my records. Please make sure to enter a Chess.com Username after your command.(Ex. $addcdc username)")
+
+@bot.command()
+async def lastcdc(ctx,name=None):
+    """grabs your last chess.com  game if Geri has your username."""
+    try:
+        Name = str(ctx.author) if not name else name.strip()
+        User = UpdateSheetDiscordID(Name)
+        cdcname = User['cdc']
+        lastgame = chessdotcomlastgame(cdcname)
+        await ctx.send(f"{lastgame['result']}\n{lastgame['vstxt']}\n<{lastgame['url']}>")
+        await ctx.send(file=discord.File("temp/chess.gif"))
+
+    except:
+        await ctx.send(f"Still testing this one. bear with me.")
 
 #-----Lichess.org Commands-----
 

@@ -318,18 +318,48 @@ def chessdotcomstats(user1):
             continue
     return stats
 
+import pgn2gif
+import re
+import io
+import chess.pgn
+
 def chessdotcomlastgame(user1):
-    #this needs more work but it's almost there!! 
-    #NEED TO FIND A WAY TO GRAB THE GAME Gif though we could have Geri generate them if need be.
+    #Temporarily working but it's slow
     p1 = user1.strip()
     today = dt.datetime.today()
     game = cdc.get_player_games_by_month(p1,year=today.year,month=today.month)
+    
     if not game.json['games']:
         game = cdc.get_player_games_by_month(p1,year=today.year,month=today.month-1)
-    nogames = len(game.json['games']) - 1
+    nogames = len(game.json['games']) -  1
     lastgame = game.json['games'][nogames]
-    lastgamedict = dict()
-    lastgamedict['url'] = lastgame['url']
-    lastgamedict['vstxt'] =  f"{lastgame['white']['username']} {lastgame['white']['rating']} vs. {lastgame['black']['username']} {lastgame['black']['rating']}"
-    lastgamedict['pgn'] = lastgame['pgn']
+    lastgamedict = {
+        'pgn':lastgame['pgn'],
+        'url':lastgame['url'],
+        'wplayer':{
+            'name':lastgame['white']['username'],
+            'rating':lastgame['white']['rating']
+            },
+        'bplayer':{
+            'name':lastgame['black']['username'],
+            'rating':lastgame['black']['rating']
+            },
+        'vstxt': f"{lastgame['white']['username']} {lastgame['white']['rating']} vs. {lastgame['black']['username']} {lastgame['black']['rating']}",
+        'result': f"{lastgame['pgn'][-6]}"
+        }
+
+    lastgamedict['pgn4gif'] = re.sub(r'{\[%clk \d+:\d+:\d+(\.\d+)?\]} ','',lastgame['pgn'])
+    lastgamedict['pgn4gif'] = re.sub(r' [0-9]\.\.\.|[1-9][0-9]\.\.\. ','',lastgamedict['pgn4gif'])
+            
+    #creates gif--
+    pgn = io.StringIO(lastgamedict['pgn4gif'])
+    gamepy = chess.pgn.read_game(pgn)
+    print(gamepy, file=open("temp/temp.pgn","w"))
+    lastgamedict['result']  = gamepy.headers['Result']
+    reverse = 0
+    if lastgamedict['bplayer']['name'] == p1:
+        reverse = 1
+    creator = pgn2gif.pgn2gif.PgnToGifCreator(reverse=reverse, duration=0.5, ws_color='#ebecd0', bs_color='#779556')
+    creator.create_gif("temp/temp.pgn", out_path="temp/chess.gif")
+    
     return lastgamedict

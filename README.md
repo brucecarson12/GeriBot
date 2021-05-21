@@ -1,6 +1,6 @@
 # GeriBot
 
-A bot designed for handling Tournement Creation/Scoring. Specifically chess tournements but it can handle any sort of round-robin style.
+A bot designed for handling Tournament Creation/Scoring. Specifically chess tournaments but it can handle any sort of round-robin style.
 
 
-The Tournmament aspect has not been fleshed out. But it can currently share games, puzzles, and lichess profiles/stats.
+The Tournament aspect has not been fleshed out. But it can currently share games, puzzles, and lichess profiles/stats.

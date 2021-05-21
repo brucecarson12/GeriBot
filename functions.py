@@ -344,7 +344,7 @@ def chessdotcomlastgame(user1):
             'name':lastgame['black']['username'],
             'rating':lastgame['black']['rating']
             },
-        'vstxt': f"{lastgame['white']['username']} {lastgame['white']['rating']} vs. {lastgame['black']['username']} {lastgame['black']['rating']}",
+        'vstxt': f"{lastgame['white']['username']} _{lastgame['white']['rating']}_ vs. {lastgame['black']['username']} _{lastgame['black']['rating']}_",
         'result': f"{lastgame['pgn'][-6]}"
         }
 

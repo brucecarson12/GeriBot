@@ -114,7 +114,7 @@ async def lastcdc(ctx,name=None):
     try:
         Name = str(ctx.author)
         User = UpdateSheetDiscordID(Name)
-        cdcname = User['cdc'] if not name else name.strip()
+        cdcname = User['cdc'] if name == None else name.strip()
         lastgame = chessdotcomlastgame(cdcname)
         await ctx.send(f"{lastgame['result']}\n{lastgame['vstxt']}\n<{lastgame['url']}>")
         await ctx.send(file=discord.File("temp/chess.gif"))

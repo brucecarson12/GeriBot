@@ -291,7 +291,7 @@ def ratinghistory(user1):
             indx = modes.index(i)
             stats[i] = ratingsget[0]['perfs'][i]['rating']
             #stats['txt'] += f"{emojis[indx]} {i}: {stats[i]} \n"
-            stats['txt'] += f"{emojis[indx]}: {stats[i]} \n"
+            stats['txt'] += f"{emojis[indx]} {stats[i]}  "
         except:
             continue
     return stats
@@ -314,7 +314,7 @@ def chessdotcomstats(user1):
             search = "chess_" + i
             stats[i] = ratings.json['stats'][search]['last']['rating']
             #stats['txt'] += f"{emojis[indx]} {i}: {stats[i]} \n"
-            stats['txt'] += f"{emojis[indx]}: {stats[i]} \n"
+            stats['txt'] += f"{emojis[indx]} {stats[i]} \n"
 
         except:
             continue

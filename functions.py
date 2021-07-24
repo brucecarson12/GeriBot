@@ -314,7 +314,7 @@ def chessdotcomstats(user1):
             search = "chess_" + i
             stats[i] = ratings.json['stats'][search]['last']['rating']
             #stats['txt'] += f"{emojis[indx]} {i}: {stats[i]} \n"
-            stats['txt'] += f"{emojis[indx]} {stats[i]} \n"
+            stats['txt'] += f"{emojis[indx]} {stats[i]}  "
 
         except:
             continue

@@ -224,6 +224,26 @@ LiTOKEN = os.getenv('LiToken')
 session = berserk.TokenSession(LiTOKEN)
 client = berserk.Client(session)
 
+def OnlineNow():
+    gc = gspread.service_account(filename='google-credentials.json')
+    Book = gc.open('Chess_Tourney')
+    sheet = Book.get_worksheet(0)
+    cell = sheet.find(str('Lichess Username'))
+    players = sheet.col_values(cell.col)[1:]
+    print(type(players))
+    players2 = [x for x in players if str(x) != '']
+    print(players2)
+    onlinetxt = 'Currently Online: /n'
+    for player in players2:
+        try:
+            playeron = client.users.get_realtime_statuses(player)
+            print(playeron[0]['online'])
+            if playeron[0]['online']:
+                onlinetxt += f":green_circle: {playeron[0]['name']} \n"
+        except:
+            continue
+    return onlinetxt
+
 def lichesslink(user1,user2):
     p1 = user1.strip()
     p2 = user2.strip() 

@@ -70,6 +70,12 @@ async def challenge(ctx,limit=5,inc=0):
     await ctx.send(f"{challenge['url']}")
 
 
+@bot.command()
+async def onlinenow(ctx,):
+    """Lists the current players I see online now."""
+    onlinemessage = OnlineNow()
+    await ctx.send(f"{onlinemessage}")
+
 #-----Chess.com Commands-----
 
 @bot.command()

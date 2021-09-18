@@ -239,7 +239,7 @@ def OnlineNow():
             playeron = client.users.get_realtime_statuses(player)
             print(playeron[0]['online'])
             if playeron[0]['online']:
-                onlinetxt += f":green_circle: {playeron[0]['name']} \n"
+                onlinetxt += f" :green_circle: {playeron[0]['name']} \n"
         except:
             continue
     return onlinetxt

@@ -230,9 +230,7 @@ def OnlineNow():
     sheet = Book.get_worksheet(0)
     cell = sheet.find(str('Lichess Username'))
     players = sheet.col_values(cell.col)[1:]
-    print(type(players))
     players2 = [x for x in players if str(x) != '']
-    print(players2)
     onlinetxt = 'Currently Online: /n'
     for player in players2:
         try:

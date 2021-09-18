@@ -231,7 +231,7 @@ def OnlineNow():
     cell = sheet.find(str('Lichess Username'))
     players = sheet.col_values(cell.col)[1:]
     players2 = [x for x in players if str(x) != '']
-    onlinetxt = 'Currently Online: /n'
+    onlinetxt = f'Currently Online: /n'
     for player in players2:
         try:
             playeron = client.users.get_realtime_statuses(player)

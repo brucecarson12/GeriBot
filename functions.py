@@ -321,10 +321,13 @@ def chessdotcomstats(user1):
     stats = dict()
     modes = ['bullet','blitz','rapid','classical','correspondence']
     emojis = [':gun:',':cloud_lightning:',':alarm_clock:',':clock:',':sunny:']
-    if cdc.is_player_online(p1).json['online'] == True:
-        stats['txt'] = ":green_circle: Online Now!\n\n"
-    else:
-        stats['txt'] = ":red_circle: Offline\n\n"
+    try:
+        if cdc.is_player_online(p1).json['online'] == True:
+            stats['txt'] = ":green_circle: Online Now!\n\n"
+        else:
+            stats['txt'] = ":red_circle: Offline\n\n"
+    except:
+        stats['txt'] = "\n"
     for i in modes:
         try:
             indx = modes.index(i)
@@ -336,6 +339,8 @@ def chessdotcomstats(user1):
         except:
             continue
     return stats
+
+chessdotcomstats('plsBnyce')
 
 import pgn2gif
 import re

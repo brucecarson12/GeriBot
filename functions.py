@@ -263,21 +263,21 @@ def lichallenge(limit=5,increment=0):
     challenge = client.challenges.create_open(clock_limit=limsec,clock_increment=increment)['challenge']
     return challenge
 
-def lastgame(user1):
+def lastgame(user1, skipno=0):
     p1 = user1.strip().lower()
-    lastgame  = list(client.games.export_by_player(p1,max=1))
+    lastgame  = list(client.games.export_by_player(p1,max=3))
     game = dict()
-    game['id'] = lastgame[0]['id']
-    game['side'] = 'white' if lastgame[0]['players']['white']['user']['name'].lower() == p1 else 'black'
+    game['id'] = lastgame[skipno]['id']
+    game['side'] = 'white' if lastgame[skipno]['players']['white']['user']['name'].lower() == p1 else 'black'
     game['link'] = f"https://lichess.org/{game['id']}"
     game['gif'] = f"https://lichess1.org/game/export/gif/{game['side']}/{game['id']}.gif"
-    gameinfo  = client.games.export(lastgame[0]['id'])
+    gameinfo  = client.games.export(lastgame[skipno]['id'])
     game['analysis'] = None
     game['opening'] = None
     game['badmoves'] = {'inaccuracy':list(),'mistake':list(),'blunder':list()}
     if 'opening' in gameinfo.keys():
         game['opening'] = f"ECO: {gameinfo['opening']['eco']}, {gameinfo['opening']['name']}"
-    game['status'] = lastgame[0]['status']
+    game['status'] = lastgame[skipno]['status']
     if 'winner' in gameinfo.keys():
         game['winner'] = gameinfo['winner']
     if 'analysis' in gameinfo.keys():
@@ -291,7 +291,6 @@ def lastgame(user1):
                 movecomment = gameinfo['analysis'][i]['judgment']['comment']
                 game['badmoves'][name].append(move)
     return game
-
 
 def ratinghistory(user1):
     p1 = user1.strip().lower()
@@ -339,8 +338,6 @@ def chessdotcomstats(user1):
         except:
             continue
     return stats
-
-chessdotcomstats('plsBnyce')
 
 import pgn2gif
 import re

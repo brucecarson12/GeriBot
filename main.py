@@ -171,12 +171,12 @@ async def findli(ctx,user1,user2):
 
 
 @bot.command()
-async def lastli(ctx):
+async def lastli(ctx, numb=0):
     """This command grabs your last lichess game(based on start date)."""
     member = str(ctx.author)
     memberid = ctx.author.id
     Sheetinfo = UpdateSheetDiscordID(member,memberid)
-    lastone = lastgame(Sheetinfo['lichess'])
+    lastone = lastgame(Sheetinfo['lichess'],numb)
     result = str()
     if lastone['status'] == 'draw':
         result = "\nResult: 1/2-1/2"

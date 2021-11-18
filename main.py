@@ -171,12 +171,12 @@ async def findli(ctx,user1,user2):
 
 
 @bot.command()
-async def lastli(ctx, numb=0):
+async def lastli(ctx, skipno=0):
     """This command grabs your last lichess game(based on start date). Takes # of Games to Skip input as well. (Ex. '$lastli 1' will skip your most recent game.)"""
     member = str(ctx.author)
     memberid = ctx.author.id
     Sheetinfo = UpdateSheetDiscordID(member,memberid)
-    lastone = lastgame(Sheetinfo['lichess'],numb)
+    lastone = lastgame(Sheetinfo['lichess'],skipno)
     result = str()
     if lastone['status'] == 'draw':
         result = "\nResult: 1/2-1/2"

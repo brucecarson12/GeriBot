@@ -179,7 +179,6 @@ async def lastli(ctx, skipno=None):
     
     if skipno.isnumeric():
         print(skipno)
-        skipno = skipno
     else:
         skipno = 0
     

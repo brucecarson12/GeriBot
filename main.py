@@ -176,7 +176,7 @@ async def lastli(ctx, skipno=None):
     member = str(ctx.author)
     memberid = ctx.author.id
     Sheetinfo = UpdateSheetDiscordID(member,memberid)
-    if isinstance(skipno, str):
+    if not skipno.isnumeric():
         print(skipno)
         skipno = 0
         print(skipno)

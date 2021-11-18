@@ -265,7 +265,7 @@ def lichallenge(limit=5,increment=0):
 
 def lastgame(user1, skipno=0):
     p1 = user1.strip().lower()
-    lastgame  = list(client.games.export_by_player(p1,max=3))
+    lastgame  = list(client.games.export_by_player(p1,max=5))
     game = dict()
     game['id'] = lastgame[skipno]['id']
     game['side'] = 'white' if lastgame[skipno]['players']['white']['user']['name'].lower() == p1 else 'black'

@@ -176,7 +176,7 @@ async def lastli(ctx, skipno=0):
     member = str(ctx.author)
     memberid = ctx.author.id
     Sheetinfo = UpdateSheetDiscordID(member,memberid)
-    if type(skipno) == str:
+    if isinstance(skipno, str):
         skipno = 0
     lastone = lastgame(Sheetinfo['lichess'],skipno)
     result = str()

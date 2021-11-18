@@ -6,8 +6,8 @@ CairoSVG==2.5.0
 cffi==1.14.3
 chardet==3.0.4
 chess==1.3.0
-chess.com==1.7.5
-discord.py==1.5.1
+chess.com
+discord.py
 google-auth==1.23.0
 google-auth-oauthlib==0.4.2
 gspread==3.6.0

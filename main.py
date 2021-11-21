@@ -178,7 +178,7 @@ async def lastli(ctx,skipno=0):
     try:
         int(skipno)
         print(skipno)
-    except:
+    except ValueError:
         skipno = 0
         
     lastone = lastgame(Sheetinfo['lichess'],skipno)

@@ -176,9 +176,11 @@ async def lastli(ctx,skipno=0):
     memberid = ctx.author.id
     Sheetinfo = UpdateSheetDiscordID(member,memberid)
     try:
-        skipno = int(skipno)
+        int(skipno)
+        print(skipno)
     except:
-        skipno = 0 
+        skipno = 0
+        
     lastone = lastgame(Sheetinfo['lichess'],skipno)
     result = str()
     if lastone['status'] == 'draw':

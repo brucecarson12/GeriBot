@@ -170,7 +170,7 @@ async def findli(ctx,user1,user2):
 
 
 @bot.command()
-async def lastli(ctx,skipno=0):
+async def lastli(ctx,skipno=int(0)):
     """This command grabs your last lichess game(based on start date)."""
     member = str(ctx.author)
     memberid = ctx.author.id
@@ -179,8 +179,7 @@ async def lastli(ctx,skipno=0):
         int(skipno)
         print(skipno)
     except ValueError:
-        skipno = 0
-        
+        skipno = int(0)    
     lastone = lastgame(Sheetinfo['lichess'],skipno)
     result = str()
     if lastone['status'] == 'draw':

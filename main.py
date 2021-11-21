@@ -176,9 +176,11 @@ async def lastli(ctx,skipno=int(0)):
     memberid = ctx.author.id
     Sheetinfo = UpdateSheetDiscordID(member,memberid)
     try:
+        print(type(skipno))
         int(skipno)
         print(skipno)
     except ValueError:
+        print(skipno)
         skipno = int(0)    
     lastone = lastgame(Sheetinfo['lichess'],skipno)
     result = str()

@@ -146,11 +146,10 @@ async def liprofile(ctx, name=None):
         if name:
             name = name.strip()
         else:
-            name = str(ctx.author)
-        User = UpdateSheetDiscordID(name)
-        LiChessName = User['lichess']
-        ratings = ratinghistory(LiChessName)
-        await ctx.send(f"{ratings['txt']}\n<https://lichess.org/@/{LiChessName}> \n<https://lichess.org/insights/{LiChessName}/result/opening>")
+            User = UpdateSheetDiscordID(str(ctx.author))
+            name = User['lichess']
+        ratings = ratinghistory(name)
+        await ctx.send(f"{ratings['txt']}\n<https://lichess.org/@/{name}> \n<https://lichess.org/insights/{name}/result/opening>")
     except:
         await ctx.send(f"Hmm, I couldn't find your name. Use the $addli command to add a username to my records. If you're looking for another player then make sure you've typed a username behind your command(Ex. $liprofile bnyce).")
 

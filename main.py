@@ -174,7 +174,11 @@ async def lastli(ctx,skipno=0):
     """This command grabs your last lichess game(based on start date)."""
     member = str(ctx.author)
     memberid = ctx.author.id
-    Sheetinfo = UpdateSheetDiscordID(member,memberid) 
+    Sheetinfo = UpdateSheetDiscordID(member,memberid)
+    try:
+        skipno = int(skipno)
+    except:
+        skipno = 0 
     lastone = lastgame(Sheetinfo['lichess'],skipno)
     result = str()
     if lastone['status'] == 'draw':

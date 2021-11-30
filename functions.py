@@ -263,7 +263,7 @@ def lichallenge(limit=5,increment=0):
     challenge = client.challenges.create_open(clock_limit=limsec,clock_increment=increment)['challenge']
     return challenge
 
-def lastgame(user1,skip=0):
+def lastgame(user1,skip: int):
     p1 = user1.strip().lower()
     lastgame  = list(client.games.export_by_player(p1,max=5))
     game = dict()

@@ -268,6 +268,7 @@ def lastgame(user1,skip: int):
     lastgame  = list(client.games.export_by_player(p1,max=5))
     game = dict()
     game['id'] = lastgame[skip]['id']
+    game['perf'] = f"{lastgame[skip]['variant'].title()} {lastgame[skip]['speed'].title()} Game"
     game['side'] = 'white' if lastgame[skip]['players']['white']['user']['name'].lower() == p1 else 'black'
     game['link'] = f"https://lichess.org/{game['id']}"
     game['gif'] = f"https://lichess1.org/game/export/gif/{game['side']}/{game['id']}.gif"

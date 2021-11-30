@@ -179,7 +179,7 @@ async def lastli(ctx, skipno=None):
         skipno = int(skipno)
         lastone = lastgame(Sheetinfo['lichess'],skipno)
     except:
-        print(skipno, "what's that?", type(skipno))
+        #maybe we add a None check to make this a smoother process but it works now.
         lastone = lastgame(Sheetinfo['lichess'],0)
 
     result = str()
@@ -193,7 +193,7 @@ async def lastli(ctx, skipno=None):
     analysis = str()
     if lastone['analysis'] != None:
         analysis = (f"Average Centipawn Loss: {lastone['analysis']['acpl']} \nInaccuracies({lastone['analysis']['inaccuracy']}): {', '.join(lastone['badmoves']['inaccuracy'])} \nMistakes({lastone['analysis']['mistake']}): {', '.join(lastone['badmoves']['mistake'])} \nBlunders({lastone['analysis']['blunder']}): {', '.join(lastone['badmoves']['blunder'])}")
-    await ctx.send(f"{lastone['perf']}\n<{lastone['link']}> \n{lastone['opening']}\n{analysis}{result}")
+    await ctx.send(f"{lastone['perf']}: <{lastone['link']}> \n{lastone['opening']}\n{analysis}{result} [{lastone['end']}]")
     await ctx.send(lastone['gif'])
 
 @bot.command()

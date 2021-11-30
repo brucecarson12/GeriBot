@@ -268,6 +268,7 @@ def lastgame(user1,skip: int):
     lastgame  = list(client.games.export_by_player(p1,max=5))
     game = dict()
     game['id'] = lastgame[skip]['id']
+    game['end'] = lastgame[skip]['status']
     game['perf'] = f"{lastgame[skip]['variant'].title()} {lastgame[skip]['speed'].title()} Game"
     game['side'] = 'white' if lastgame[skip]['players']['white']['user']['name'].lower() == p1 else 'black'
     game['link'] = f"https://lichess.org/{game['id']}"
@@ -292,6 +293,8 @@ def lastgame(user1,skip: int):
                 movecomment = gameinfo['analysis'][i]['judgment']['comment']
                 game['badmoves'][name].append(move)
     return game
+
+print(lastgame('bnyce',0))
 
 def ratinghistory(user1):
     p1 = user1.strip().lower()

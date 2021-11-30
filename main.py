@@ -86,7 +86,7 @@ async def profile(ctx, name=None):
        User = UpdateSheetDiscordID(Name)
        ratings = chessdotcomstats(User['cdc'])
        liratings = ratinghistory(User['lichess'])
-       await ctx.send(f"**Chess.com**\n{ratings['txt']}\n<https://www.chess.com/member/{User['cdc']}>\n\n**Lichess.org**\n{liratings['txt']}\n<https://lichess.org/@/{User['lichess']}>")
+       await ctx.send(f"**Chess.com** *{User['cdc']}*\n{ratings['txt']}\n<https://www.chess.com/member/{User['cdc']}>\n\n**Lichess.org** *{User['lichess']}*\n{liratings['txt']}\n<https://lichess.org/@/{User['lichess']}>")
     except:
        await ctx.send(f"Hmm, I couldn't find your name. Use the $addcdc command to add a username to my records. If you're looking for another player then make sure you've typed a username behind your command(Ex. $cdcprofile plsBnyce).")
 

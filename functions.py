@@ -231,7 +231,7 @@ def OnlineNow():
     cell = sheet.find(str('Lichess Username'))
     players = sheet.col_values(cell.col)[1:]
     players2 = [x for x in players if str(x) != '']
-    onlinetxt = f"Currently Online: \n"
+    onlinetxt = f"Currently On Lichess: \n"
     for player in players2:
         try:
             playeron = client.users.get_realtime_statuses(player)
@@ -293,8 +293,6 @@ def lastgame(user1,skip: int):
                 movecomment = gameinfo['analysis'][i]['judgment']['comment']
                 game['badmoves'][name].append(move)
     return game
-
-print(lastgame('bnyce',0))
 
 def ratinghistory(user1):
     p1 = user1.strip().lower()

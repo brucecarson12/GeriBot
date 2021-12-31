@@ -231,7 +231,7 @@ def OnlineNow():
     cell = sheet.find(str('Lichess Username'))
     players = sheet.col_values(cell.col)[1:]
     players2 = [x for x in players if str(x) != '']
-    onlinetxt = f"Currently On Lichess: \n"
+    onlinetxt = f"Currently on Lichess: \n"
     for player in players2:
         try:
             playeron = client.users.get_realtime_statuses(player)
@@ -312,7 +312,13 @@ def ratinghistory(user1):
             stats['txt'] += f"{emojis[indx]} {stats[i]}  "
         except:
             continue
-    return stats
+    streak_best = ratingsget[0]['perfs']['streak']['score']
+    try:
+        stats['txt'] += f":jigsaw::cloud_tornado: {streak_best}"
+    finally:
+        return stats
+
+print(ratinghistory('bnyce'))
 
 #--------------------chess.com functions--------------------------------------
 
@@ -339,7 +345,11 @@ def chessdotcomstats(user1):
 
         except:
             continue
-    return stats
+    rush_best = ratings.json['stats']['puzzle_rush']['best']['score']
+    try:
+        stats['txt'] += f":jigsaw::cloud_tornado: {rush_best}"
+    finally:
+        return stats
 
 import pgn2gif
 import re

@@ -317,9 +317,6 @@ def ratinghistory(user1):
         stats['txt'] += f":jigsaw::cloud_tornado: {streak_best}"
     finally:
         return stats
-
-print(ratinghistory('bnyce'))
-
 #--------------------chess.com functions--------------------------------------
 
 def chessdotcomstats(user1):
@@ -345,8 +342,9 @@ def chessdotcomstats(user1):
 
         except:
             continue
-    rush_best = ratings.json['stats']['puzzle_rush']['best']['score']
+        
     try:
+        rush_best = ratings.json['stats']['puzzle_rush']['best']['score']
         stats['txt'] += f":jigsaw::cloud_tornado: {rush_best}"
     finally:
         return stats

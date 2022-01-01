@@ -390,7 +390,7 @@ def chessdotcomlastgame(user1):
     reverse = 0
     if lastgamedict['bplayer']['name'] == p1:
         reverse = 1
-    creator = pgn2gif.pgn2gif.PgnToGifCreator(reverse=reverse, duration=0.5, ws_color='#ebecd0', bs_color='#779556')
+    creator = pgn2gif.PgnToGifCreator(reverse=reverse, duration=0.5, ws_color='#ebecd0', bs_color='#779556')
     creator.create_gif("temp/temp.pgn", out_path="temp/chess.gif")
     
     return lastgamedict

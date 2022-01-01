@@ -117,16 +117,15 @@ async def addcdc(ctx,cdcName, IRLname=None):
 @bot.command()
 async def lastcdc(ctx,name=None):
     """grabs your last chess.com  game if Geri has your username."""
-    try:
-        Name = str(ctx.author)
-        User = UpdateSheetDiscordID(Name)
-        cdcname = User['cdc'] if name == None else name.strip()
-        lastgame = chessdotcomlastgame(cdcname)
-        await ctx.send(f"{lastgame['result']}\n{lastgame['vstxt']}\n<{lastgame['url']}>")
-        await ctx.send(file=discord.File("temp/chess.gif"))
+    Name = str(ctx.author)
+    User = UpdateSheetDiscordID(Name)
+    cdcname = User['cdc'] if name == None else name.strip()
+    lastgame = chessdotcomlastgame(cdcname)
+    await ctx.send(f"{lastgame['result']}\n{lastgame['vstxt']}\n<{lastgame['url']}>")
+    await ctx.send(file=discord.File("temp/chess.gif"))
 
-    except:
-        await ctx.send(f"Still testing this one. bear with me.")
+    #except:
+    #    await ctx.send(f"Still testing this one. bear with me.")
 
 #-----Lichess.org Commands-----
 

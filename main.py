@@ -131,8 +131,8 @@ async def lastcdc(ctx,name=None):
 @bot.command()
 async def cdcleaderboard(ctx,perf='blitz'):
     """Chess.com Leaderboard generator. Defaults to Blitz. perf options= = ['streak','bullet','blitz','rapid','classical','correspondence']"""
-    from functions import leaderboard
-    cdc_derboard = cdcleaderboard(perf)
+    from functions import cdc_leaderboard
+    cdc_derboard = cdc_leaderboard(perf)
     await ctx.send(f"{cdc_derboard}")
 
 #-----Lichess.org Commands-----

@@ -380,7 +380,7 @@ def chessdotcomstats(user1):
     finally:
         return stats
 
-def cdcleaderboard(perf='blitz'):
+def cdc_leaderboard(perf='blitz'):
     gc = gspread.service_account(filename='google-credentials.json')
     Book = gc.open('Chess_Tourney')
     sheet = Book.get_worksheet(0)

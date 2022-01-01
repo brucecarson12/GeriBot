@@ -241,6 +241,37 @@ def OnlineNow():
             continue
     return onlinetxt
 
+def leaderboard(perf='blitz'):
+    gc = gspread.service_account(filename='google-credentials.json')
+    Book = gc.open('Chess_Tourney')
+    sheet = Book.get_worksheet(0)
+    cell = sheet.find(str('Lichess Username'))
+    players = sheet.col_values(cell.col)[1:]
+    players2 = [x for x in players if str(x) != '']
+    leaderboardtxt = f"**Lichess {perf.title()} Ratings** \n"
+    playerlist = []
+    word = 'score' if perf == 'streak' else 'rating'
+    for player in players2:
+        try:
+            ratings = client.users.get_by_id(player)
+            if ratings[0]['perfs'][perf][word]:
+                ##add to list of lists
+                rating = ratings[0]['perfs'][perf][word]
+                playerlist.append([player,rating])
+        except:
+            continue
+    
+    def getKey(item):
+        return item[1]
+        
+    leaderboard = sorted(playerlist,key=getKey,reverse=True)
+    
+    for i in leaderboard:
+        leaderboardtxt += f"{i[0]}: {i[1]}\n"
+    
+    return leaderboardtxt
+
+
 def lichesslink(user1,user2):
     p1 = user1.strip()
     p2 = user2.strip() 

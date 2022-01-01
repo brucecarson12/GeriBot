@@ -207,6 +207,13 @@ async def addli(ctx, Lichessname , IRLname=None):
         Sheetinfo = AddLiSheet(Lichessname.strip(), member, memberid,IRLname)
 
     await ctx.send(f"lichess username: {Sheetinfo['lichess']} added to your info.")
+    
+@bot.command()
+async def lileaderboard(ctx,perf='blitz'):
+    """Lichess Leaderboard generator. Defaults to Blitz. perf options= = ['streak','bullet','blitz','rapid','classical','correspondence']"""
+    from functions import leaderboard
+    li_derboard = leaderboard(perf)
+    await ctx.send(f"{li_derboard}")
      
 
 bot.run(TOKEN)

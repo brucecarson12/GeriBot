@@ -380,6 +380,44 @@ def chessdotcomstats(user1):
     finally:
         return stats
 
+def cdcleaderboard(perf='blitz'):
+    gc = gspread.service_account(filename='google-credentials.json')
+    Book = gc.open('Chess_Tourney')
+    sheet = Book.get_worksheet(0)
+    cell = sheet.find(str('ChessCom Username'))
+    players = sheet.col_values(cell.col)[1:]
+    players2 = [x for x in players if str(x) != '']
+    leaderboardtxt = f"**Chess.com {perf.title()} Ratings** \n"
+    playerlist = []
+    word = 'last'
+    word2 = 'rating'
+    perf = f'chess_{perf}'
+    
+    if perf == 'chess_streak':
+        word = 'best'
+        word2 = 'score'
+        perf = 'puzzle_rush'
+    
+    for player in players2:
+        try:
+            ratings = cdc.get_player_stats(player)
+            if ratings.json['stats'][perf][word][word2]:
+                ##add to list of lists
+                rating = ratings.json['stats'][perf][word][word2]
+                playerlist.append([player,rating])
+        except:
+            continue
+    
+    def getKey(item):
+        return item[1]
+        
+    leaderboard = sorted(playerlist,key=getKey,reverse=True)
+    
+    for i in leaderboard:
+        leaderboardtxt += f"{i[0]}: {i[1]}\n"
+    
+    return leaderboardtxt
+
 import pgn2gif
 import re
 import io

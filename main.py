@@ -11,7 +11,7 @@ import nest_asyncio
 nest_asyncio.apply()
 
 TOKEN = os.getenv("DiscToken")
-client = discord.Client()
+client = discord.Client(intents=discord.Intents.default())
 bot = commands.Bot('$')
 tnmtinfo = str()
 people = []

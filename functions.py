@@ -158,18 +158,18 @@ def UpdateSheetDiscordID(discName,discID=None,IRLname=None,lichessname=None,cdcn
     Book = gc.open('Chess_Tourney')
     sheet = Book.get_worksheet(0)
     try:
-        cell = sheet.find(discName)
-    except:
         cell = sheet.find(str(discID))
-        sheet.update_cell(cell.row,3,discName)
-    if discID:
-        sheet.update_cell(cell.row,8,str(discID))
-    if IRLname:
-        sheet.update_cell(cell.row,1,IRLname)
-    if lichessname:
-        sheet.update_cell(cell.row,2,lichessname)
-    if cdcname:
-        sheet.update_cell(cell.row,9,cdcname)
+        if discID:
+            sheet.update_cell(cell.row,8,str(discID))
+        if IRLname:
+            sheet.update_cell(cell.row,1,IRLname)
+        if lichessname:
+            sheet.update_cell(cell.row,2,lichessname)
+        if cdcname:
+            sheet.update_cell(cell.row,9,cdcname)
+    except:
+        sheet.append_row([IRLname, lichessname, discName,0,0,0,0,str(discID)])
+        cell = sheet.find(str(discID))
     senderman = dict()
     senderman['discName']  =  discName
     senderman['discID'] = discID

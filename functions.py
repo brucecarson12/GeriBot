@@ -168,7 +168,7 @@ def UpdateSheetDiscordID(discName,discID=None,IRLname=None,lichessname=None,cdcn
         if cdcname:
             sheet.update_cell(cell.row,9,cdcname)
     except:
-        sheet.append_row([IRLname, lichessname, discName,0,0,0,0,str(discID)])
+        sheet.append_row([IRLname, lichessname, discName,0,0,0,0,str(discID),str(cdcname)])
         cell = sheet.find(str(discID))
     senderman = dict()
     senderman['discName']  =  discName

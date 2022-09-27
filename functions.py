@@ -176,6 +176,7 @@ def UpdateSheetDiscordID(discName,discID=None,IRLname=None,lichessname=None,cdcn
     senderman['lichess'] = sheet.cell(cell.row,2).value
     senderman['cdc'] = sheet.cell(cell.row,9).value
     senderman['IRLname'] = sheet.cell(cell.row,1).value
+    print(senderman)
     return senderman
 
 def AddLiSheet(lichessname,DiscName, DiscID, IRLname = None):
@@ -202,7 +203,6 @@ def AddLiSheet(lichessname,DiscName, DiscID, IRLname = None):
 
     userlistdict = sheet.get_all_records()
     
-    print(userlistdict[0]['Lichess Username'])
     return senderman
 
 

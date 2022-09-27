@@ -1,4 +1,4 @@
-git+git://github.com/brucecarson12/berserk.git
+git+https://github.com/brucecarson12/berserk.git
 git+git://github.com/dn1z/pgn2gif.git
 cachetools==4.1.1
 cairocffi==1.2.0

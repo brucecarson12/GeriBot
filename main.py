@@ -119,7 +119,8 @@ async def lastcdc(ctx,name=None):
     """grabs your last chess.com  game if Geri has your username."""
     try:
         Name = str(ctx.author)
-        User = UpdateSheetDiscordID(Name)
+        memberId = ctx.author.id
+        User = UpdateSheetDiscordID(Name, memberId)
         cdcname = User['cdc'] if name == None else name.strip()
         lastgame = chessdotcomlastgame(cdcname)
         await ctx.send(f"{lastgame['result']}\n{lastgame['vstxt']}\n<{lastgame['url']}>")

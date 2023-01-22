@@ -1,7 +1,7 @@
 import discord
 from dotenv import load_dotenv
 import os
-from RRTSchedule import *
+from _old.RRTSchedule import *
 from functions import *
 import requests
 

@@ -5,7 +5,7 @@ import chess.svg
 import cairo
 import cairosvg
 import gspread
-from RRTSchedule import *
+from _old.RRTSchedule import *
 import berserk
 import os
 import sys
@@ -21,7 +21,7 @@ def randpuzzle():
     solutiontxt = str()
     ori = chess.WHITE
 
-    with open('puzzles.csv', 'r') as puzzles:
+    with open('data/puzzles.csv', 'r') as puzzles:
         # pass the file object to reader() to get the reader object
         csv_reader = reader(puzzles)
         # Pass reader object to list() to get a list of lists
@@ -49,7 +49,7 @@ def lichesspuzzle():
     lipuzzle = dict() #might be better to use a dict to contain puzzle info like gamelink, clue, toPlay, Solution etc.
     ori = chess.WHITE
 
-    with open('lipuzzlesTEST.csv', 'r') as puzzles:
+    with open('data/lipuzzlesTEST.csv', 'r') as puzzles:
         # pass the file object to reader() to get the reader object
         csv_reader = reader(puzzles)
         # Pass reader object to list() to get a list of lists

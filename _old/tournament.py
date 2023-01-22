@@ -4,7 +4,7 @@ This defines a double elimination 'Tournament' object.
 import math
 import itertools
 
-from match import Match
+from _old.match import Match
 from participant import Participant
 
 class Tournament:

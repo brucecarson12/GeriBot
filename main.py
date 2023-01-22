@@ -2,7 +2,6 @@ import discord
 import discord.ext.commands as commands
 from dotenv import load_dotenv
 import os
-from RRTSchedule import *
 from functions import *
 import requests
 import asyncio
@@ -11,7 +10,6 @@ import nest_asyncio
 nest_asyncio.apply()
 
 TOKEN = os.getenv("DiscToken")
-#client = discord.Client()
 bot = commands.Bot('$', intents= discord.Intents.all())
 tnmtinfo = str()
 people = []
@@ -42,7 +40,7 @@ async def hello(ctx):
 @bot.command()
 async def Geri(ctx):
     """an alternate help command"""
-    with open(file="Geri-intro.txt",mode="r") as introtext:
+    with open(file="data/Geri-intro.txt",mode="r") as introtext:
             txtinfo = introtext.read()
             embed = discord.Embed(description = '[My namesake.](https://www.youtube.com/watch?v=uMVtpCPx8ow)')
             await ctx.send(content=txtinfo, embed=embed)
@@ -50,7 +48,7 @@ async def Geri(ctx):
 @bot.command()
 async def resources(ctx):
     """shares some helpful resources for improving at chess!"""
-    with open(file="resources.txt",mode="r") as resourcetext:
+    with open(file="data/resources.txt",mode="r") as resourcetext:
         txt = resourcetext.read()
         await ctx.send(content=txt)
 

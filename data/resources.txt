@@ -1,6 +1,5 @@
 **Resources**
 __streamers:__
-NM Nick Matta: <https://www.twitch.tv/nmchess>
 NM ChessNetwork(Jerry): <https://www.youtube.com/user/ChessNetwork> // <https://www.twitch.tv/chessnetwork>
 IM GothamChhess(Levi): <https://www.youtube.com/c/GothamChess> // <https://www.twitch.tv/gothamchess>
 IM Eric Rosen: <https://www.youtube.com/channel/UCXy10-NEFGxQ3b4NVrzHw1Q> // <https://www.twitch.tv/imrosen>

@@ -64,7 +64,7 @@ def performanceRatingCalculator(yourScore,*opponentRatings):
     
     normTxt = checkForNorms(yourScore,*opponentRatings)    
     
-    performanceOutput += f""" You played {numGames} games and your opponents' average rating was {avgOpponentRating}.\nYour Performance rating was {perfRating}.\n{normTxt}"""
+    performanceOutput += f""" You played {numGames} games and your opponents' average rating was {avgOpponentRating}.\nYour performance rating was {perfRating}.\n{normTxt}"""
     
     
     return performanceOutput

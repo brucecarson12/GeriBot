@@ -44,11 +44,13 @@ def randpuzzle():
 
 
 def performanceRatingCalculator(yourScore,*opponentRatings):
-    
+    opponentRatings = opponentRatings
     if yourScore > len(opponentRatings):
-        return "Hmm, you won more games than you played..."
+        performanceOutput = "Hmm, you won more games than you played..."
+        return performanceOutput
     elif yourScore < 0:
-        return "It couldn't have been that bad!"
+        performanceOutput = "It couldn't have been that bad!"
+        return performanceOutput
     elif yourScore == len(opponentRatings):
         performanceOutput = "Excellent Tournament!\n"
     else:
@@ -66,6 +68,8 @@ def performanceRatingCalculator(yourScore,*opponentRatings):
     
     
     return performanceOutput
+
+performanceRatingCalculator(3, [1614, 1195, 1964, 1900])
 
 #Calculate US Chess Norms Earned
 def checkForNorms(yourScore,*opponentRatings):

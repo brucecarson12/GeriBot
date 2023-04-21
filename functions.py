@@ -103,7 +103,7 @@ def checkForNorms(yourScore,*opponentRatings):
                 pointCalc = .5 + difference/400
             points+= pointCalc
         if yourScore - points > 1:
-            normAward = {txt for txt in levels if levels[txt] == i}
+            normAward = [txt for txt in levels if levels[txt] == i][0]
         if yourScore - points <=1:
             break
     
@@ -111,6 +111,8 @@ def checkForNorms(yourScore,*opponentRatings):
     
     return normTxt
         
+performanceRatingCalculator(3, [1614, 1195, 1964, 1900])
+
 
 
 #needs more work but looking to pull puzzles similar to how we do it with the above randpuzzle command. Ideally eliminating Cairo at some point.

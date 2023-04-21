@@ -44,7 +44,7 @@ def randpuzzle():
 
 
 def performanceRatingCalculator(yourScore,*opponentRatings):
-    opponentRatings = opponentRatings
+    opponentRatings = opponentRatings[0]
     if yourScore > len(opponentRatings):
         performanceOutput = "Hmm, you won more games than you played..."
         return performanceOutput

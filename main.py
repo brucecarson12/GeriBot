@@ -78,7 +78,6 @@ async def onlinenow(ctx):
 async def performance(ctx,Score=0,*oppRatings):
      """Calculates Performance Rating from a tournament based on score and opponent ratings. Ex. $performance 3 1614 1195 1964 1900"""
      args = [int(a) for a in oppRatings]
-     print(args)
      perfTxt = performanceRatingCalculator(Score,args)
      await ctx.send(f"{perfTxt}")
     

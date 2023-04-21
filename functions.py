@@ -69,8 +69,6 @@ def performanceRatingCalculator(yourScore,*opponentRatings):
     
     return performanceOutput
 
-performanceRatingCalculator(3, [1614, 1195, 1964, 1900])
-
 #Calculate US Chess Norms Earned
 def checkForNorms(yourScore,*opponentRatings):
     

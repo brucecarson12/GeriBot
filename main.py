@@ -75,7 +75,7 @@ async def onlinenow(ctx):
     await ctx.send(f"{onlinemessage}")
 
 @bot.command()
-async def performance(ctx,Score,*args):
+async def performance(ctx,Score=0,*args):
      """Calculates Performance Rating from a tournament based on score and opponent ratings. Ex. $performance 3 1614 1195 1964 1900"""
      args = [int(a) for a in args]
      print(args)

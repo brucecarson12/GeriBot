@@ -43,6 +43,74 @@ def randpuzzle():
     return filename, clue, title, fentxt, solutiontxt
 
 
+def performanceRatingCalculator(yourScore,*opponentRatings):
+    
+    if yourScore > len(opponentRatings):
+        return "Hmm, you won more games than you played..."
+    elif yourScore < 0:
+        return "It couldn't have been that bad!"
+    elif yourScore == len(opponentRatings):
+        performanceOutput = "Excellent Tournament!\n"
+    else:
+        performanceOutput = ""
+    
+    
+    #calculate performance Rating || Excel formula: =ROUND (AVERAGE(B3:B11)+800*(A3/COUNTA(B3:B11) - 0.5))
+    numGames = len(opponentRatings)
+    avgOpponentRating = int(round(sum(opponentRatings)/len(opponentRatings),0))
+    perfRating = int(round(avgOpponentRating + (800 * (yourScore/len(opponentRatings)-.5)),0))
+    
+    normTxt = checkForNorms(yourScore,*opponentRatings)    
+    
+    performanceOutput += f"""Your Performance:\nAverage Opponent | {avgOpponentRating}\nGames Played: {numGames}\nPerformance Rating | {perfRating}\n{normTxt}"""
+    
+    
+    return performanceOutput
+
+#Calculate US Chess Norms Earned
+def checkForNorms(yourScore,*opponentRatings):
+    
+    if len(opponentRatings)< 4:
+        normTxt = "Norm Earned | A Norm requires at least 4 games"
+        return normTxt
+    else:
+        normAward = "None"
+    
+    levels = {'Category 1' :1200, 'Category 2':1400, 'Category 3':1600, 'Category 4':1800,
+              'Candidate Master(rating dependent)':2000, 
+              'Life Master(rating dependent)':2200, 
+              'Senior Life Master(rating dependent)':2400}
+    
+    #if yourRating < 2000:
+    #    levels.pop('Candidate Master')
+    #    levels.pop('Life Master')
+    #    levels.pop('Senior Life Master')
+        
+    #Calculate Norm value for each opponent 
+    # Excel formula: =IF(ISBLANK(E$4),"", IF(($D6-E$4)<-400,0,IF(AND(($D6-E$4)>-400,($D6-E$4)<1),0.5+($D6-E$4)/800,IF(AND(($D6-E$4)>0,($D6-E$4)<201),0.5+($D6-E$4)/400,1))))
+    for i in levels.values():
+        points=0
+        for opp in opponentRatings:
+            difference =  i - opp
+            pointCalc = 1
+            if difference <= -400:
+                pointCalc = 0
+            elif -400 < difference <= 0:
+                pointCalc = .5 + difference/800 
+            elif 1<= difference <=200:
+                pointCalc = .5 + difference/400
+            points+= pointCalc
+        if yourScore - points > 1:
+            normAward = {txt for txt in levels if levels[txt] == i}
+        if yourScore - points <=1:
+            break
+    
+    normTxt= f"Norm Earned: {normAward}\nMore info on Norms can be found here: http://www.glicko.net/ratings/titles.pdf" 
+    
+    return normTxt
+        
+
+
 #needs more work but looking to pull puzzles similar to how we do it with the above randpuzzle command. Ideally eliminating Cairo at some point.
 def lichesspuzzle():
     rand = random.randint(1,353269)

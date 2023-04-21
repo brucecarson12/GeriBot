@@ -69,10 +69,16 @@ async def challenge(ctx,limit=5,inc=0):
 
 
 @bot.command()
-async def onlinenow(ctx,):
+async def onlinenow(ctx):
     """Lists the current players I see online now."""
     onlinemessage = OnlineNow()
     await ctx.send(f"{onlinemessage}")
+
+@bot.command()
+async def performance(ctx,Score,*oppRatings):
+    perfTxt = performanceRatingCalculator(Score,*oppRatings)
+    await ctx.send(f"{perfTxt}")
+    
 
 #-----Chess.com Commands-----
 

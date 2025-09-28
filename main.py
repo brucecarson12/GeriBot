@@ -35,11 +35,47 @@ tourney_status = 'None'
 async def on_ready():
     """Event handler for when the bot is ready"""
     print('We have logged in as {0.user}'.format(bot))
+    
+    # Load cogs after bot is ready
+    try:
+        # Load test commands first
+        await bot.load_extension('bot.commands.test_commands')
+        print("✅ Test commands loaded")
+        
+        # Try to load main command modules
+        try:
+            await bot.load_extension('bot.commands.general_commands')
+            print("✅ General commands loaded")
+        except Exception as e:
+            print(f"❌ Failed to load general commands: {e}")
+        
+        try:
+            await bot.load_extension('bot.commands.chess_commands')
+            print("✅ Chess commands loaded")
+        except Exception as e:
+            print(f"❌ Failed to load chess commands: {e}")
+        
+        try:
+            await bot.load_extension('bot.commands.lichess_commands')
+            print("✅ Lichess commands loaded")
+        except Exception as e:
+            print(f"❌ Failed to load lichess commands: {e}")
+        
+        print("Cog loading completed")
+    except Exception as e:
+        print(f"❌ Failed to load cogs: {e}")
+        import traceback
+        traceback.print_exc()
+    
+    # Sync slash commands
     try:
         synced = await bot.tree.sync()
-        print(f"Synced {len(synced)} command(s)")
+        print(f"✅ Synced {len(synced)} slash command(s)")
     except Exception as e:
-        print(f"Failed to sync commands: {e}")
+        print(f"❌ Failed to sync commands: {e}")
+        import traceback
+        traceback.print_exc()
+    
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='$Geri'))
 
 
@@ -54,20 +90,15 @@ async def on_command_error(ctx, error):
         await ctx.send(f"An error occurred: {error}")
 
 
-async def load_cogs():
-    """Load all command cogs"""
-    try:
-        await bot.load_extension('bot.commands.general_commands')
-        await bot.load_extension('bot.commands.chess_commands')
-        await bot.load_extension('bot.commands.lichess_commands')
-        print("All cogs loaded successfully")
-    except Exception as e:
-        print(f"Failed to load cogs: {e}")
+# Test command to verify bot is working
+@bot.hybrid_command(name="test", description="Test command to verify bot is working")
+async def test(ctx):
+    """Test command to verify the bot is working"""
+    await ctx.send("✅ Bot is working! Commands are functional.")
 
 
 async def main():
     """Main function to start the bot"""
-    await load_cogs()
     await bot.start(TOKEN)
 
 

@@ -46,6 +46,11 @@ class EmbedBuilder:
         return EmbedBuilder.create_base_embed(title, description, EmbedBuilder.WARNING_COLOR)
     
     @staticmethod
+    def create_info_embed(title: str, description: str = "") -> discord.Embed:
+        """Create an info embed (blue)"""
+        return EmbedBuilder.create_base_embed(title, description, EmbedBuilder.INFO_COLOR)
+    
+    @staticmethod
     def create_chess_embed(title: str, description: str = "") -> discord.Embed:
         """Create a chess-themed embed (brown)"""
         return EmbedBuilder.create_base_embed(title, description, EmbedBuilder.CHESS_COLOR)

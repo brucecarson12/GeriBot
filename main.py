@@ -13,7 +13,12 @@ nest_asyncio.apply()
 load_dotenv()
 
 TOKEN = os.getenv("DiscToken")
-bot = commands.Bot('$', intents= discord.Intents.all())
+
+# Ensure all necessary intents are enabled
+intents = discord.Intents.all()
+intents.message_content = True  # Required for message-based commands
+
+bot = commands.Bot('$', intents=intents)
 
 # Optional: Set a test guild ID for faster command syncing during development
 # Remove this or set to None for global command syncing (takes up to 1 hour)
@@ -30,39 +35,83 @@ tournament = str()
 tourney_status = 'None'
 
 
+# Setup hook to ensure commands are registered
+@bot.event
+async def setup_hook():
+    """This is called when the bot is setting up, before it connects to Discord."""
+    print("Setting up bot and registering commands...")
+    
+    # Commands are automatically registered when decorated with @bot.hybrid_command
+    # This hook ensures everything is ready before connecting
+
 #------Generic Commands-----
 @bot.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(bot))
+    print(f'We have logged in as {bot.user}')
     print(f'Bot ID: {bot.user.id}')
+    print(f'Discord.py version: {discord.__version__}')
     
-    channel = bot.get_channel('763912928247414794')
+    # Ensure we wait for the bot to be fully ready
+    await bot.wait_until_ready()
+    
+    channel = bot.get_channel(763912928247414794) if bot.get_channel(763912928247414794) else None
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='$Geri'))
     
-    # List all registered commands
-    print(f"\n📋 Registered hybrid commands (before sync):")
+    # Give a small delay to ensure all commands are registered
+    await asyncio.sleep(1)
+    
+    # List all registered commands BEFORE sync
+    print(f"\n📋 Checking registered hybrid commands (before sync):")
+    # Get commands from the tree
     tree_commands = bot.tree.get_commands()
     print(f"   Found {len(tree_commands)} command(s) in command tree")
-    for command in tree_commands:
-        print(f"   - /{command.name}: {command.description[:50]}...")
+    
+    if len(tree_commands) == 0:
+        print("   ⚠️  WARNING: No commands found in tree! Commands may not be registering properly.")
+        print("   Checking if commands are defined as hybrid commands...")
+        # Check all bot commands
+        all_commands = list(bot.commands)
+        print(f"   Found {len(all_commands)} regular command(s): {[cmd.name for cmd in all_commands]}")
+        print("   This suggests commands might be registered as regular commands, not hybrid commands.")
+    else:
+        for command in tree_commands[:10]:  # Show first 10
+            desc = command.description[:50] if command.description else "No description"
+            print(f"   - /{command.name}: {desc}...")
+        if len(tree_commands) > 10:
+            print(f"   ... and {len(tree_commands) - 10} more commands")
     
     # Sync commands with Discord
+    print(f"\n🔄 Syncing commands with Discord...")
     try:
         if TEST_GUILD_ID:
             # Sync to specific guild for instant updates (good for testing)
+            print(f"   Syncing to guild {TEST_GUILD_ID} (instant update)...")
             guild = discord.Object(id=TEST_GUILD_ID)
             synced = await bot.tree.sync(guild=guild)
             print(f"\n✅ Successfully synced {len(synced)} command(s) to guild {TEST_GUILD_ID}")
         else:
             # Sync globally (takes up to 1 hour to propagate)
+            print("   Syncing globally (may take up to 1 hour to appear)...")
             synced = await bot.tree.sync()
             print(f"\n✅ Successfully synced {len(synced)} command(s) globally")
             print("   ⚠️  Note: Global commands can take up to 1 hour to appear in Discord")
+            print("   💡 Tip: Set TEST_GUILD_ID in main.py for instant command updates during testing")
         
-        print("\n📝 Synced commands:")
-        for cmd in synced:
-            print(f"   - /{cmd.name}")
+        if len(synced) > 0:
+            print("\n📝 Synced commands:")
+            for cmd in synced[:20]:  # Show first 20
+                print(f"   - /{cmd.name}")
+            if len(synced) > 20:
+                print(f"   ... and {len(synced) - 20} more commands")
+        else:
+            print("   ⚠️  WARNING: No commands were synced! Check command definitions.")
             
+    except discord.HTTPException as e:
+        print(f"\n❌ HTTP Error syncing commands: {e}")
+        print(f"   Status: {e.status}")
+        print(f"   Response: {e.response}")
+        import traceback
+        traceback.print_exc()
     except Exception as e:
         print(f"\n❌ Failed to sync commands: {e}")
         import traceback
@@ -75,10 +124,34 @@ async def on_command_error(ctx, error):
     elif isinstance(error, discord.app_commands.CommandInvokeError):
         await ctx.send(f"An error occurred while executing the command: {error.original}")
 
+@bot.tree.error
+async def on_app_command_error(interaction: discord.Interaction, error: discord.app_commands.AppCommandError):
+    """Handle errors for slash commands"""
+    if isinstance(error, discord.app_commands.CommandInvokeError):
+        await interaction.response.send_message(
+            f"An error occurred while executing the command: {str(error.original)}",
+            ephemeral=True
+        )
+    else:
+        await interaction.response.send_message(
+            f"An error occurred: {str(error)}",
+            ephemeral=True
+        )
+
 @bot.hybrid_command(name="test")
 async def test(ctx):
     """Test command to verify hybrid commands are working"""
     await ctx.send("✅ Hybrid commands are working! Both slash and prefix commands should function.")
+
+@bot.hybrid_command(name="sync")
+@commands.has_permissions(administrator=True)
+async def sync(ctx):
+    """Manually sync slash commands (Admin only)"""
+    try:
+        synced = await bot.tree.sync()
+        await ctx.send(f"✅ Synced {len(synced)} command(s)")
+    except Exception as e:
+        await ctx.send(f"❌ Failed to sync: {e}")
 
 @bot.hybrid_command(name="hello")
 async def hello(ctx):

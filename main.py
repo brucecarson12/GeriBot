@@ -1,5 +1,6 @@
 import discord
 import discord.ext.commands as commands
+from discord import app_commands
 from dotenv import load_dotenv
 import os
 from functions import *
@@ -144,7 +145,7 @@ async def test(ctx):
     await ctx.send("✅ Hybrid commands are working! Both slash and prefix commands should function.")
 
 @bot.hybrid_command(name="sync")
-@commands.has_permissions(administrator=True)
+@app_commands.default_permissions(administrator=True)
 async def sync(ctx):
     """Manually sync slash commands (Admin only)"""
     try:
@@ -182,8 +183,9 @@ async def puzzle(ctx):
     os.remove(filename2)
 
 @bot.hybrid_command(name="challenge")
+@app_commands.describe(limit="Time limit in minutes (default: 5)", inc="Time increment in seconds (default: 0)")
 async def challenge(ctx, limit: int = 5, inc: int = 0):
-    """Creates an open challenge for 2 players to join. Ex. $challenge time increment"""
+    """Creates an open challenge for 2 players to join"""
     #I'd like to add the name and rated parts of the api call at some point, but that requires some berserk manipulation.
     challenge_result = lichallenge(limit=limit,increment=inc)
     await ctx.send(f"{challenge_result['url']}")
@@ -196,8 +198,9 @@ async def onlinenow(ctx):
     await ctx.send(f"{onlinemessage}")
 
 @bot.hybrid_command(name="performance")
+@app_commands.describe(score="Your tournament score (points)", opp_ratings="Space-separated opponent ratings (e.g., '1614 1195 1964 1900')")
 async def performance(ctx, score: int, opp_ratings: str):
-     """Calculates Performance Rating from a tournament based on score and opponent ratings. Ex. $performance 3 1614 1195 1964 1900"""
+     """Calculates Performance Rating from a tournament"""
      args = [int(a.strip()) for a in opp_ratings.split() if a.strip().isdigit()]
      perfTxt = performanceRatingCalculator(score, args)
      await ctx.send(f"{perfTxt}")
@@ -206,8 +209,9 @@ async def performance(ctx, score: int, opp_ratings: str):
 #-----Chess.com Commands-----
 
 @bot.hybrid_command(name="profile")
+@app_commands.describe(name="Discord username (optional, defaults to you)")
 async def profile(ctx, name: str = None):  
-    """Grabs chess.com and lichess profiles of the name given or the one who calls the command."""
+    """Grabs chess.com and lichess profiles"""
     try:
        Name = str(ctx.author) if not name else name.strip()
        User = UpdateSheetDiscordID(Name)
@@ -219,8 +223,9 @@ async def profile(ctx, name: str = None):
 
 
 @bot.hybrid_command(name="cdcprofile")
+@app_commands.describe(name="Discord username (optional, defaults to you)")
 async def cdcprofile(ctx, name: str = None):
-    """Grabs a chess.com profile and stats. example: $cdcprofile username"""
+    """Grabs a chess.com profile and stats"""
     try:
         Name = str(ctx.author) if not name else name.strip()
         User = UpdateSheetDiscordID(Name)
@@ -231,8 +236,9 @@ async def cdcprofile(ctx, name: str = None):
 
 
 @bot.hybrid_command(name="addcdc")
+@app_commands.describe(cdc_name="Your Chess.com username", irl_name="Your real name (optional)")
 async def addcdc(ctx, cdc_name: str, irl_name: str = None):
-    """Add your chess.com username. Ex. $addcdc yourusername IRLName[Optional]"""
+    """Add your chess.com username"""
     try:
         member = str(ctx.author)
         memberid  = ctx.author.id
@@ -242,8 +248,9 @@ async def addcdc(ctx, cdc_name: str, irl_name: str = None):
         await ctx.send(f"Hmm, I don't see you in my records. Please make sure to enter a Chess.com Username after your command.(Ex. $addcdc username)")
 
 @bot.hybrid_command(name="lastcdc")
+@app_commands.describe(name="Chess.com username (optional)")
 async def lastcdc(ctx, name: str = None):
-    """Grabs your last chess.com game if Geri has your username."""
+    """Grabs your last chess.com game"""
     try:
         Name = str(ctx.author)
         memberId = ctx.author.id
@@ -257,8 +264,9 @@ async def lastcdc(ctx, name: str = None):
         await ctx.send(f"Still testing this one. bear with me.")
 
 @bot.hybrid_command(name="cdcleaderboard")
+@app_commands.describe(perf="Performance type: streak, bullet, blitz, rapid, classical, or correspondence")
 async def cdcleaderboard(ctx, perf: str = 'blitz'):
-    """Chess.com Leaderboard generator. Defaults to Blitz. perf options = ['streak','bullet','blitz','rapid','classical','correspondence']"""
+    """Chess.com Leaderboard generator"""
     from functions import cdc_leaderboard
     cdc_derboard = cdc_leaderboard(perf)
     await ctx.send(f"{cdc_derboard}")
@@ -275,8 +283,9 @@ async def lipuzzle(ctx):
 
 
 @bot.hybrid_command(name="liprofile")
+@app_commands.describe(name="Lichess username (optional, case sensitive)")
 async def liprofile(ctx, name: str = None):
-    """Grabs a lichess profile. example: $liprofile username [CaSe SeNsItIvE usernames!]""" 
+    """Grabs a lichess profile""" 
     try:
         if name:
             name = name.strip()
@@ -290,8 +299,9 @@ async def liprofile(ctx, name: str = None):
 
 
 @bot.hybrid_command(name="findli")
+@app_commands.describe(user1="First lichess username", user2="Second lichess username")
 async def findli(ctx, user1: str, user2: str):
-    """Finds the most recently started game between 2 lichess users. Ex: $findli user1 user2"""
+    """Finds the most recently started game between 2 lichess users"""
     p1, p2 = user1.strip(), user2.strip()
     gameinfo = lichesslink(p1,p2)
     infotext = "Most Recent Game"
@@ -305,8 +315,9 @@ async def findli(ctx, user1: str, user2: str):
 
 
 @bot.hybrid_command(name="lastli")
+@app_commands.describe(skipno="Number of games to skip (0 = most recent, default: 0)")
 async def lastli(ctx, skipno: int = None):
-    """This command grabs your last lichess game(based on start date)."""
+    """Grabs your last lichess game"""
     member = str(ctx.author)
     memberid = ctx.author.id
     Sheetinfo = UpdateSheetDiscordID(member,memberid)
@@ -332,8 +343,9 @@ async def lastli(ctx, skipno: int = None):
     await ctx.send(lastone['gif'])
 
 @bot.hybrid_command(name="addli")
+@app_commands.describe(lichess_name="Your Lichess username", irl_name="Your real name (optional)")
 async def addli(ctx, lichess_name: str, irl_name: str = None):
-    """Add your lichess username. Ex. $addli yourusername IRLName[Optional]"""
+    """Add your lichess username"""
     member = str(ctx.author)
     memberid  = ctx.author.id
     if irl_name:
@@ -344,8 +356,9 @@ async def addli(ctx, lichess_name: str, irl_name: str = None):
     await ctx.send(f"lichess username: {Sheetinfo['lichess']} added to your info.")
     
 @bot.hybrid_command(name="lileaderboard")
+@app_commands.describe(perf="Performance type: streak, bullet, blitz, rapid, classical, or correspondence")
 async def lileaderboard(ctx, perf: str = 'blitz'):
-    """Lichess Leaderboard generator. Defaults to Blitz. perf options = ['streak','bullet','blitz','rapid','classical','correspondence']"""
+    """Lichess Leaderboard generator"""
     from functions import leaderboard
     li_derboard = leaderboard(perf)
     await ctx.send(f"{li_derboard}")

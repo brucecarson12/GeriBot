@@ -9,8 +9,17 @@ import nest_asyncio
 
 nest_asyncio.apply()
 
+# Load environment variables
+load_dotenv()
+
 TOKEN = os.getenv("DiscToken")
 bot = commands.Bot('$', intents= discord.Intents.all())
+
+# Optional: Set a test guild ID for faster command syncing during development
+# Remove this or set to None for global command syncing (takes up to 1 hour)
+TEST_GUILD_ID = None  # Set to a guild ID (int) for instant syncing during testing
+# Example: TEST_GUILD_ID = 123456789012345678  # Replace with your guild ID
+
 tnmtinfo = str()
 people = []
 players=[]
@@ -25,18 +34,51 @@ tourney_status = 'None'
 @bot.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
+    print(f'Bot ID: {bot.user.id}')
+    
     channel = bot.get_channel('763912928247414794')
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='$Geri'))
+    
+    # List all registered commands
+    print(f"\n📋 Registered hybrid commands (before sync):")
+    tree_commands = bot.tree.get_commands()
+    print(f"   Found {len(tree_commands)} command(s) in command tree")
+    for command in tree_commands:
+        print(f"   - /{command.name}: {command.description[:50]}...")
+    
+    # Sync commands with Discord
     try:
-        synced = await bot.tree.sync()
-        print(f"Synced {len(synced)} command(s)")
+        if TEST_GUILD_ID:
+            # Sync to specific guild for instant updates (good for testing)
+            guild = discord.Object(id=TEST_GUILD_ID)
+            synced = await bot.tree.sync(guild=guild)
+            print(f"\n✅ Successfully synced {len(synced)} command(s) to guild {TEST_GUILD_ID}")
+        else:
+            # Sync globally (takes up to 1 hour to propagate)
+            synced = await bot.tree.sync()
+            print(f"\n✅ Successfully synced {len(synced)} command(s) globally")
+            print("   ⚠️  Note: Global commands can take up to 1 hour to appear in Discord")
+        
+        print("\n📝 Synced commands:")
+        for cmd in synced:
+            print(f"   - /{cmd.name}")
+            
     except Exception as e:
-        print(f"Failed to sync commands: {e}")
+        print(f"\n❌ Failed to sync commands: {e}")
+        import traceback
+        traceback.print_exc()
 
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
         await ctx.send("Oops! Looks like you didn't give me enough info.")
+    elif isinstance(error, discord.app_commands.CommandInvokeError):
+        await ctx.send(f"An error occurred while executing the command: {error.original}")
+
+@bot.hybrid_command(name="test")
+async def test(ctx):
+    """Test command to verify hybrid commands are working"""
+    await ctx.send("✅ Hybrid commands are working! Both slash and prefix commands should function.")
 
 @bot.hybrid_command(name="hello")
 async def hello(ctx):

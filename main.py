@@ -83,6 +83,26 @@ async def on_ready():
     
     # Sync commands with Discord
     print(f"\n🔄 Syncing commands with Discord...")
+    
+    # Try to validate commands before syncing
+    print("   Validating command structure...")
+    invalid_commands = []
+    for cmd in tree_commands:
+        # Check description length
+        if cmd.description and len(cmd.description) > 100:
+            invalid_commands.append(f"{cmd.name}: description too long ({len(cmd.description)} chars)")
+            print(f"   ⚠️  {cmd.name}: description is {len(cmd.description)} characters (max 100)")
+        
+        # Check parameter descriptions
+        if hasattr(cmd, 'parameters'):
+            for param in cmd.parameters.values():
+                if hasattr(param, 'description') and param.description and len(param.description) > 100:
+                    invalid_commands.append(f"{cmd.name}.{param.name}: parameter description too long")
+                    print(f"   ⚠️  {cmd.name}.{param.name}: description is {len(param.description)} characters (max 100)")
+    
+    if invalid_commands:
+        print(f"\n❌ Found {len(invalid_commands)} validation issue(s)!")
+    
     try:
         if TEST_GUILD_ID:
             # Sync to specific guild for instant updates (good for testing)
@@ -110,7 +130,16 @@ async def on_ready():
     except discord.HTTPException as e:
         print(f"\n❌ HTTP Error syncing commands: {e}")
         print(f"   Status: {e.status}")
-        print(f"   Response: {e.response}")
+        print(f"   Code: {e.code if hasattr(e, 'code') else 'N/A'}")
+        if hasattr(e, 'text'):
+            print(f"   Response text: {e.text}")
+        try:
+            if hasattr(e, 'response') and e.response:
+                import json
+                response_data = await e.response.json() if hasattr(e.response, 'json') else str(e.response)
+                print(f"   Full response: {json.dumps(response_data, indent=2)}")
+        except:
+            pass
         import traceback
         traceback.print_exc()
     except Exception as e:
@@ -163,9 +192,20 @@ async def test(ctx):
     await ctx.send("✅ Hybrid commands are working! Both slash and prefix commands should function.")
 
 @bot.hybrid_command(name="sync")
-@app_commands.default_permissions(administrator=True)
 async def sync(ctx):
     """Manually sync slash commands (Admin only)"""
+    # Check if user is admin
+    if hasattr(ctx, 'author'):
+        # Prefix command
+        if not ctx.author.guild_permissions.administrator:
+            await ctx.send("❌ You need administrator permissions to use this command.")
+            return
+    elif hasattr(ctx, 'user'):
+        # Slash command
+        if not ctx.user.guild_permissions.administrator:
+            await ctx.send("❌ You need administrator permissions to use this command.", ephemeral=True)
+            return
+    
     try:
         synced = await bot.tree.sync()
         await ctx.send(f"✅ Synced {len(synced)} command(s)")
@@ -257,6 +297,13 @@ async def profile(ctx, name: str = None):
     try:
        Name = str(ctx.author) if not name else name.strip()
        User = UpdateSheetDiscordID(Name)
+       # Check if user has usernames registered
+       if not User.get('cdc') or User['cdc'] == "":
+           await ctx.send(f"❌ Error: No Chess.com username found. Use `/addcdc` to add your Chess.com username.")
+           return
+       if not User.get('lichess') or User['lichess'] == "":
+           await ctx.send(f"❌ Error: No Lichess username found. Use `/addli` to add your Lichess username.")
+           return
        ratings = chessdotcomstats(User['cdc'])
        liratings = ratinghistory(User['lichess'])
        await ctx.send(f"**Chess.com** *{User['cdc']}*\n{ratings['txt']}\n<https://www.chess.com/member/{User['cdc']}>\n\n**Lichess.org** *{User['lichess']}*\n{liratings['txt']}\n<https://lichess.org/@/{User['lichess']}>")
@@ -278,6 +325,9 @@ async def cdcprofile(ctx, name: str = None):
     try:
         Name = str(ctx.author) if not name else name.strip()
         User = UpdateSheetDiscordID(Name)
+        if not User.get('cdc') or User['cdc'] == "":
+            await ctx.send(f"❌ Error: No Chess.com username found. Use `/addcdc` to add your Chess.com username.")
+            return
         ratings = chessdotcomstats(User['cdc'])
         await ctx.send(f"{ratings['txt']} \n<https://www.chess.com/member/{User['cdc']}>")
     except Exception as e:
@@ -374,6 +424,9 @@ async def liprofile(ctx, name: str = None):
             name = name.strip()
         else:
             User = UpdateSheetDiscordID(str(ctx.author))
+            if not User.get('lichess') or User['lichess'] == "":
+                await ctx.send(f"❌ Error: No Lichess username found. Use `/addli` to add your Lichess username.")
+                return
             name = User['lichess']
         ratings = ratinghistory(name)
         await ctx.send(f"{ratings['txt']}\n<https://lichess.org/@/{name}> \n<https://lichess.org/insights/{name}/result/opening>")
@@ -424,6 +477,11 @@ async def lastli(ctx, skipno: int = None):
         Sheetinfo = UpdateSheetDiscordID(member,memberid)
     except Exception as e:
         await ctx.send(f"❌ Error: Could not find your user information. Error: {str(e)}")
+        return
+    
+    # Check if user has a lichess username
+    if not Sheetinfo.get('lichess') or Sheetinfo['lichess'] == "":
+        await ctx.send(f"❌ Error: You don't have a Lichess username registered. Use `/addli` to add your Lichess username first.")
         return
         
     try:

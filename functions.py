@@ -226,55 +226,97 @@ def UpdateSheet(players,tnmtinfo):
         Losses = TotalMatches - p.TourneyWins - p.TourneyDraws
 
 def UpdateSheetDiscordID(discName,discID=None,IRLname=None,lichessname=None,cdcname=None):
-    gc = gspread.service_account(filename='google-credentials.json')
-    Book = gc.open('Chess_Tourney')
-    sheet = Book.get_worksheet(0)
     try:
-        cell = sheet.find(str(discID))
-        if discID:
-            sheet.update_cell(cell.row,8,str(discID))
-        if IRLname:
-            sheet.update_cell(cell.row,1,IRLname)
-        if lichessname:
-            sheet.update_cell(cell.row,2,lichessname)
-        if cdcname:
-            sheet.update_cell(cell.row,9,cdcname)
-    except:
-        sheet.append_row([IRLname, lichessname, discName,0,0,0,0,str(discID),str(cdcname)])
-        cell = sheet.find(str(discID))
-    senderman = dict()
-    senderman['discName']  =  discName
-    senderman['discID'] = discID
-    senderman['lichess'] = sheet.cell(cell.row,2).value
-    senderman['cdc'] = sheet.cell(cell.row,9).value
-    senderman['IRLname'] = sheet.cell(cell.row,1).value
-    return senderman
+        gc = gspread.service_account(filename='google-credentials.json')
+        Book = gc.open('Chess_Tourney')
+        sheet = Book.get_worksheet(0)
+        try:
+            cell = sheet.find(str(discID)) if discID else None
+            if cell:
+                if discID:
+                    sheet.update_cell(cell.row,8,str(discID))
+                if IRLname:
+                    sheet.update_cell(cell.row,1,IRLname)
+                if lichessname:
+                    sheet.update_cell(cell.row,2,lichessname)
+                if cdcname:
+                    sheet.update_cell(cell.row,9,cdcname)
+        except Exception as e:
+            # User not found, append new row
+            print(f"User not found in sheet, appending: {e}")
+            sheet.append_row([IRLname, lichessname, discName,0,0,0,0,str(discID),str(cdcname)])
+            if discID:
+                cell = sheet.find(str(discID))
+            else:
+                cell = sheet.find(discName)
+        
+        if not cell:
+            # Fallback: search by name
+            try:
+                cell = sheet.find(discName)
+            except:
+                raise Exception(f"Could not find user {discName} in Google Sheet")
+        
+        senderman = dict()
+        senderman['discName']  =  discName
+        senderman['discID'] = discID
+        senderman['lichess'] = sheet.cell(cell.row,2).value if sheet.cell(cell.row,2).value else ""
+        senderman['cdc'] = sheet.cell(cell.row,9).value if sheet.cell(cell.row,9).value else ""
+        senderman['IRLname'] = sheet.cell(cell.row,1).value if sheet.cell(cell.row,1).value else ""
+        return senderman
+    except FileNotFoundError:
+        raise Exception("Google credentials file (google-credentials.json) not found. Please add it to the project root.")
+    except Exception as e:
+        print(f"Error in UpdateSheetDiscordID: {e}")
+        import traceback
+        traceback.print_exc()
+        raise Exception(f"Google Sheets error: {str(e)}")
 
 def AddLiSheet(lichessname,DiscName, DiscID, IRLname = None):
-    gc = gspread.service_account(filename='google-credentials.json')
-    Book = gc.open('Chess_Tourney')
-    sheet = Book.get_worksheet(0)
-    headers = sheet.row_values(1)
-    print(headers)
     try:
-        cell = sheet.find(str(DiscID))
-        sheet.update_cell(cell.row,2,lichessname)
-        if IRLname:
-            sheet.update_cell(cell.row,1,IRLname)
-        else:
-            sheet.update_cell(cell.row,1,DiscName)
-    except:
-        sheet.append_row([IRLname, lichessname, DiscName,0,0,0,0,str(DiscID)])
-    cell = sheet.find(lichessname)    
-    senderman = dict()
-    senderman['discName']  =  sheet.cell(cell.row,3).value
-    senderman['discID'] = DiscID
-    senderman['lichess'] = sheet.cell(cell.row,2).value
-    senderman['IRLname'] = sheet.cell(cell.row,1).value
+        gc = gspread.service_account(filename='google-credentials.json')
+        Book = gc.open('Chess_Tourney')
+        sheet = Book.get_worksheet(0)
+        headers = sheet.row_values(1)
+        print(headers)
+        try:
+            cell = sheet.find(str(DiscID))
+            sheet.update_cell(cell.row,2,lichessname)
+            if IRLname:
+                sheet.update_cell(cell.row,1,IRLname)
+            else:
+                sheet.update_cell(cell.row,1,DiscName)
+        except Exception as e:
+            # User not found, append new row
+            print(f"User not found in sheet, appending: {e}")
+            sheet.append_row([IRLname, lichessname, DiscName,0,0,0,0,str(DiscID)])
+        
+        # Find the cell by lichess name
+        try:
+            cell = sheet.find(lichessname)
+        except:
+            # Fallback: try to find by DiscID
+            try:
+                cell = sheet.find(str(DiscID))
+            except:
+                raise Exception(f"Could not find user {DiscName} or {lichessname} in Google Sheet")
+        
+        senderman = dict()
+        senderman['discName']  =  sheet.cell(cell.row,3).value if sheet.cell(cell.row,3).value else DiscName
+        senderman['discID'] = DiscID
+        senderman['lichess'] = sheet.cell(cell.row,2).value if sheet.cell(cell.row,2).value else lichessname
+        senderman['IRLname'] = sheet.cell(cell.row,1).value if sheet.cell(cell.row,1).value else IRLname
 
-    userlistdict = sheet.get_all_records()
-    
-    return senderman
+        userlistdict = sheet.get_all_records()
+        
+        return senderman
+    except FileNotFoundError:
+        raise Exception("Google credentials file (google-credentials.json) not found. Please add it to the project root.")
+    except Exception as e:
+        print(f"Error in AddLiSheet: {e}")
+        import traceback
+        traceback.print_exc()
+        raise Exception(f"Google Sheets error: {str(e)}")
 
 
 def GetStats(discID):

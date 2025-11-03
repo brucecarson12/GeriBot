@@ -128,16 +128,34 @@ async def on_command_error(ctx, error):
 @bot.tree.error
 async def on_app_command_error(interaction: discord.Interaction, error: discord.app_commands.AppCommandError):
     """Handle errors for slash commands"""
-    if isinstance(error, discord.app_commands.CommandInvokeError):
-        await interaction.response.send_message(
-            f"An error occurred while executing the command: {str(error.original)}",
-            ephemeral=True
-        )
+    # Log the error for debugging
+    print(f"❌ Slash command error in {interaction.command.name if interaction.command else 'unknown'}: {error}")
+    import traceback
+    traceback.print_exc()
+    
+    # Check if interaction was already responded to
+    if interaction.response.is_done():
+        # Try to follow up
+        try:
+            await interaction.followup.send(
+                f"❌ An error occurred: {str(error.original) if isinstance(error, discord.app_commands.CommandInvokeError) else str(error)}",
+                ephemeral=True
+            )
+        except:
+            pass
     else:
-        await interaction.response.send_message(
-            f"An error occurred: {str(error)}",
-            ephemeral=True
-        )
+        # Respond to the interaction
+        try:
+            error_msg = str(error.original) if isinstance(error, discord.app_commands.CommandInvokeError) else str(error)
+            # Limit error message length
+            if len(error_msg) > 1000:
+                error_msg = error_msg[:997] + "..."
+            await interaction.response.send_message(
+                f"❌ An error occurred: {error_msg}",
+                ephemeral=True
+            )
+        except Exception as e:
+            print(f"Failed to send error message: {e}")
 
 @bot.hybrid_command(name="test")
 async def test(ctx):
@@ -177,10 +195,20 @@ async def resources(ctx):
 @bot.hybrid_command(name="puzzle")
 async def puzzle(ctx):
     """Gives a random puzzle to the chat"""
-    filename2,clue,title,fentxt,solution = randpuzzle()
-    await ctx.send(f"Clue: {clue} \nGame: {title} \n||{solution}|| \n (Please use '||' around your answer to keep it hidden)")
-    await ctx.send(file=discord.File(filename2))
-    os.remove(filename2)
+    # For slash commands, defer if this might take time
+    if ctx.interaction and not ctx.interaction.response.is_done():
+        await ctx.defer()
+    
+    try:
+        filename2,clue,title,fentxt,solution = randpuzzle()
+        await ctx.send(f"Clue: {clue} \nGame: {title} \n||{solution}|| \n (Please use '||' around your answer to keep it hidden)")
+        await ctx.send(file=discord.File(filename2))
+        os.remove(filename2)
+    except Exception as e:
+        await ctx.send(f"❌ Error generating puzzle: {str(e)}")
+        print(f"Error in puzzle: {e}")
+        import traceback
+        traceback.print_exc()
 
 @bot.hybrid_command(name="challenge")
 @app_commands.describe(limit="Time limit in minutes (default: 5)", inc="Time increment in seconds (default: 0)")
@@ -194,8 +222,18 @@ async def challenge(ctx, limit: int = 5, inc: int = 0):
 @bot.hybrid_command(name="onlinenow")
 async def onlinenow(ctx):
     """Lists the current players I see online now."""
-    onlinemessage = OnlineNow()
-    await ctx.send(f"{onlinemessage}")
+    # For slash commands, defer if this might take time
+    if ctx.interaction and not ctx.interaction.response.is_done():
+        await ctx.defer()
+    
+    try:
+        onlinemessage = OnlineNow()
+        await ctx.send(f"{onlinemessage}")
+    except Exception as e:
+        await ctx.send(f"❌ Error: {str(e)}")
+        print(f"Error in onlinenow: {e}")
+        import traceback
+        traceback.print_exc()
 
 @bot.hybrid_command(name="performance")
 @app_commands.describe(score="Your tournament score (points)", opp_ratings="Space-separated opponent ratings (e.g., '1614 1195 1964 1900')")
@@ -212,27 +250,41 @@ async def performance(ctx, score: int, opp_ratings: str):
 @app_commands.describe(name="Discord username (optional, defaults to you)")
 async def profile(ctx, name: str = None):  
     """Grabs chess.com and lichess profiles"""
+    # For slash commands, defer if this might take time
+    if ctx.interaction and not ctx.interaction.response.is_done():
+        await ctx.defer()
+    
     try:
        Name = str(ctx.author) if not name else name.strip()
        User = UpdateSheetDiscordID(Name)
        ratings = chessdotcomstats(User['cdc'])
        liratings = ratinghistory(User['lichess'])
        await ctx.send(f"**Chess.com** *{User['cdc']}*\n{ratings['txt']}\n<https://www.chess.com/member/{User['cdc']}>\n\n**Lichess.org** *{User['lichess']}*\n{liratings['txt']}\n<https://lichess.org/@/{User['lichess']}>")
-    except:
-       await ctx.send(f"Hmm, I couldn't find your name. Use the $addcdc command to add a username to my records. If you're looking for another player then make sure you've typed a username behind your command(Ex. $cdcprofile plsBnyce).")
+    except Exception as e:
+       await ctx.send(f"❌ Error: Could not find your profile. Use the $addcdc command to add a username. Error: {str(e)}")
+       print(f"Error in profile: {e}")
+       import traceback
+       traceback.print_exc()
 
 
 @bot.hybrid_command(name="cdcprofile")
 @app_commands.describe(name="Discord username (optional, defaults to you)")
 async def cdcprofile(ctx, name: str = None):
     """Grabs a chess.com profile and stats"""
+    # For slash commands, defer if this might take time
+    if ctx.interaction and not ctx.interaction.response.is_done():
+        await ctx.defer()
+    
     try:
         Name = str(ctx.author) if not name else name.strip()
         User = UpdateSheetDiscordID(Name)
         ratings = chessdotcomstats(User['cdc'])
         await ctx.send(f"{ratings['txt']} \n<https://www.chess.com/member/{User['cdc']}>")
-    except:
-        await ctx.send(f"Hmm, I couldn't find your name. Use the $addcdc command to add a username to my records. If you're looking for another player then make sure you've typed a username behind your command(Ex. $cdcprofile plsBnyce).")
+    except Exception as e:
+        await ctx.send(f"❌ Error: Could not find profile. Use $addcdc to add a username. Error: {str(e)}")
+        print(f"Error in cdcprofile: {e}")
+        import traceback
+        traceback.print_exc()
 
 
 @bot.hybrid_command(name="addcdc")
@@ -251,6 +303,10 @@ async def addcdc(ctx, cdc_name: str, irl_name: str = None):
 @app_commands.describe(name="Chess.com username (optional)")
 async def lastcdc(ctx, name: str = None):
     """Grabs your last chess.com game"""
+    # For slash commands, defer if this might take time
+    if ctx.interaction and not ctx.interaction.response.is_done():
+        await ctx.defer()
+    
     try:
         Name = str(ctx.author)
         memberId = ctx.author.id
@@ -260,32 +316,59 @@ async def lastcdc(ctx, name: str = None):
         await ctx.send(f"{lastgame['result']}\n{lastgame['vstxt']}\n<{lastgame['url']}>")
         await ctx.send(file=discord.File("temp/chess.gif"))
 
-    except:
-        await ctx.send(f"Still testing this one. bear with me.")
+    except Exception as e:
+        await ctx.send(f"❌ Error fetching game: {str(e)}")
+        print(f"Error in lastcdc: {e}")
+        import traceback
+        traceback.print_exc()
 
 @bot.hybrid_command(name="cdcleaderboard")
 @app_commands.describe(perf="Performance type: streak, bullet, blitz, rapid, classical, or correspondence")
 async def cdcleaderboard(ctx, perf: str = 'blitz'):
     """Chess.com Leaderboard generator"""
-    from functions import cdc_leaderboard
-    cdc_derboard = cdc_leaderboard(perf)
-    await ctx.send(f"{cdc_derboard}")
+    # For slash commands, defer if this might take time
+    if ctx.interaction and not ctx.interaction.response.is_done():
+        await ctx.defer()
+    
+    try:
+        from functions import cdc_leaderboard
+        cdc_derboard = cdc_leaderboard(perf)
+        await ctx.send(f"{cdc_derboard}")
+    except Exception as e:
+        await ctx.send(f"❌ Error: {str(e)}")
+        print(f"Error in cdcleaderboard: {e}")
+        import traceback
+        traceback.print_exc()
 
 #-----Lichess.org Commands-----
 
 @bot.hybrid_command(name="lipuzzle")
 async def lipuzzle(ctx):
     """Gives a random puzzle from lichess"""
-    puzzle = lichesspuzzle()
-    await ctx.send(f"Game: <{puzzle['gameurl']}> \nRating: {puzzle['rating']} \nThemes: ||{puzzle['themes']}|| \nSolution: ||{puzzle['solution']}|| \n{puzzle['toPlay']}")
-    await ctx.send(file=discord.File(puzzle['img']))
-    os.remove(puzzle['img'])
+    # For slash commands, defer if this might take time
+    if ctx.interaction and not ctx.interaction.response.is_done():
+        await ctx.defer()
+    
+    try:
+        puzzle = lichesspuzzle()
+        await ctx.send(f"Game: <{puzzle['gameurl']}> \nRating: {puzzle['rating']} \nThemes: ||{puzzle['themes']}|| \nSolution: ||{puzzle['solution']}|| \n{puzzle['toPlay']}")
+        await ctx.send(file=discord.File(puzzle['img']))
+        os.remove(puzzle['img'])
+    except Exception as e:
+        await ctx.send(f"❌ Error generating puzzle: {str(e)}")
+        print(f"Error in lipuzzle: {e}")
+        import traceback
+        traceback.print_exc()
 
 
 @bot.hybrid_command(name="liprofile")
 @app_commands.describe(name="Lichess username (optional, case sensitive)")
 async def liprofile(ctx, name: str = None):
-    """Grabs a lichess profile""" 
+    """Grabs a lichess profile"""
+    # For slash commands, defer if this might take time
+    if ctx.interaction and not ctx.interaction.response.is_done():
+        await ctx.defer()
+    
     try:
         if name:
             name = name.strip()
@@ -294,39 +377,68 @@ async def liprofile(ctx, name: str = None):
             name = User['lichess']
         ratings = ratinghistory(name)
         await ctx.send(f"{ratings['txt']}\n<https://lichess.org/@/{name}> \n<https://lichess.org/insights/{name}/result/opening>")
-    except:
-        await ctx.send(f"Hmm, I couldn't find your name. Use the $addli command to add a username to my records. If you're looking for another player then make sure you've typed a username behind your command(Ex. $liprofile bnyce).")
+    except Exception as e:
+        await ctx.send(f"❌ Error: Could not find profile. Use $addli to add a username. Error: {str(e)}")
+        print(f"Error in liprofile: {e}")
+        import traceback
+        traceback.print_exc()
 
 
 @bot.hybrid_command(name="findli")
 @app_commands.describe(user1="First lichess username", user2="Second lichess username")
 async def findli(ctx, user1: str, user2: str):
     """Finds the most recently started game between 2 lichess users"""
-    p1, p2 = user1.strip(), user2.strip()
-    gameinfo = lichesslink(p1,p2)
-    infotext = "Most Recent Game"
-    if gameinfo['live']:
-        infotext = "Live Game"
-    await ctx.send(f"{infotext}: <{gameinfo['link']}> \n{gameinfo['opening']}")
-    with open('game.gif', 'wb') as f:
-        f.write(requests.get(gameinfo['giflink']).content)
-    await ctx.send(file=discord.File('game.gif'))
-    os.remove('game.gif')
+    # For slash commands, defer if this might take time
+    if ctx.interaction and not ctx.interaction.response.is_done():
+        await ctx.defer()
+    
+    try:
+        p1, p2 = user1.strip(), user2.strip()
+        gameinfo = lichesslink(p1,p2)
+        infotext = "Most Recent Game"
+        if gameinfo['live']:
+            infotext = "Live Game"
+        await ctx.send(f"{infotext}: <{gameinfo['link']}> \n{gameinfo['opening']}")
+        with open('game.gif', 'wb') as f:
+            f.write(requests.get(gameinfo['giflink']).content)
+        await ctx.send(file=discord.File('game.gif'))
+        os.remove('game.gif')
+    except Exception as e:
+        await ctx.send(f"❌ Error: {str(e)}")
+        print(f"Error in findli: {e}")
+        import traceback
+        traceback.print_exc()
 
 
 @bot.hybrid_command(name="lastli")
 @app_commands.describe(skipno="Number of games to skip (0 = most recent, default: 0)")
 async def lastli(ctx, skipno: int = None):
     """Grabs your last lichess game"""
+    # For slash commands, we need to defer if this might take more than 3 seconds
+    if ctx.interaction and not ctx.interaction.response.is_done():
+        await ctx.defer()
+    
     member = str(ctx.author)
     memberid = ctx.author.id
-    Sheetinfo = UpdateSheetDiscordID(member,memberid)
+    try:
+        Sheetinfo = UpdateSheetDiscordID(member,memberid)
+    except Exception as e:
+        await ctx.send(f"❌ Error: Could not find your user information. Error: {str(e)}")
+        return
+        
     try:
         skipno = int(skipno) if skipno is not None else 0
         lastone = lastgame(Sheetinfo['lichess'],skipno)
-    except:
+    except Exception as e:
         #maybe we add a None check to make this a smoother process but it works now.
-        lastone = lastgame(Sheetinfo['lichess'],0)
+        try:
+            lastone = lastgame(Sheetinfo['lichess'],0)
+        except Exception as e2:
+            await ctx.send(f"❌ Error fetching game data: {str(e2)}")
+            print(f"Error in lastli: {e2}")
+            import traceback
+            traceback.print_exc()
+            return
 
     result = str()
     if lastone['status'] == 'draw':
@@ -359,9 +471,19 @@ async def addli(ctx, lichess_name: str, irl_name: str = None):
 @app_commands.describe(perf="Performance type: streak, bullet, blitz, rapid, classical, or correspondence")
 async def lileaderboard(ctx, perf: str = 'blitz'):
     """Lichess Leaderboard generator"""
-    from functions import leaderboard
-    li_derboard = leaderboard(perf)
-    await ctx.send(f"{li_derboard}")
+    # For slash commands, defer if this might take time
+    if ctx.interaction and not ctx.interaction.response.is_done():
+        await ctx.defer()
+    
+    try:
+        from functions import leaderboard
+        li_derboard = leaderboard(perf)
+        await ctx.send(f"{li_derboard}")
+    except Exception as e:
+        await ctx.send(f"❌ Error: {str(e)}")
+        print(f"Error in lileaderboard: {e}")
+        import traceback
+        traceback.print_exc()
      
 
 bot.run(TOKEN)

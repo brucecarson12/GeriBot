@@ -186,32 +186,92 @@ async def findli(ctx,user1,user2):
 @bot.command()
 async def lastli(ctx, skipno=None):
     """This command grabs your last lichess game(based on start date)."""
+    print(f"[lastli] Command called by {ctx.author} with skipno={skipno}")
     member = str(ctx.author)
     memberid = ctx.author.id
-    Sheetinfo = UpdateSheetDiscordID(member,memberid)
+    print(f"[lastli] Member: {member}, ID: {memberid}")
+    
     try:
-        skipno = int(skipno)
+        Sheetinfo = UpdateSheetDiscordID(member,memberid)
+        print(f"[lastli] Sheetinfo retrieved: lichess={Sheetinfo.get('lichess', 'None')}")
+    except Exception as e:
+        print(f"[lastli] Error getting Sheetinfo: {e}")
+        await ctx.send(f"Error retrieving user information: {e}")
+        return
+    
+    if not Sheetinfo.get('lichess'):
+        print(f"[lastli] No lichess username found for {member}")
+        await ctx.send("No lichess username found. Use $addli to add your lichess username.")
+        return
+    
+    try:
+        skipno = int(skipno) if skipno else 0
+        print(f"[lastli] Fetching game with skipno={skipno} for user {Sheetinfo['lichess']}")
         lastone = lastgame(Sheetinfo['lichess'],skipno)
-    except:
-        #maybe we add a None check to make this a smoother process but it works now.
+        print(f"[lastli] Game retrieved: id={lastone.get('id', 'None')}, status={lastone.get('status', 'None')}")
+    except ValueError as e:
+        print(f"[lastli] ValueError converting skipno, using 0: {e}")
         lastone = lastgame(Sheetinfo['lichess'],0)
+    except Exception as e:
+        print(f"[lastli] Error fetching game: {e}")
+        await ctx.send(f"Error fetching game: {e}")
+        return
 
     result = str()
-    if lastone['status'] == 'draw':
+    if lastone.get('status') == 'draw':
         result = "\nResult: 1/2-1/2"
     elif 'winner' in lastone.keys():
         if lastone['winner'] == 'white':
             result = "\nResult: 1-0"
         elif lastone['winner'] == 'black':
             result = "\nResult: 0-1"
+    
     analysis = str()
-    if lastone['analysis'] != None:
-        analysis = (f"Average Centipawn Loss: {lastone['analysis']['acpl']} \nInaccuracies({lastone['analysis']['inaccuracy']}): {', '.join(lastone['badmoves']['inaccuracy'])} \nMistakes({lastone['analysis']['mistake']}): {', '.join(lastone['badmoves']['mistake'])} \nBlunders({lastone['analysis']['blunder']}): {', '.join(lastone['badmoves']['blunder'])}")
-    await ctx.send(f"{lastone['perf']}: <{lastone['link']}> \n{lastone['opening']}\n{analysis}{result} [{lastone['end']}]")
-    with open('temp/lastgame.gif', 'wb') as f:
-        f.write(requests.get(lastone['gif']).content)
-    await ctx.send(file=discord.File('temp/lastgame.gif'))
-    os.remove('temp/lastgame.gif')
+    if lastone.get('analysis') != None:
+        try:
+            analysis = (f"Average Centipawn Loss: {lastone['analysis']['acpl']} \nInaccuracies({lastone['analysis']['inaccuracy']}): {', '.join(lastone['badmoves']['inaccuracy'])} \nMistakes({lastone['analysis']['mistake']}): {', '.join(lastone['badmoves']['mistake'])} \nBlunders({lastone['analysis']['blunder']}): {', '.join(lastone['badmoves']['blunder'])}")
+        except Exception as e:
+            print(f"[lastli] Error formatting analysis: {e}")
+            analysis = ""
+    
+    try:
+        game_info = f"{lastone.get('perf', 'Unknown')}: <{lastone.get('link', 'No link')}> \n{lastone.get('opening', 'No opening info')}\n{analysis}{result} [{lastone.get('end', 'Unknown')}]"
+        print(f"[lastli] Sending game info message")
+        await ctx.send(game_info)
+    except Exception as e:
+        print(f"[lastli] Error sending game info: {e}")
+        await ctx.send(f"Error formatting game info: {e}")
+        return
+    
+    try:
+        gif_url = lastone.get('gif')
+        if not gif_url:
+            print(f"[lastli] No GIF URL found in lastone")
+            await ctx.send("No GIF available for this game.")
+            return
+        
+        print(f"[lastli] Downloading GIF from {gif_url}")
+        with open('temp/lastgame.gif', 'wb') as f:
+            response = requests.get(gif_url)
+            print(f"[lastli] GIF download status: {response.status_code}")
+            if response.status_code == 200:
+                f.write(response.content)
+                print(f"[lastli] GIF saved successfully")
+            else:
+                print(f"[lastli] Failed to download GIF: HTTP {response.status_code}")
+                await ctx.send(f"Failed to download game GIF (HTTP {response.status_code})")
+                return
+        
+        print(f"[lastli] Sending GIF file")
+        await ctx.send(file=discord.File('temp/lastgame.gif'))
+        print(f"[lastli] Cleaning up temporary GIF file")
+        os.remove('temp/lastgame.gif')
+        print(f"[lastli] Command completed successfully")
+    except Exception as e:
+        print(f"[lastli] Error handling GIF: {e}")
+        await ctx.send(f"Error processing game GIF: {e}")
+        if os.path.exists('temp/lastgame.gif'):
+            os.remove('temp/lastgame.gif')
 
 @bot.command()
 async def addli(ctx, Lichessname , IRLname=None):

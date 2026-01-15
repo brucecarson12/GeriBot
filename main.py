@@ -184,34 +184,49 @@ async def findli(ctx,user1,user2):
 
 
 @bot.command()
-async def lastli(ctx, skipno=None):
-    """This command grabs your last lichess game(based on start date)."""
-    print(f"[lastli] Command called by {ctx.author} with skipno={skipno}")
+async def lastli(ctx, username=None):
+    """This command grabs your last lichess game(based on start date). Can specify a lichess username or defaults to your own."""
+    print(f"[lastli] Command called by {ctx.author} with username={username}")
     member = str(ctx.author)
     memberid = ctx.author.id
     print(f"[lastli] Member: {member}, ID: {memberid}")
     
-    try:
-        Sheetinfo = UpdateSheetDiscordID(member,memberid)
-        print(f"[lastli] Sheetinfo retrieved: lichess={Sheetinfo.get('lichess', 'None')}")
-    except Exception as e:
-        print(f"[lastli] Error getting Sheetinfo: {e}")
-        await ctx.send(f"Error retrieving user information: {e}")
-        return
+    # Determine which lichess username to use
+    lichess_username = None
+    skipno = 0
     
-    if not Sheetinfo.get('lichess'):
-        print(f"[lastli] No lichess username found for {member}")
-        await ctx.send("No lichess username found. Use $addli to add your lichess username.")
-        return
+    if username:
+        # Check if username is a number (for backward compatibility with skipno)
+        try:
+            skipno = int(username)
+            print(f"[lastli] Parameter is a number, treating as skipno={skipno}")
+            # If it's a number, use current user's lichess username
+            username = None
+        except ValueError:
+            # It's a string, treat it as a lichess username
+            lichess_username = username.strip()
+            print(f"[lastli] Using provided lichess username: {lichess_username}")
+    
+    # If no username provided, get current user's lichess username
+    if not lichess_username:
+        try:
+            Sheetinfo = UpdateSheetDiscordID(member,memberid)
+            print(f"[lastli] Sheetinfo retrieved: lichess={Sheetinfo.get('lichess', 'None')}")
+            lichess_username = Sheetinfo.get('lichess')
+        except Exception as e:
+            print(f"[lastli] Error getting Sheetinfo: {e}")
+            await ctx.send(f"Error retrieving user information: {e}")
+            return
+        
+        if not lichess_username:
+            print(f"[lastli] No lichess username found for {member}")
+            await ctx.send("No lichess username found. Use $addli to add your lichess username, or specify a username: $lastli <username>")
+            return
     
     try:
-        skipno = int(skipno) if skipno else 0
-        print(f"[lastli] Fetching game with skipno={skipno} for user {Sheetinfo['lichess']}")
-        lastone = lastgame(Sheetinfo['lichess'],skipno)
+        print(f"[lastli] Fetching game with skipno={skipno} for user {lichess_username}")
+        lastone = lastgame(lichess_username, skipno)
         print(f"[lastli] Game retrieved: id={lastone.get('id', 'None')}, status={lastone.get('status', 'None')}")
-    except ValueError as e:
-        print(f"[lastli] ValueError converting skipno, using 0: {e}")
-        lastone = lastgame(Sheetinfo['lichess'],0)
     except Exception as e:
         print(f"[lastli] Error fetching game: {e}")
         await ctx.send(f"Error fetching game: {e}")

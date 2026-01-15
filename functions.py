@@ -428,7 +428,9 @@ def lastgame(user1,skip: int):
     game['perf'] = f"{lastgame[skip]['variant'].title()} {lastgame[skip]['speed'].title()} Game"
     game['side'] = 'white' if lastgame[skip]['players']['white']['user']['name'].lower() == p1 else 'black'
     game['link'] = f"https://lichess.org/{game['id']}"
+    # Store both URL formats - with side (preferred for perspective) and without (fallback)
     game['gif'] = f"https://lichess1.org/game/export/gif/{game['side']}/{game['id']}.gif"
+    game['gif_fallback'] = f"https://lichess1.org/game/export/gif/{game['id']}.gif"
     gameinfo  = client.games.export(lastgame[skip]['id'])
     game['analysis'] = None
     game['opening'] = None

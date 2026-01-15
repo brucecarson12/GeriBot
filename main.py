@@ -244,23 +244,37 @@ async def lastli(ctx, skipno=None):
         return
     
     try:
+        # Try the primary URL format (with side for correct perspective)
         gif_url = lastone.get('gif')
         if not gif_url:
             print(f"[lastli] No GIF URL found in lastone")
             await ctx.send("No GIF available for this game.")
             return
         
-        print(f"[lastli] Downloading GIF from {gif_url}")
-        with open('temp/lastgame.gif', 'wb') as f:
-            response = requests.get(gif_url)
-            print(f"[lastli] GIF download status: {response.status_code}")
-            if response.status_code == 200:
+        print(f"[lastli] Downloading GIF from {gif_url} (perspective: {lastone.get('side', 'unknown')})")
+        response = requests.get(gif_url, timeout=10)
+        print(f"[lastli] GIF download status: {response.status_code}")
+        
+        # If 404, try the fallback format without side
+        if response.status_code == 404:
+            fallback_url = lastone.get('gif_fallback')
+            if fallback_url:
+                print(f"[lastli] Primary URL failed, trying fallback format: {fallback_url}")
+                response = requests.get(fallback_url, timeout=10)
+                print(f"[lastli] Fallback GIF download status: {response.status_code}")
+                if response.status_code == 200:
+                    gif_url = fallback_url
+                    print(f"[lastli] Using fallback URL (no perspective control)")
+        
+        if response.status_code == 200:
+            with open('temp/lastgame.gif', 'wb') as f:
                 f.write(response.content)
-                print(f"[lastli] GIF saved successfully")
-            else:
-                print(f"[lastli] Failed to download GIF: HTTP {response.status_code}")
-                await ctx.send(f"Failed to download game GIF (HTTP {response.status_code})")
-                return
+            print(f"[lastli] GIF saved successfully")
+        else:
+            print(f"[lastli] Failed to download GIF: HTTP {response.status_code}")
+            # Don't fail the entire command if GIF fails - just notify user
+            await ctx.send(f"⚠️ Game info retrieved, but GIF unavailable (HTTP {response.status_code})")
+            return
         
         print(f"[lastli] Sending GIF file")
         await ctx.send(file=discord.File('temp/lastgame.gif'))

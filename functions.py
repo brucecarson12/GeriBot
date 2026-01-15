@@ -226,29 +226,83 @@ def UpdateSheet(players,tnmtinfo):
         Losses = TotalMatches - p.TourneyWins - p.TourneyDraws
 
 def UpdateSheetDiscordID(discName,discID=None,IRLname=None,lichessname=None,cdcname=None):
-    gc = gspread.service_account(filename='google-credentials.json')
-    Book = gc.open('Chess_Tourney')
-    sheet = Book.get_worksheet(0)
+    print(f"[UpdateSheetDiscordID] Called with discName={discName}, discID={discID}")
+    
+    # Try to authenticate with Google Sheets
     try:
-        cell = sheet.find(str(discID))
+        print(f"[UpdateSheetDiscordID] Attempting to authenticate with google-credentials.json")
+        if not os.path.exists('google-credentials.json'):
+            print(f"[UpdateSheetDiscordID] ERROR: google-credentials.json file not found")
+            raise FileNotFoundError("google-credentials.json not found")
+        
+        gc = gspread.service_account(filename='google-credentials.json')
+        print(f"[UpdateSheetDiscordID] Authentication successful")
+    except FileNotFoundError as e:
+        print(f"[UpdateSheetDiscordID] FileNotFoundError: {e}")
+        raise
+    except Exception as e:
+        print(f"[UpdateSheetDiscordID] Authentication error: {type(e).__name__}: {e}")
+        raise Exception(f"Failed to authenticate with Google Sheets: {e}")
+    
+    # Open the spreadsheet
+    try:
+        print(f"[UpdateSheetDiscordID] Opening 'Chess_Tourney' spreadsheet")
+        Book = gc.open('Chess_Tourney')
+        sheet = Book.get_worksheet(0)
+        print(f"[UpdateSheetDiscordID] Spreadsheet opened successfully")
+    except Exception as e:
+        print(f"[UpdateSheetDiscordID] Error opening spreadsheet: {type(e).__name__}: {e}")
+        raise Exception(f"Failed to open spreadsheet: {e}")
+    
+    # Try to find existing user or create new row
+    try:
         if discID:
-            sheet.update_cell(cell.row,8,str(discID))
-        if IRLname:
-            sheet.update_cell(cell.row,1,IRLname)
-        if lichessname:
-            sheet.update_cell(cell.row,2,lichessname)
-        if cdcname:
-            sheet.update_cell(cell.row,9,cdcname)
-    except:
-        sheet.append_row([IRLname, lichessname, discName,0,0,0,0,str(discID),str(cdcname)])
-        cell = sheet.find(str(discID))
-    senderman = dict()
-    senderman['discName']  =  discName
-    senderman['discID'] = discID
-    senderman['lichess'] = sheet.cell(cell.row,2).value
-    senderman['cdc'] = sheet.cell(cell.row,9).value
-    senderman['IRLname'] = sheet.cell(cell.row,1).value
-    return senderman
+            print(f"[UpdateSheetDiscordID] Searching for discID: {discID}")
+            cell = sheet.find(str(discID))
+            print(f"[UpdateSheetDiscordID] Found existing row: {cell.row}")
+            
+            if discID:
+                sheet.update_cell(cell.row,8,str(discID))
+            if IRLname:
+                sheet.update_cell(cell.row,1,IRLname)
+            if lichessname:
+                sheet.update_cell(cell.row,2,lichessname)
+            if cdcname:
+                sheet.update_cell(cell.row,9,cdcname)
+        else:
+            # If no discID, try to find by discName
+            print(f"[UpdateSheetDiscordID] No discID provided, searching by discName: {discName}")
+            cell = sheet.find(discName)
+            print(f"[UpdateSheetDiscordID] Found existing row: {cell.row}")
+    except gspread.exceptions.CellNotFound:
+        print(f"[UpdateSheetDiscordID] User not found, creating new row")
+        try:
+            sheet.append_row([IRLname, lichessname, discName,0,0,0,0,str(discID),str(cdcname)])
+            if discID:
+                cell = sheet.find(str(discID))
+            else:
+                cell = sheet.find(discName)
+            print(f"[UpdateSheetDiscordID] New row created at: {cell.row}")
+        except Exception as e:
+            print(f"[UpdateSheetDiscordID] Error creating new row: {type(e).__name__}: {e}")
+            raise Exception(f"Failed to create new row: {e}")
+    except Exception as e:
+        print(f"[UpdateSheetDiscordID] Unexpected error finding/updating user: {type(e).__name__}: {e}")
+        raise
+    
+    # Retrieve user data
+    try:
+        senderman = dict()
+        senderman['discName']  =  discName
+        senderman['discID'] = discID
+        senderman['lichess'] = sheet.cell(cell.row,2).value or ""
+        senderman['cdc'] = sheet.cell(cell.row,9).value or ""
+        senderman['IRLname'] = sheet.cell(cell.row,1).value or ""
+        print(f"[UpdateSheetDiscordID] Successfully retrieved user data: lichess={senderman['lichess']}, cdc={senderman['cdc']}")
+        return senderman
+    except Exception as e:
+        print(f"[UpdateSheetDiscordID] Error retrieving user data: {type(e).__name__}: {e}")
+        raise Exception(f"Failed to retrieve user data: {e}")
 
 def AddLiSheet(lichessname,DiscName, DiscID, IRLname = None):
     gc = gspread.service_account(filename='google-credentials.json')

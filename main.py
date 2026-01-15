@@ -208,7 +208,10 @@ async def lastli(ctx, skipno=None):
     if lastone['analysis'] != None:
         analysis = (f"Average Centipawn Loss: {lastone['analysis']['acpl']} \nInaccuracies({lastone['analysis']['inaccuracy']}): {', '.join(lastone['badmoves']['inaccuracy'])} \nMistakes({lastone['analysis']['mistake']}): {', '.join(lastone['badmoves']['mistake'])} \nBlunders({lastone['analysis']['blunder']}): {', '.join(lastone['badmoves']['blunder'])}")
     await ctx.send(f"{lastone['perf']}: <{lastone['link']}> \n{lastone['opening']}\n{analysis}{result} [{lastone['end']}]")
-    await ctx.send(lastone['gif'])
+    with open('temp/lastgame.gif', 'wb') as f:
+        f.write(requests.get(lastone['gif']).content)
+    await ctx.send(file=discord.File('temp/lastgame.gif'))
+    os.remove('temp/lastgame.gif')
 
 @bot.command()
 async def addli(ctx, Lichessname , IRLname=None):

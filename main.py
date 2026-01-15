@@ -244,17 +244,12 @@ async def lastli(ctx, skipno=None):
         return
     
     try:
-        print(f"[lastli] Downloading GIF from {lastone['gif']}")
-        with open('temp/lastgame.gif', 'wb') as f:
-            f.write(requests.get(lastone['gif']).content)
-        await ctx.send(file=discord.File('temp/lastgame.gif'))
-        os.remove('temp/lastgame.gif')
+        print(f"[lastli] Sending GIF link: {lastone['gif']}")
+        await ctx.send(lastone['gif'])
         print(f"[lastli] Command completed successfully")
     except Exception as e:
-        print(f"[lastli] Error handling GIF: {e}")
-        await ctx.send(f"Error processing game GIF: {e}")
-        if os.path.exists('temp/lastgame.gif'):
-            os.remove('temp/lastgame.gif')
+        print(f"[lastli] Error sending GIF link: {e}")
+        await ctx.send(f"Error: {e}")
 
 @bot.command()
 async def addli(ctx, Lichessname , IRLname=None):

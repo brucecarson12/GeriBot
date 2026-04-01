@@ -1,9 +1,7 @@
-"Hey, I'm Geri! I like to play chess against myself but I can also help you setup a tournament if you'd like.
- 
-Commands: 
--- $puzzle : generates a chess puzzle in the chat 
--- $addli : i'll remember your username and add it to the current tournament
--- $lastli : shows your last game(based on start date, not end date of the game)
--- $findli : will find a lichess games using usernames
--- $liprofile : I'll find someones profile for you if I know their name
--- $resources : provides a list of useful chess resources"
+Hey, I'm Geri. I link your Discord account to Chess.com and show stats, last games, and a server leaderboard.
+
+Commands (use **$** prefix or **/** slash — same commands):
+• **addcdc** — save your Chess.com username (optional real name)
+• **cdcprofile** — your ratings and profile link (optional: another member's Discord name if they're registered)
+• **lastcdc** — your most recent Chess.com game + GIF (optional: a Chess.com username)
+• **cdcleaderboard** — ratings for everyone registered here (optional: bullet, blitz, rapid, …)

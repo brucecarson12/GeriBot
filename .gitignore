@@ -1,6 +1,7 @@
 /.env
 /.vscode
-/__pycache__
+**__pycache__
 /.png
 /.SVG
 google-credentials.json
+/temp/

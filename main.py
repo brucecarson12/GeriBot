@@ -8,16 +8,13 @@ import logging
 import sys
 
 import discord
-import nest_asyncio
 from discord import app_commands
 from discord.ext import commands
 
 from geri.config import debug_mode, get_discord_token, get_test_guild_id
 from geri.db.connection import init_db
 from geri.services.chesscom_bootstrap import ensure_chesscom_configured
-from geri.utils.discord_safe import clip_message, user_facing_error
-
-nest_asyncio.apply()
+from geri.utils.discord_safe import clip_message, send_ctx_message, user_facing_error
 
 logging.basicConfig(
     level=logging.DEBUG if debug_mode() else logging.INFO,
@@ -65,7 +62,7 @@ async def on_ready():
     log.info("Logged in as %s (%s)", bot.user, bot.user.id)
     await bot.change_presence(
         activity=discord.Activity(
-            type=discord.ActivityType.listening, name="$geri / /geri"
+            type=discord.ActivityType.listening, name="/geri · $geri"
         )
     )
 
@@ -73,15 +70,18 @@ async def on_ready():
 @bot.event
 async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send("Not enough information for that command.")
+        await send_ctx_message(ctx, "Not enough information for that command.")
         return
     if isinstance(error, commands.CommandNotFound):
         return
     if isinstance(error, commands.CommandInvokeError) and error.original:
         log.exception("Prefix command error", exc_info=error.original)
         try:
-            await ctx.send(
-                clip_message(f"Something went wrong. {user_facing_error(error.original)}")
+            await send_ctx_message(
+                ctx,
+                clip_message(
+                    f"Something went wrong. {user_facing_error(error.original)}"
+                ),
             )
         except Exception:
             pass

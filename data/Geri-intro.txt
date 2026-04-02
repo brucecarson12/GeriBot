@@ -1,6 +1,6 @@
 Hey, I'm Geri. I link your Discord account to Chess.com and show stats, last games, and a server leaderboard.
 
-Commands (use **$** prefix or **/** slash — same commands):
+Commands (prefer **/** slash; **$** prefix works too):
 • **addcdc** — save your Chess.com username (optional real name)
 • **cdcprofile** — your ratings and profile link (optional: another member's Discord name if they're registered)
 • **lastcdc** — your most recent Chess.com game + GIF (optional: a Chess.com username)
